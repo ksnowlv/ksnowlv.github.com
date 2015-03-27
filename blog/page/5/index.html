@@ -1,0 +1,1634 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>ksnowlv</title>
+  <meta name="author" content="律威">
+
+  
+  <meta name="description" content="Mac下NSDistributedLock也可以用来同步。 可以用来限制对某些共享资源的访问，比如一个文件。
+没有实现NSLocking协议，所有没有lock方法。一个lock方法将会阻塞线程的执行，并要求系统以预定的速度轮询锁。
+它提供了一个tryLock方法，并让你决定是否轮询。访问结束后， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://ksnowlv.github.io/blog/page/5">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="ksnowlv" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.useso.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.useso.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.useso.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+     _gaq.push(['_setAccount', 'UA-39546615-2']);
+    // _gaq.push(['_trackPageview']);
+
+    // (function() {
+    //   var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    //   ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    //   var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    // })();
+
+    _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src='http://droidyue-tools.qiniudn.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">ksnowlv</a></h1>
+  
+    <h2>回顾过去,总结以往;立足现在,铭记当下;技术为主,笔记而已.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:ksnowlv.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客首页</a></li>
+  <li><a href="/blog/archives">文章列表</a></li>
+  <!-- <li><a href="/about-me">关于我</a></li>
+ -->
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/09/07/macxia-nsdistributedlocktong-bu-xing-neng/">Mac下NSDistributedLock同步性能</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-09-07T14:56:00+08:00" pubdate data-updated="true">Sep 7<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/09/07/macxia-nsdistributedlocktong-bu-xing-neng/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h4>Mac下<a href="https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/NSDistributedLock_Class/Reference/Reference.html">NSDistributedLock</a>也可以用来同步。</h4>
+
+<blockquote><ul>
+<li>可以用来限制对某些共享资源的访问，比如一个文件。</li>
+<li>没有实现<strong>NSLocking</strong>协议，所有没有<code>lock</code>方法。一个<code>lock</code>方法将会阻塞线程的执行，并要求系统以预定的速度轮询锁。</li>
+<li>它提供了一个<code>tryLock</code>方法，并让你决定是否轮询。访问结束后，可以通过调用unlock方法来释放它。</li>
+</ul>
+</blockquote>
+
+<p>我们使用该锁对<code>doucument</code>目录访问。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'>    <span class="p">...</span>
+</span><span class='line'>    <span class="n">NSString</span> <span class="o">*</span><span class="n">doucumentDir</span> <span class="o">=</span> <span class="p">[</span><span class="n">paths</span> <span class="nl">objectAtIndex:</span><span class="mi">0</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;doucumentDir = %@&quot;</span><span class="p">,</span> <span class="n">doucumentDir</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">const</span> <span class="n">NSInteger</span> <span class="n">KRunTimes</span> <span class="o">=</span> <span class="mi">1000</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">;</span>
+</span><span class='line'>    <span class="kt">double</span> <span class="n">curTime</span><span class="p">,</span> <span class="n">lastTime</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// NSDistributedLock</span>
+</span><span class='line'>    <span class="n">NSDistributedLock</span> <span class="o">*</span><span class="n">lock</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSDistributedLock</span> <span class="nl">lockWithPath:</span><span class="n">doucumentDir</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">lastTime</span> <span class="o">=</span> <span class="n">CFAbsoluteTimeGetCurrent</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="n">NSInteger</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">KRunTimes</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">if</span> <span class="p">([</span><span class="n">lock</span> <span class="n">tryLock</span><span class="p">])</span> <span class="p">{</span>
+</span><span class='line'>            <span class="p">[</span><span class="n">lock</span> <span class="n">unlock</span><span class="p">];</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">curTime</span> <span class="o">=</span> <span class="n">CFAbsoluteTimeGetCurrent</span><span class="p">();</span>
+</span><span class='line'>    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;@synchronized: %f ms&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">curTime</span> <span class="o">-</span> <span class="n">lastTime</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">);</span>
+</span><span class='line'>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>日志输出:</h4>
+
+<pre><code>2014-09-07 14:55:32.438 NSDistributedLockTest[4131:303] doucumentDir = /Users/ksnowlv/Documents
+2014-09-07 14:55:33.703 NSDistributedLockTest[4131:303] @synchronized: 1264.391005 ms
+</code></pre>
+
+<h4>结论：和其它同步锁相比，耗时是比较高的。</h4>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/09/07/ios-tong-bu-suo-xing-neng-dui-bi/">iOS同步对象性能对比</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-09-07T10:42:00+08:00" pubdate data-updated="true">Sep 7<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/09/07/ios-tong-bu-suo-xing-neng-dui-bi/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>在iOS开发中，支持多种同步方法，我们从耗时角度出发，评估各种同步对象的性能。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'> <span class="mf">1.</span><span class="k">@synchronized</span>
+</span><span class='line'> <span class="mf">2.</span><span class="n">NSLock</span>
+</span><span class='line'> <span class="mf">3.</span><span class="n">NSCondition</span>
+</span><span class='line'> <span class="mf">4.</span><span class="n">NSConditionLock</span>
+</span><span class='line'> <span class="mf">5.</span><span class="n">NSRecursiveLock</span>
+</span><span class='line'> <span class="mf">6.</span><span class="n">pthread_mutex_t</span>
+</span><span class='line'> <span class="mf">7.</span><span class="n">OSSpinLock</span>
+</span><span class='line'> <span class="mf">8.</span><span class="n">dispatch_barrier_async</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>示例代码如下：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'>  <span class="k">const</span> <span class="n">NSInteger</span> <span class="n">KRunTimes</span> <span class="o">=</span> <span class="mi">1000</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kt">double</span> <span class="n">curTime</span><span class="p">,</span> <span class="n">lastTime</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// 1.同步synchronized</span>
+</span><span class='line'>  <span class="kt">id</span> <span class="n">obj</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSObject</span> <span class="n">new</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">lastTime</span> <span class="o">=</span> <span class="n">CFAbsoluteTimeGetCurrent</span><span class="p">();</span>
+</span><span class='line'>  <span class="k">for</span> <span class="p">(</span><span class="n">NSInteger</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">KRunTimes</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">@synchronized</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="n">curTime</span> <span class="o">=</span> <span class="n">CFAbsoluteTimeGetCurrent</span><span class="p">();</span>
+</span><span class='line'>  <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;@synchronized: %f ms&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">curTime</span> <span class="o">-</span> <span class="n">lastTime</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// 2.NSLock</span>
+</span><span class='line'>  <span class="n">NSLock</span> <span class="o">*</span><span class="n">myLock</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSLock</span> <span class="n">new</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">lastTime</span> <span class="o">=</span> <span class="n">CFAbsoluteTimeGetCurrent</span><span class="p">();</span>
+</span><span class='line'>  <span class="k">for</span> <span class="p">(</span><span class="n">NSInteger</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">KRunTimes</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">myLock</span> <span class="n">lock</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">myLock</span> <span class="n">unlock</span><span class="p">];</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="n">curTime</span> <span class="o">=</span> <span class="n">CFAbsoluteTimeGetCurrent</span><span class="p">();</span>
+</span><span class='line'>  <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;NSLock: %f ms&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">curTime</span> <span class="o">-</span> <span class="n">lastTime</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// NSLock IMP</span>
+</span><span class='line'>  <span class="k">typedef</span> <span class="nf">void</span> <span class="p">(</span><span class="o">*</span><span class="n">func</span><span class="p">)(</span><span class="kt">id</span><span class="p">,</span> <span class="kt">SEL</span><span class="p">);</span>
+</span><span class='line'>  <span class="kt">SEL</span> <span class="n">lockSEL</span> <span class="o">=</span> <span class="k">@selector</span><span class="p">(</span><span class="n">lock</span><span class="p">);</span>
+</span><span class='line'>  <span class="kt">SEL</span> <span class="n">unlockSEL</span> <span class="o">=</span> <span class="k">@selector</span><span class="p">(</span><span class="n">unlock</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">func</span> <span class="n">lockFunc</span> <span class="o">=</span> <span class="p">(</span><span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="p">)(</span><span class="kt">id</span><span class="p">,</span> <span class="kt">SEL</span><span class="p">))[</span><span class="n">myLock</span> <span class="n">methodForSelector</span> <span class="o">:</span> <span class="n">lockSEL</span><span class="p">];</span>
+</span><span class='line'>  <span class="n">func</span> <span class="n">unlockFunc</span> <span class="o">=</span> <span class="p">(</span><span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="p">)(</span><span class="kt">id</span><span class="p">,</span> <span class="kt">SEL</span><span class="p">))[</span><span class="n">myLock</span> <span class="n">methodForSelector</span> <span class="o">:</span> <span class="n">unlockSEL</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">lastTime</span> <span class="o">=</span> <span class="n">CFAbsoluteTimeGetCurrent</span><span class="p">();</span>
+</span><span class='line'>  <span class="k">for</span> <span class="p">(</span><span class="n">NSInteger</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">KRunTimes</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">lockFunc</span><span class="p">(</span><span class="n">myLock</span><span class="p">,</span> <span class="n">lockSEL</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">unlockFunc</span><span class="p">(</span><span class="n">myLock</span><span class="p">,</span> <span class="n">unlockSEL</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">curTime</span> <span class="o">=</span> <span class="n">CFAbsoluteTimeGetCurrent</span><span class="p">();</span>
+</span><span class='line'>  <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;NSLock + IMP: %f ms&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">curTime</span> <span class="o">-</span> <span class="n">lastTime</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// 3.NSCondition</span>
+</span><span class='line'>  <span class="n">NSCondition</span> <span class="o">*</span><span class="n">condition</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSCondition</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</span><span class='line'>  <span class="n">lastTime</span> <span class="o">=</span> <span class="n">CFAbsoluteTimeGetCurrent</span><span class="p">();</span>
+</span><span class='line'>  <span class="k">for</span> <span class="p">(</span><span class="n">NSInteger</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">KRunTimes</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">condition</span> <span class="n">lock</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">condition</span> <span class="n">unlock</span><span class="p">];</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="n">curTime</span> <span class="o">=</span> <span class="n">CFAbsoluteTimeGetCurrent</span><span class="p">();</span>
+</span><span class='line'>  <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;NSCondition: %f ms&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">curTime</span> <span class="o">-</span> <span class="n">lastTime</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// 4.NSConditionLock</span>
+</span><span class='line'>  <span class="n">NSConditionLock</span> <span class="o">*</span><span class="n">conditionLock</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSConditionLock</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</span><span class='line'>  <span class="n">lastTime</span> <span class="o">=</span> <span class="n">CFAbsoluteTimeGetCurrent</span><span class="p">();</span>
+</span><span class='line'>  <span class="k">for</span> <span class="p">(</span><span class="n">NSInteger</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">KRunTimes</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">conditionLock</span> <span class="n">lock</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">conditionLock</span> <span class="n">unlock</span><span class="p">];</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="n">curTime</span> <span class="o">=</span> <span class="n">CFAbsoluteTimeGetCurrent</span><span class="p">();</span>
+</span><span class='line'>  <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;NSConditionLock: %f ms&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">curTime</span> <span class="o">-</span> <span class="n">lastTime</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// 5.NSRecursiveLock</span>
+</span><span class='line'>  <span class="n">NSRecursiveLock</span> <span class="o">*</span><span class="n">recursiveLock</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSRecursiveLock</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</span><span class='line'>  <span class="n">lastTime</span> <span class="o">=</span> <span class="n">CFAbsoluteTimeGetCurrent</span><span class="p">();</span>
+</span><span class='line'>  <span class="k">for</span> <span class="p">(</span><span class="n">NSInteger</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">KRunTimes</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">recursiveLock</span> <span class="n">lock</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">recursiveLock</span> <span class="n">unlock</span><span class="p">];</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="n">curTime</span> <span class="o">=</span> <span class="n">CFAbsoluteTimeGetCurrent</span><span class="p">();</span>
+</span><span class='line'>  <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;NSRecursiveLock: %f ms&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">curTime</span> <span class="o">-</span> <span class="n">lastTime</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// 6.pthread_mutex_t</span>
+</span><span class='line'>  <span class="n">pthread_mutex_t</span> <span class="n">mutex</span> <span class="o">=</span> <span class="n">PTHREAD_MUTEX_INITIALIZER</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">lastTime</span> <span class="o">=</span> <span class="n">CFAbsoluteTimeGetCurrent</span><span class="p">();</span>
+</span><span class='line'>  <span class="k">for</span> <span class="p">(</span><span class="n">NSInteger</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">KRunTimes</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">curTime</span> <span class="o">=</span> <span class="n">CFAbsoluteTimeGetCurrent</span><span class="p">();</span>
+</span><span class='line'>  <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;pthread_mutex: %f ms&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">curTime</span> <span class="o">-</span> <span class="n">lastTime</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">pthread_mutex_destroy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// 7.OSSpinLock 自旋锁;</span>
+</span><span class='line'>  <span class="n">OSSpinLock</span> <span class="n">spinlock</span> <span class="o">=</span> <span class="n">OS_SPINLOCK_INIT</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">lastTime</span> <span class="o">=</span> <span class="n">CFAbsoluteTimeGetCurrent</span><span class="p">();</span>
+</span><span class='line'>  <span class="k">for</span> <span class="p">(</span><span class="n">NSInteger</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">KRunTimes</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">OSSpinLockLock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">spinlock</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">OSSpinLockUnlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">spinlock</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">curTime</span> <span class="o">=</span> <span class="n">CFAbsoluteTimeGetCurrent</span><span class="p">();</span>
+</span><span class='line'>  <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;OSSpinlock: %f ms&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">curTime</span> <span class="o">-</span> <span class="n">lastTime</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// 8 dispatch_barrier_async</span>
+</span><span class='line'>  <span class="n">dispatch_queue_t</span> <span class="n">queue</span> <span class="o">=</span>
+</span><span class='line'>      <span class="n">dispatch_queue_create</span><span class="p">(</span><span class="s">&quot;com.qq.ksnow&quot;</span><span class="p">,</span> <span class="n">DISPATCH_QUEUE_CONCURRENT</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">lastTime</span>   <span class="o">=</span> <span class="n">CFAbsoluteTimeGetCurrent</span><span class="p">();</span>
+</span><span class='line'>  <span class="k">for</span> <span class="p">(</span><span class="n">NSInteger</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">KRunTimes</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">dispatch_barrier_async</span><span class="p">(</span><span class="n">queue</span><span class="p">,</span> <span class="o">^</span><span class="p">{});</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="n">curTime</span> <span class="o">=</span> <span class="n">CFAbsoluteTimeGetCurrent</span><span class="p">();</span>
+</span><span class='line'>  <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;@dispatch_barrier_async: %f ms&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">curTime</span> <span class="o">-</span> <span class="n">lastTime</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">);</span>
+</span><span class='line'>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>一.模拟器/iOS7/XCode6下性能对比</h3>
+
+<h4>日志情况:</h4>
+
+<pre><code> 2014-09-07 11:26:48.071 LockTest[2713:98107] @synchronized: 232.551038 ms
+
+2014-09-07 11:26:48.173 LockTest[2713:98107] NSLock: 100.879967 ms
+2014-09-07 11:26:48.263 LockTest[2713:98107] NSLock + IMP: 89.570999 ms
+2014-09-07 11:26:48.353 LockTest[2713:98107] NSCondition: 89.850008 ms
+2014-09-07 11:26:48.587 LockTest[2713:98107] NSConditionLock: 233.431995 ms
+2014-09-07 11:26:48.677 LockTest[2713:98107] NSRecursiveLock: 89.230001 ms
+2014-09-07 11:26:48.740 LockTest[2713:98107] pthread_mutex: 62.326968 ms
+2014-09-07 11:26:48.750 LockTest[2713:98107] OSSpinlock: 10.430992 ms
+2014-09-07 11:26:49.985 LockTest[2713:98107] dispatch_barrier_async: 1234.429002 ms
+</code></pre>
+
+<h4>总结对比</h4>
+
+<p><img src="/images/post/2014-09-07-ios-tong-bu-suo-xing-neng-dui-bi/syn_compared_simulate.png" alt="image" /></p>
+
+<h4>二.iPad Mini2/iOS7/XCode6下性能对比</h4>
+
+<pre><code>2014-09-07 13:32:47.720 LockTest[3494:60b] @synchronized: 499.736011 ms
+2014-09-07 13:32:47.948 LockTest[3494:60b] NSLock: 227.194011 ms
+2014-09-07 13:32:48.170 LockTest[3494:60b] NSLock + IMP: 221.384048 ms
+2014-09-07 13:32:48.393 LockTest[3494:60b] NSCondition: 221.689999 ms
+2014-09-07 13:32:49.030 LockTest[3494:60b] NSConditionLock: 636.340976 ms
+2014-09-07 13:32:49.260 LockTest[3494:60b] NSRecursiveLock: 229.423046 ms
+2014-09-07 13:32:49.431 LockTest[3494:60b] pthread_mutex: 170.615971 ms
+2014-09-07 13:32:49.495 LockTest[3494:60b] OSSpinlock: 63.916981 ms
+2014-09-07 13:32:49.826 LockTest[3494:60b] dispatch_barrier_async: 329.769015 ms
+</code></pre>
+
+<p><img src="/images/post/2014-09-07-ios-tong-bu-suo-xing-neng-dui-bi/syn_compared_ipad_mini2.png" alt="image" /></p>
+
+<h3>总结</h3>
+
+<ul>
+<li><p>耗时方面：</p>
+
+<ul>
+<li>OSSpinlock耗时最少;</li>
+<li>pthread_mutex其次。</li>
+<li>NSLock/NSCondition/NSRecursiveLock 耗时接近，220ms上下居中。</li>
+<li>NSConditionLock最差，我们常用synchronized倒数第二。</li>
+<li>dispatch_barrier_async也许，性能并不像我们想象中的那么好.推测与线程同步调度开销有关。单独block耗时在1ms以下基本上可以忽略不计的。</li>
+</ul>
+</li>
+<li><p>在访问次数比较多的情况下,IMP访问耗时要比消息发送略小。
+参看<code>NSLock</code>与<code>NSLock + IMP</code>对比。</p></li>
+<li><p>为什么不直接使用<strong>IMP</strong>而使用直接声明函数指针的方式?
+XCode6下IMP不能指定参数，报错如下：
+<img src="/images/post/2014-09-07-ios-tong-bu-suo-xing-neng-dui-bi/error_overview.png" alt="image" />
+如何解决呢？修改LLVM预处理设置即可。详情见<a href="http://ksnowlv.gitcafe.com/blog/2014/09/07/xcode6-too-many-arguments-to-function-call-expected-0-have-2/">XCode6下Too many arguments to function call, expected 0, have 2解决办法</a></p></li>
+</ul>
+
+
+<h3>原因分析</h3>
+
+<h4>1.synchronized</h4>
+
+<pre><code>会创建一个异常捕获handler和一些内部的锁。所以，使用@synchronized替换普通锁的代价是，你付出更多的时间消耗。
+</code></pre>
+
+<h4>2.NSConditionLock</h4>
+
+<pre><code>条件锁，与特定的，用户定义的条件有关。可以确保一个线程可以获取满足一定条件的锁。
+内部会涉及到信号量机制，一旦一个线程获得锁后，它可以放弃锁并设置相关条件;其它线程竞争该锁。
+线程之间的竞争激烈，涉及到条件锁检测，线程间通信。系统调用，上下切换方切换比较频繁。
+</code></pre>
+
+<h4>3.OSSpinLock</h4>
+
+<pre><code>自旋锁几乎不进入内核，仅仅是重新加载自旋锁。
+如果自旋锁被占用时间是几十，上百纳秒，性能还是挺高的。减少了代价较高的系统调用和一系列上下文言切换。
+但是，该锁不是万能的;如果该锁抢占比较多的时候，不要使用该锁。会占用较多cpu,导致耗电较多。
+这种情况下使用pthread_mutex虽然耗时多一点，但是，避免了电量过多的消耗。是不错的选择。
+</code></pre>
+
+<h4>4.pthread_mutex</h4>
+
+<pre><code>底层的API还是性能比较高啊，在各种同步对象中，性能属于佼佼者。
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/09/06/gcd-zhi-jian-ting-wen-jian/">GCD之监听文件</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-09-06T17:42:00+08:00" pubdate data-updated="true">Sep 6<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/09/06/gcd-zhi-jian-ting-wen-jian/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>GCD可以用来监听文件变化，例如目录变化，重命名等之类的。
+例如我们监听<code>Document</code>目录下，<code>ksnow</code>目录的变化。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">NSArray</span> <span class="o">*</span><span class="n">paths</span> <span class="o">=</span> <span class="n">NSSearchPathForDirectoriesInDomains</span><span class="p">(</span><span class="n">NSDocumentDirectory</span><span class="p">,</span>
+</span><span class='line'>                                                       <span class="n">NSUserDomainMask</span><span class="p">,</span> <span class="n">YES</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">paths</span><span class="p">.</span><span class="n">count</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">NSString</span> <span class="o">*</span><span class="n">ksnowDir</span> <span class="o">=</span>
+</span><span class='line'>      <span class="p">[[</span><span class="n">paths</span> <span class="nl">objectAtIndex:</span><span class="mi">0</span><span class="p">]</span> <span class="nl">stringByAppendingPathComponent:</span><span class="s">@&quot;ksnow&quot;</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;ksnowdir = %@&quot;</span><span class="p">,</span> <span class="n">ksnowDir</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">NSURL</span> <span class="o">*</span><span class="n">directoryURL</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSURL</span> <span class="nl">URLWithString:</span><span class="n">ksnowDir</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kt">int</span> <span class="k">const</span> <span class="n">fd</span> <span class="o">=</span>
+</span><span class='line'>      <span class="n">open</span><span class="p">([[</span><span class="n">directoryURL</span> <span class="n">path</span><span class="p">]</span> <span class="n">fileSystemRepresentation</span><span class="p">],</span> <span class="n">O_EVTONLY</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">fd</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Unable to open the path = %@&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">directoryURL</span> <span class="n">path</span><span class="p">]);</span>
+</span><span class='line'>    <span class="k">return</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="n">dispatch_source_t</span> <span class="n">source</span> <span class="o">=</span>
+</span><span class='line'>      <span class="n">dispatch_source_create</span><span class="p">(</span><span class="n">DISPATCH_SOURCE_TYPE_VNODE</span><span class="p">,</span> <span class="n">fd</span><span class="p">,</span>
+</span><span class='line'>                             <span class="n">DISPATCH_VNODE_WRITE</span> <span class="o">|</span> <span class="n">DISPATCH_VNODE_RENAME</span><span class="p">,</span>
+</span><span class='line'>                             <span class="n">DISPATCH_TARGET_QUEUE_DEFAULT</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">dispatch_source_set_event_handler</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="o">^</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>      <span class="kt">unsigned</span> <span class="kt">long</span> <span class="k">const</span> <span class="n">type</span> <span class="o">=</span> <span class="n">dispatch_source_get_data</span><span class="p">(</span><span class="n">source</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">switch</span> <span class="p">(</span><span class="n">type</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">case</span> <span class="nl">DISPATCH_VNODE_WRITE:</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;目录内容改变!!!&quot;</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">break</span><span class="p">;</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>      <span class="k">case</span> <span class="nl">DISPATCH_VNODE_RENAME:</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;目录被重命名!!!&quot;</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">break</span><span class="p">;</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">default</span><span class="o">:</span>
+</span><span class='line'>        <span class="k">break</span><span class="p">;</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'>  <span class="n">dispatch_source_set_cancel_handler</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="o">^</span><span class="p">()</span> <span class="p">{</span> <span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span> <span class="p">});</span>
+</span><span class='line'>  <span class="n">self</span><span class="p">.</span><span class="n">source</span> <span class="o">=</span> <span class="n">source</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">dispatch_resume</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">source</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>对<code>/Users/ksnowlv/Library/Developer/CoreSimulator/Devices/DCA2391F-AA20-484C-AC45-BB762077A904/data/Containers/Data/Application/C268F09F-1B97-4546-BED0-EF56782A50B8/Documents/ksnow</code>该目录进行重命名，添加文件，删除文件等操作。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="mi">2014</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mo">06</span> <span class="mi">17</span><span class="o">:</span><span class="mi">50</span><span class="o">:</span><span class="mf">06.473</span> <span class="n">GCDWatchFileTest</span><span class="p">[</span><span class="mi">6257</span><span class="o">:</span><span class="mi">881686</span><span class="p">]</span> <span class="n">ksnowdir</span> <span class="o">=</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">ksnowlv</span><span class="o">/</span><span class="n">Library</span><span class="o">/</span><span class="n">Developer</span><span class="o">/</span><span class="n">CoreSimulator</span><span class="o">/</span><span class="n">Devices</span><span class="o">/</span><span class="n">DCA2391F</span><span class="o">-</span><span class="n">AA20</span><span class="o">-</span><span class="mi">484</span><span class="n">C</span><span class="o">-</span><span class="n">AC45</span><span class="o">-</span><span class="n">BB762077A904</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">Containers</span><span class="o">/</span><span class="n">Data</span><span class="o">/</span><span class="n">Application</span><span class="o">/</span><span class="n">C268F09F</span><span class="o">-</span><span class="mi">1</span><span class="n">B97</span><span class="o">-</span><span class="mi">4546</span><span class="o">-</span><span class="n">BED0</span><span class="o">-</span><span class="n">EF56782A50B8</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">ksnow</span>
+</span><span class='line'><span class="mi">2014</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mo">06</span> <span class="mi">17</span><span class="o">:</span><span class="mi">50</span><span class="o">:</span><span class="mf">26.799</span> <span class="n">GCDWatchFileTest</span><span class="p">[</span><span class="mi">6257</span><span class="o">:</span><span class="mi">882512</span><span class="p">]</span> <span class="err">目录被重命名</span><span class="o">!!!</span>
+</span><span class='line'><span class="mi">2014</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mo">06</span> <span class="mi">17</span><span class="o">:</span><span class="mi">50</span><span class="o">:</span><span class="mf">40.113</span> <span class="n">GCDWatchFileTest</span><span class="p">[</span><span class="mi">6257</span><span class="o">:</span><span class="mi">883922</span><span class="p">]</span> <span class="err">目录被重命名</span><span class="o">!!!</span>
+</span><span class='line'><span class="mi">2014</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mo">06</span> <span class="mi">17</span><span class="o">:</span><span class="mi">50</span><span class="o">:</span><span class="mf">47.472</span> <span class="n">GCDWatchFileTest</span><span class="p">[</span><span class="mi">6257</span><span class="o">:</span><span class="mi">884919</span><span class="p">]</span> <span class="err">目录内容改变</span><span class="o">!!!</span>
+</span><span class='line'><span class="mi">2014</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mo">06</span> <span class="mi">17</span><span class="o">:</span><span class="mi">50</span><span class="o">:</span><span class="mf">53.632</span> <span class="n">GCDWatchFileTest</span><span class="p">[</span><span class="mi">6257</span><span class="o">:</span><span class="mi">884919</span><span class="p">]</span> <span class="err">目录内容改变</span><span class="o">!!!</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/09/06/cgd-zhi-jian-shi-jin-cheng/">CGD之监视进程</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-09-06T16:07:00+08:00" pubdate data-updated="true">Sep 6<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/09/06/cgd-zhi-jian-shi-jin-cheng/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><strong>GCD</strong>可以检测进程的运行，退出状态，可以检测到进程间的信号。</p>
+
+<pre><code>#define DISPATCH_PROC_EXIT      0x80000000
+#define DISPATCH_PROC_FORK      0x40000000
+#define DISPATCH_PROC_EXEC      0x20000000
+#define DISPATCH_PROC_SIGNAL       0x08000000
+</code></pre>
+
+<p>可以使用<code>dispatch source</code>捕获相关信号。</p>
+
+<ul>
+<li><strong>DISPATCH_PROC_EXIT</strong>在<strong>Mac</strong>上可以捕获，在<strong>iOS</strong>上是无法捕获的。</li>
+<li><strong>DISPATCH_PROC_SIGNAL</strong>在<strong>Mac</strong>/<strong>iOS</strong>上均可捕获。</li>
+</ul>
+
+
+<h4>1.Mac上示例:</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="c1">// 可以通过注释掉的代码找关掉应用的BundleIdentifier</span>
+</span><span class='line'><span class="c1">//    NSArray *runningAppList = [NSWorkspace sharedWorkspace].runningApplications;</span>
+</span><span class='line'><span class="c1">//    </span>
+</span><span class='line'><span class="c1">//    NSLog(@&quot;runningAppList = %@&quot;,runningAppList.description);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">NSArray</span> <span class="o">*</span><span class="n">appList</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSRunningApplication</span>
+</span><span class='line'>                                  <span class="nl">runningApplicationsWithBundleIdentifier:</span><span class="s">@&quot;com.google.Chrome&quot;</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">appList</span><span class="p">.</span><span class="n">count</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">NSRunningApplication</span> <span class="o">*</span><span class="n">chromeApp</span> <span class="o">=</span> <span class="n">appList</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">self</span><span class="p">.</span><span class="n">source</span> <span class="o">=</span> <span class="n">dispatch_source_create</span><span class="p">(</span><span class="n">DISPATCH_SOURCE_TYPE_PROC</span><span class="p">,</span> <span class="n">chromeApp</span><span class="p">.</span><span class="n">processIdentifier</span><span class="p">,</span>
+</span><span class='line'>                                         <span class="n">DISPATCH_PROC_EXIT</span><span class="p">,</span> <span class="n">DISPATCH_TARGET_QUEUE_DEFAULT</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">dispatch_source_set_event_handler</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">source</span><span class="p">,</span> <span class="o">^</span><span class="p">(){</span>
+</span><span class='line'>        <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;google Chrome exit&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">});</span>
+</span><span class='line'>    <span class="n">dispatch_resume</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">source</span><span class="p">);</span>
+</span><span class='line'>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>执行上述代码前，确保<code>google Chrome浏览器</code>是打开的，然后，退出<code>google Chrome浏览器</code>。</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="mi">2014</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mo">06</span> <span class="mi">16</span><span class="o">:</span><span class="mi">16</span><span class="o">:</span><span class="mf">34.261</span> <span class="n">MacSignalTest</span><span class="p">[</span><span class="mi">4070</span><span class="o">:</span><span class="mi">1003</span><span class="p">]</span> <span class="n">google</span> <span class="n">Chrome</span> <span class="n">exit</span>
+</span><span class='line'>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>2. iOS示例</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'>    <span class="n">pid_t</span> <span class="n">pid</span> <span class="o">=</span> <span class="n">getpid</span><span class="p">();</span>
+</span><span class='line'>    <span class="n">pid_t</span> <span class="n">uid</span> <span class="o">=</span> <span class="n">getuid</span><span class="p">();</span>
+</span><span class='line'>    <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">name</span> <span class="o">=</span>  <span class="n">getprogname</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;pid = %d uid = %d, progname = %s&quot;</span><span class="p">,</span><span class="n">pid</span><span class="p">,</span><span class="n">uid</span><span class="p">,</span><span class="n">name</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">self</span><span class="p">.</span><span class="n">source</span> <span class="o">=</span> <span class="n">dispatch_source_create</span><span class="p">(</span><span class="n">DISPATCH_SOURCE_TYPE_PROC</span><span class="p">,</span> <span class="n">pid</span><span class="p">,</span>
+</span><span class='line'>                                         <span class="n">DISPATCH_PROC_SIGNAL</span><span class="p">,</span> <span class="n">DISPATCH_TARGET_QUEUE_DEFAULT</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">dispatch_source_set_event_handler</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">source</span><span class="p">,</span> <span class="o">^</span><span class="p">(){</span>
+</span><span class='line'>        <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;ios app exit for signal!&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">});</span>
+</span><span class='line'>    <span class="n">dispatch_resume</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">source</span><span class="p">);</span>
+</span><span class='line'>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>当<strong>signal</strong>信号发出时，会触发<strong>signal</strong>事件。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/09/06/objective-c-de-wen-dang-sheng-cheng-gong-ju-appledoc/">Objective-C的文档生成工具-Appledoc</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-09-06T08:36:00+08:00" pubdate data-updated="true">Sep 6<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/09/06/objective-c-de-wen-dang-sheng-cheng-gong-ju-appledoc/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="https://github.com/tomaz/appledoc">Appledoc</a>默认生成的文档风格与苹果的官方文档是一致的,生成docset，可以集成到xcode中。在源码中按住option再单击就可以调出相应方法的帮助。</p>
+
+<h4>1.Appledoc安装.</h4>
+
+<pre><code>git clone git://github.com/tomaz/appledoc.git
+cd appledoc
+sudo sh install-appledoc.sh
+</code></pre>
+
+<p> 或者在安装<a href="http://brew.sh">Homebrew</a>后，使用Homebrew安装也可。</p>
+
+<pre><code> brew install appledoc
+</code></pre>
+
+<h4>2.Appledoc生成。</h4>
+
+<p>我使用曾经做的<a href="http://open.map.qq.com/ios_v1/index.html">iOS腾讯地图API</a>为例，把<strong>API</strong>的<strong>inc</strong>文件拷贝到目录<strong>QQMapAPI</strong>.指定工程名为<strong>QQMapAPI</strong>，公司名为<strong>tencent</strong></p>
+
+<pre><code>ksnowlv@ksnowlvdeMacBook-Pro~/Movies/QQMapAPI$appledoc    -p QQMapAPI -c  tencent -v 1.0  -o  /Users/ksnowlv/Movies/QQMapAPI/inc  /Users/ksnowlv/Movies/QQMapAPI
+appledoc version: 2.2 (build 963)
+...
+</code></pre>
+
+<p> 使用<code>appledoc --help</code>查看相关命令</p>
+
+<pre><code> ksnowlv@ksnowlvdeMacBook-Pro~/Movies/QQMapAPI$appledoc --help
+Usage: appledoc [OPTIONS] &lt;paths to source dirs or files&gt;
+
+PATHS
+  -o, --output &lt;path&gt;                     Output path
+  -t, --templates &lt;path&gt;                  Template files path
+  --docset-install-path &lt;path&gt;        DocSet installation path
+  -s, --include &lt;path&gt;                    Include static doc(s) at path
+  -i, --ignore &lt;path&gt;                     Ignore given path
+  -x, --exclude-output &lt;path&gt;             Exclude given path from output
+  --index-desc &lt;path&gt;                 File including main index description
+
+PROJECT INFO
+  -p, --project-name &lt;string&gt;             Project name
+  -v, --project-version &lt;string&gt;          Project version
+  -c, --project-company &lt;string&gt;          Project company
+  --company-id &lt;string&gt;               Company UTI (i.e. reverse DNS name)
+</code></pre>
+
+<h4>简单解释下:</h4>
+
+<ul>
+<li>-p:工程名称</li>
+<li>-c:公司名称</li>
+<li><code>-v</code>:版本号</li>
+<li><code>/Users/ksnowlv/Movies/QQMapAPI/</code>:生成结果输出路径。成功以后,appledoc会新建一个文本文件来记录生成情况.</li>
+<li><code>/Users/ksnowlv/Movies/QQMapAPI/inc</code>:扫描目标的目录所有文件。</li>
+</ul>
+
+
+<h4>3.文档查看。</h4>
+
+<p>   在苹果帮助文档目录：<code>/Users/ksnowlv/Library/Developer/Shared/Documentation/DocSets</code>查看<strong>QQMapAPI</strong>生成的文档。
+   <img src="/images/post/2014-09-06-objective-c-de-wen-dang-sheng-cheng-gong-ju-appledoc/qqmapapi_path.png" alt="image" /></p>
+
+<p>   在xcode帮助文档中查看<strong>QQMapAPI文档</strong>
+   <img src="/images/post/2014-09-06-objective-c-de-wen-dang-sheng-cheng-gong-ju-appledoc/qqmapapi_in_xcode_help.png" alt="image" /></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/09/05/ios-xi-tong-dui-xiang-zhong-yong/">iOS系统对象重用</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-09-05T16:24:00+08:00" pubdate data-updated="true">Sep 5<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/09/05/ios-xi-tong-dui-xiang-zhong-yong/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h4>当我们重复创建/销毁对象的操作时，iOS系统对象是否会被重用呢？</h4>
+
+<h4>结论:iOS系统较低概率会输出可重用的对象,so,注意内存使用效率[可用Allocation工具检测]。</h4>
+
+<blockquote><p>不要寄希望于系统对你低效的代码进行你想象中的优化!</p></blockquote>
+
+<h4>测试思路</h4>
+
+<pre><code>以0.1s为间隔的timer,周期性的创建UILabel/NSMutableData，观察它们内存地址变化情况？
+</code></pre>
+
+<h4>测试代码</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">viewDidLoad</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">super</span> <span class="n">viewDidLoad</span><span class="p">];</span>
+</span><span class='line'>    <span class="c1">// Do any additional setup after loading the view, typically from a nib.</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">_timer</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSTimer</span> <span class="nl">scheduledTimerWithTimeInterval:</span><span class="mf">0.1</span> <span class="nl">target:</span><span class="n">self</span> <span class="nl">selector:</span><span class="k">@selector</span><span class="p">(</span><span class="n">handleNewObject</span><span class="p">)</span> <span class="nl">userInfo:</span><span class="nb">nil</span> <span class="nl">repeats:</span><span class="n">YES</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">didReceiveMemoryWarning</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">super</span> <span class="n">didReceiveMemoryWarning</span><span class="p">];</span>
+</span><span class='line'>    <span class="c1">// Dispose of any resources that can be recreated.</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">handleNewObject</span><span class="p">{</span>
+</span><span class='line'>    <span class="n">UILabel</span> <span class="o">*</span><span class="n">label</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UILabel</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">NSMutableData</span> <span class="o">*</span><span class="n">data</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSMutableData</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithCapacity:</span><span class="mi">1024</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;UILabel address = %p,NSMutableData address = %p&quot;</span><span class="p">,</span><span class="n">label</span><span class="p">,</span><span class="n">data</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<h4>截取部分日志情况</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="mi">2014</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mo">05</span> <span class="mi">16</span><span class="o">:</span><span class="mi">22</span><span class="o">:</span><span class="mf">43.564</span> <span class="n">DataReuseTest</span><span class="p">[</span><span class="mi">70877</span><span class="o">:</span><span class="mi">5448269</span><span class="p">]</span> <span class="n">UILabel</span> <span class="n">address</span> <span class="o">=</span> <span class="mh">0xba12bd0</span><span class="p">,</span><span class="n">NSMutableData</span> <span class="n">address</span> <span class="o">=</span> <span class="mh">0xba06aa0</span>
+</span><span class='line'><span class="mi">2014</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mo">05</span> <span class="mi">16</span><span class="o">:</span><span class="mi">22</span><span class="o">:</span><span class="mf">43.664</span> <span class="n">DataReuseTest</span><span class="p">[</span><span class="mi">70877</span><span class="o">:</span><span class="mi">5448269</span><span class="p">]</span> <span class="n">UILabel</span> <span class="n">address</span> <span class="o">=</span> <span class="mh">0xae104c0</span><span class="p">,</span><span class="n">NSMutableData</span> <span class="n">address</span> <span class="o">=</span> <span class="mh">0xae19f70</span>
+</span><span class='line'><span class="mi">2014</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mo">05</span> <span class="mi">16</span><span class="o">:</span><span class="mi">22</span><span class="o">:</span><span class="mf">43.764</span> <span class="n">DataReuseTest</span><span class="p">[</span><span class="mi">70877</span><span class="o">:</span><span class="mi">5448269</span><span class="p">]</span> <span class="n">UILabel</span> <span class="n">address</span> <span class="o">=</span> <span class="mh">0xbb0d7d0</span><span class="p">,</span><span class="n">NSMutableData</span> <span class="n">address</span> <span class="o">=</span> <span class="mh">0xbb08710</span>
+</span><span class='line'><span class="mi">2014</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mo">05</span> <span class="mi">16</span><span class="o">:</span><span class="mi">22</span><span class="o">:</span><span class="mf">43.864</span> <span class="n">DataReuseTest</span><span class="p">[</span><span class="mi">70877</span><span class="o">:</span><span class="mi">5448269</span><span class="p">]</span> <span class="n">UILabel</span> <span class="n">address</span> <span class="o">=</span> <span class="mh">0xba315f0</span><span class="p">,</span><span class="n">NSMutableData</span> <span class="n">address</span> <span class="o">=</span> <span class="mh">0xba12330</span>
+</span><span class='line'><span class="mi">2014</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mo">05</span> <span class="mi">16</span><span class="o">:</span><span class="mi">22</span><span class="o">:</span><span class="mf">43.964</span> <span class="n">DataReuseTest</span><span class="p">[</span><span class="mi">70877</span><span class="o">:</span><span class="mi">5448269</span><span class="p">]</span> <span class="n">UILabel</span> <span class="n">address</span> <span class="o">=</span> <span class="mh">0xae104c0</span><span class="p">,</span><span class="n">NSMutableData</span> <span class="n">address</span> <span class="o">=</span> <span class="mh">0xae19f70</span>
+</span><span class='line'><span class="mi">2014</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mo">05</span> <span class="mi">16</span><span class="o">:</span><span class="mi">22</span><span class="o">:</span><span class="mf">44.064</span> <span class="n">DataReuseTest</span><span class="p">[</span><span class="mi">70877</span><span class="o">:</span><span class="mi">5448269</span><span class="p">]</span> <span class="n">UILabel</span> <span class="n">address</span> <span class="o">=</span> <span class="mh">0xba315f0</span><span class="p">,</span><span class="n">NSMutableData</span> <span class="n">address</span> <span class="o">=</span> <span class="mh">0xba12330</span>
+</span><span class='line'><span class="mi">2014</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mo">05</span> <span class="mi">16</span><span class="o">:</span><span class="mi">22</span><span class="o">:</span><span class="mf">44.164</span> <span class="n">DataReuseTest</span><span class="p">[</span><span class="mi">70877</span><span class="o">:</span><span class="mi">5448269</span><span class="p">]</span> <span class="n">UILabel</span> <span class="n">address</span> <span class="o">=</span> <span class="mh">0xba315f0</span><span class="p">,</span><span class="n">NSMutableData</span> <span class="n">address</span> <span class="o">=</span> <span class="mh">0xae0d9d0</span>
+</span><span class='line'><span class="mi">2014</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mo">05</span> <span class="mi">16</span><span class="o">:</span><span class="mi">22</span><span class="o">:</span><span class="mf">44.263</span> <span class="n">DataReuseTest</span><span class="p">[</span><span class="mi">70877</span><span class="o">:</span><span class="mi">5448269</span><span class="p">]</span> <span class="n">UILabel</span> <span class="n">address</span> <span class="o">=</span> <span class="mh">0xba315f0</span><span class="p">,</span><span class="n">NSMutableData</span> <span class="n">address</span> <span class="o">=</span> <span class="mh">0xba12330</span>
+</span><span class='line'><span class="mi">2014</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mo">05</span> <span class="mi">16</span><span class="o">:</span><span class="mi">22</span><span class="o">:</span><span class="mf">44.364</span> <span class="n">DataReuseTest</span><span class="p">[</span><span class="mi">70877</span><span class="o">:</span><span class="mi">5448269</span><span class="p">]</span> <span class="n">UILabel</span> <span class="n">address</span> <span class="o">=</span> <span class="mh">0xba315f0</span><span class="p">,</span><span class="n">NSMutableData</span> <span class="n">address</span> <span class="o">=</span> <span class="mh">0xba12330</span>
+</span><span class='line'><span class="mi">2014</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mo">05</span> <span class="mi">16</span><span class="o">:</span><span class="mi">22</span><span class="o">:</span><span class="mf">44.464</span> <span class="n">DataReuseTest</span><span class="p">[</span><span class="mi">70877</span><span class="o">:</span><span class="mi">5448269</span><span class="p">]</span> <span class="n">UILabel</span> <span class="n">address</span> <span class="o">=</span> <span class="mh">0xae104c0</span><span class="p">,</span><span class="n">NSMutableData</span> <span class="n">address</span> <span class="o">=</span> <span class="mh">0xae19f70</span>
+</span><span class='line'><span class="mi">2014</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mo">05</span> <span class="mi">16</span><span class="o">:</span><span class="mi">22</span><span class="o">:</span><span class="mf">44.564</span> <span class="n">DataReuseTest</span><span class="p">[</span><span class="mi">70877</span><span class="o">:</span><span class="mi">5448269</span><span class="p">]</span> <span class="n">UILabel</span> <span class="n">address</span> <span class="o">=</span> <span class="mh">0xba315f0</span><span class="p">,</span><span class="n">NSMutableData</span> <span class="n">address</span> <span class="o">=</span> <span class="mh">0xba12330</span>
+</span><span class='line'><span class="mi">2014</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mo">05</span> <span class="mi">16</span><span class="o">:</span><span class="mi">22</span><span class="o">:</span><span class="mf">44.664</span> <span class="n">DataReuseTest</span><span class="p">[</span><span class="mi">70877</span><span class="o">:</span><span class="mi">5448269</span><span class="p">]</span> <span class="n">UILabel</span> <span class="n">address</span> <span class="o">=</span> <span class="mh">0xba315f0</span><span class="p">,</span><span class="n">NSMutableData</span> <span class="n">address</span> <span class="o">=</span> <span class="mh">0xbb02d20</span>
+</span><span class='line'><span class="mi">2014</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mo">05</span> <span class="mi">16</span><span class="o">:</span><span class="mi">22</span><span class="o">:</span><span class="mf">44.764</span> <span class="n">DataReuseTest</span><span class="p">[</span><span class="mi">70877</span><span class="o">:</span><span class="mi">5448269</span><span class="p">]</span> <span class="n">UILabel</span> <span class="n">address</span> <span class="o">=</span> <span class="mh">0xae104c0</span><span class="p">,</span><span class="n">NSMutableData</span> <span class="n">address</span> <span class="o">=</span> <span class="mh">0xae19f70</span>
+</span><span class='line'><span class="mi">2014</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mo">05</span> <span class="mi">16</span><span class="o">:</span><span class="mi">22</span><span class="o">:</span><span class="mf">44.864</span> <span class="n">DataReuseTest</span><span class="p">[</span><span class="mi">70877</span><span class="o">:</span><span class="mi">5448269</span><span class="p">]</span> <span class="n">UILabel</span> <span class="n">address</span> <span class="o">=</span> <span class="mh">0xba315f0</span><span class="p">,</span><span class="n">NSMutableData</span> <span class="n">address</span> <span class="o">=</span> <span class="mh">0xba13490</span>
+</span><span class='line'><span class="mi">2014</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mo">05</span> <span class="mi">16</span><span class="o">:</span><span class="mi">22</span><span class="o">:</span><span class="mf">44.963</span> <span class="n">DataReuseTest</span><span class="p">[</span><span class="mi">70877</span><span class="o">:</span><span class="mi">5448269</span><span class="p">]</span> <span class="n">UILabel</span> <span class="n">address</span> <span class="o">=</span> <span class="mh">0xba315f0</span><span class="p">,</span><span class="n">NSMutableData</span> <span class="n">address</span> <span class="o">=</span> <span class="mh">0xba13490</span>
+</span><span class='line'><span class="mi">2014</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mo">05</span> <span class="mi">16</span><span class="o">:</span><span class="mi">22</span><span class="o">:</span><span class="mf">45.064</span> <span class="n">DataReuseTest</span><span class="p">[</span><span class="mi">70877</span><span class="o">:</span><span class="mi">5448269</span><span class="p">]</span> <span class="n">UILabel</span> <span class="n">address</span> <span class="o">=</span> <span class="mh">0xae104c0</span><span class="p">,</span><span class="n">NSMutableData</span> <span class="n">address</span> <span class="o">=</span> <span class="mh">0xae19f70</span>
+</span><span class='line'><span class="mi">2014</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mo">05</span> <span class="mi">16</span><span class="o">:</span><span class="mi">22</span><span class="o">:</span><span class="mf">45.164</span> <span class="n">DataReuseTest</span><span class="p">[</span><span class="mi">70877</span><span class="o">:</span><span class="mi">5448269</span><span class="p">]</span> <span class="n">UILabel</span> <span class="n">address</span> <span class="o">=</span> <span class="mh">0xb84ea90</span><span class="p">,</span><span class="n">NSMutableData</span> <span class="n">address</span> <span class="o">=</span> <span class="mh">0xb811d60</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/09/05/ios-de-shu-ru-slash-shu-chu-liu/">iOS的输入/输出流</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-09-05T14:26:00+08:00" pubdate data-updated="true">Sep 5<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/09/05/ios-de-shu-ru-slash-shu-chu-liu/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>使用Cocoa框架中的输入输出流，可以从文件或应用中内存读取数据，也可以向文件/应用中内存写入数据。你可以在基于socket连接的远程服务交换数据中使用。&mdash;-翻译自苹果文档。</p>
+
+<h4>其主要类与方法</h4>
+
+<p><img src="/images/post/2014-09-05-ios-de-shu-ru-slash-shu-chu-liu/cocoa_stream_class.jpg" alt="image" /></p>
+
+<p>使用示例：我们从使用输入流从本地文件中读取图片，使用输出流存储读取的图片数据并显示。</p>
+
+<h4>1.声明输入/输出流/图片框属性。</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="k">@property</span><span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">)</span> <span class="n">NSInputStream</span> <span class="o">*</span><span class="n">imageInputStream</span><span class="p">;</span>
+</span><span class='line'><span class="k">@property</span><span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">)</span> <span class="n">NSOutputStream</span> <span class="o">*</span><span class="n">imageOutputStream</span><span class="p">;</span>
+</span><span class='line'><span class="k">@property</span><span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">)</span> <span class="kt">IBOutlet</span> <span class="n">UIImageView</span> <span class="o">*</span><span class="n">imageView</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>2.初始化输出流/输入流，清理方法，相关方法调用。</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">viewDidLoad</span> <span class="p">{</span>
+</span><span class='line'>  <span class="p">[</span><span class="n">super</span> <span class="n">viewDidLoad</span><span class="p">];</span>
+</span><span class='line'>  <span class="c1">// Do any additional setup after loading the view, typically from a nib.</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">NSString</span> <span class="o">*</span><span class="n">filePath</span> <span class="o">=</span>
+</span><span class='line'>      <span class="p">[[</span><span class="n">NSBundle</span> <span class="n">mainBundle</span><span class="p">]</span> <span class="nl">pathForResource:</span><span class="s">@&quot;qq_head&quot;</span> <span class="nl">ofType:</span><span class="s">@&quot;jpg&quot;</span><span class="p">];</span>
+</span><span class='line'>  <span class="p">[</span><span class="n">self</span> <span class="nl">loadImageFile:</span><span class="n">filePath</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#pragma mark---------NSStreamDelegate----------</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">stream:</span><span class="p">(</span><span class="n">NSStream</span> <span class="o">*</span><span class="p">)</span><span class="nv">aStream</span> <span class="nf">handleEvent:</span><span class="p">(</span><span class="n">NSStreamEvent</span><span class="p">)</span><span class="nv">eventCode</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">const</span> <span class="n">NSUInteger</span> <span class="n">kBufferSize</span> <span class="o">=</span> <span class="mi">2048</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">aStream</span> <span class="o">==</span> <span class="n">_imageInputStream</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;eventcode = %u&quot;</span><span class="p">,</span> <span class="n">eventCode</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">switch</span> <span class="p">(</span><span class="n">eventCode</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">case</span> <span class="nl">NSStreamEventHasBytesAvailable:</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">uint8_t</span> <span class="n">buf</span><span class="p">[</span><span class="n">kBufferSize</span><span class="p">];</span>
+</span><span class='line'>      <span class="n">memset</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">kBufferSize</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">uint8_t</span><span class="p">));</span>
+</span><span class='line'>      <span class="n">NSInteger</span> <span class="n">numOfBytes</span> <span class="o">=</span>
+</span><span class='line'>          <span class="p">[(</span><span class="n">NSInputStream</span> <span class="o">*</span><span class="p">)</span><span class="n">aStream</span> <span class="nl">read:</span><span class="n">buf</span> <span class="nl">maxLength:</span><span class="n">kBufferSize</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="n">numOfBytes</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="p">[</span><span class="n">_imageOutputStream</span> <span class="nl">write:</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="n">buf</span> <span class="nl">maxLength:</span><span class="n">numOfBytes</span><span class="p">];</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">break</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">case</span> <span class="nl">NSStreamEventEndEncountered:</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;The end of the stream has been reached.&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">NSData</span> <span class="o">*</span><span class="n">imageData</span> <span class="o">=</span> <span class="p">[</span><span class="n">_imageOutputStream</span>
+</span><span class='line'>          <span class="nl">propertyForKey:</span><span class="n">NSStreamDataWrittenToMemoryStreamKey</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="n">imageData</span><span class="p">.</span><span class="n">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">UIImage</span> <span class="o">*</span><span class="n">icon</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIImage</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithData:</span><span class="n">imageData</span><span class="p">];</span>
+</span><span class='line'>        <span class="n">_imageView</span><span class="p">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">icon</span><span class="p">;</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="p">[</span><span class="n">self</span> <span class="n">cleanUpStream</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">break</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">case</span> <span class="nl">NSStreamEventErrorOccurred:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;NSStreamEventErrorOccurred!!&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="p">[</span><span class="n">self</span> <span class="n">cleanUpStream</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">default</span><span class="o">:</span>
+</span><span class='line'>      <span class="k">break</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">loadNewImageFileEvnet:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">NSString</span> <span class="o">*</span><span class="n">filePath</span> <span class="o">=</span>
+</span><span class='line'>      <span class="p">[[</span><span class="n">NSBundle</span> <span class="n">mainBundle</span><span class="p">]</span> <span class="nl">pathForResource:</span><span class="s">@&quot;qq_head_1&quot;</span> <span class="nl">ofType:</span><span class="s">@&quot;jpg&quot;</span><span class="p">];</span>
+</span><span class='line'>  <span class="p">[</span><span class="n">self</span> <span class="nl">loadImageFile:</span><span class="n">filePath</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/**</span>
+</span><span class='line'><span class="cm"> *  从本地图片文件中初始化输入流，同时初始化输出流。</span>
+</span><span class='line'><span class="cm"> *</span>
+</span><span class='line'><span class="cm"> *  @param fileName 图片文件全路径</span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">loadImageFile:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">fileName</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span> <span class="p">([[</span><span class="n">NSFileManager</span> <span class="n">defaultManager</span><span class="p">]</span> <span class="nl">fileExistsAtPath:</span><span class="n">fileName</span><span class="p">])</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">self</span><span class="p">.</span><span class="n">imageInputStream</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSInputStream</span> <span class="nl">inputStreamWithFileAtPath:</span><span class="n">fileName</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">_imageInputStream</span><span class="p">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="n">self</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">_imageInputStream</span> <span class="nl">scheduleInRunLoop:</span><span class="p">[</span><span class="n">NSRunLoop</span> <span class="n">currentRunLoop</span><span class="p">]</span>
+</span><span class='line'>                                 <span class="nl">forMode:</span><span class="n">NSDefaultRunLoopMode</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">_imageInputStream</span> <span class="n">open</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">self</span><span class="p">.</span><span class="n">imageOutputStream</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSOutputStream</span> <span class="n">outputStreamToMemory</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">_imageOutputStream</span> <span class="n">open</span><span class="p">];</span>
+</span><span class='line'>  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%@ ---not found the file&quot;</span><span class="p">,</span> <span class="n">fileName</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/**</span>
+</span><span class='line'><span class="cm"> *  清理输出输入流</span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">cleanUpStream</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="p">[</span><span class="n">_imageInputStream</span> <span class="nl">removeFromRunLoop:</span><span class="p">[</span><span class="n">NSRunLoop</span> <span class="n">currentRunLoop</span><span class="p">]</span>
+</span><span class='line'>                               <span class="nl">forMode:</span><span class="n">NSDefaultRunLoopMode</span><span class="p">];</span>
+</span><span class='line'>  <span class="n">_imageInputStream</span><span class="p">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">[</span><span class="n">_imageInputStream</span> <span class="n">close</span><span class="p">];</span>
+</span><span class='line'>  <span class="n">_imageInputStream</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="p">[</span><span class="n">_imageOutputStream</span> <span class="n">close</span><span class="p">];</span>
+</span><span class='line'>  <span class="n">_imageOutputStream</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/09/05/afnetworking-2-dot-x-kuang-jia-ke-gai-jin-dian-zong-jie/">AFNetworking-2.x框架可改进点总结</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-09-05T14:10:00+08:00" pubdate data-updated="true">Sep 5<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/09/05/afnetworking-2-dot-x-kuang-jia-ke-gai-jin-dian-zong-jie/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><strong>AFNetworking</strong>网络框架<strong>2.x</strong>是很优秀的，许多关键的技术细节处理的是很到位的。</p>
+
+<h3>AFNetworking 2.x可能改进点小结</h3>
+
+<h4>1.可以根据需求，选用其中部分模块，并裁剪其中一些类。</h4>
+
+<h4>2.目前网络模块不支持长连接。</h4>
+
+<h4>3.<strong>NSCache</strong>的不当使用，可以调整优化。</h4>
+
+<p>   见<code>UIKit扩展</code>中<code>UIImageView (AFNetworking)</code>中</p>
+
+<ul>
+<li>1.如果没有对图片个数或占用内存大小作限制，如果使用过多，会造成内存占用过多引发crash;</li>
+<li>2.如果做了图片个数或内存大小的限制，因为<strong>NSCache</strong>的淘汰策略是基于引用计数的，则通常不是我们所需求的，这也是系统提供的<strong>NSCache</strong>的尴尬之处。</li>
+</ul>
+
+
+<h4>4.<strong>UIKit扩展</strong>中<strong>UIButton (AFNetworking)</strong>图片不支持cache.</h4>
+
+<h4>5.图片下载队列的优化调整。</h4>
+
+<ul>
+<li> 1.<strong>UIImageView (AFNetworking)</strong>和<strong>UIButton (AFNetworking)</strong>各使用一个<strong>NSOperationQueue</strong>,如果同时使用这两个控件，可以考虑使用同一个<strong>NSOperationQueue</strong>。</li>
+<li> 2.鉴于我们应用当中图片使用量较大，不建议直接使用网络模块中的队列进行下载。</li>
+</ul>
+
+
+<h4>6.网络请求取消，可以完善下。</h4>
+
+<h4>7.最好屏蔽网络请求暂停的接口.</h4>
+
+<pre><code>网络请求暂停后，始终会停留在NSOperationQueue中，占用线程资源，影响其它线程的调度。
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/09/04/afnetworking-guan-yu-wang-luo-diao-yong-shi-xu-tu/">AFNetworking 2.x网络调用时序图</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-09-04T20:49:00+08:00" pubdate data-updated="true">Sep 4<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/09/04/afnetworking-guan-yu-wang-luo-diao-yong-shi-xu-tu/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>AFNetworking 2.x中，关于网络请求的并发是通过<code>NSOperation</code>&amp;<code>NSOperationQueue</code>实现的。</p>
+
+<blockquote><ul>
+<li>网络调用相关封装在<a href="https://developer.apple.com/library/ios/documentation/cocoa/reference/NSOperation_class/Reference/Reference.html#//apple_ref/doc/uid/TP40004591">NSOperation</a>的子类<code>AFURLConnectionOperation</code>中。</li>
+<li>类<code>AFHTTPRequestOperationManager</code>通过<a href="https://developer.apple.com/library/ios/documentation/cocoa/reference/NSOperationQueue_class/Reference/Reference.html">NSOperationQueue</a>完成对<code>AFURLConnectionOperation</code>的调度，当<code>AFURLConnectionOperation</code>一旦被加入到<code>NSOperationQueue</code>中，就开始了对网络并发执行.</li>
+<li><code>AFURLConnectionOperation</code>可以通过调用<code>start</code>方法单独执行，此时和<code>NSOperationQueue</code>无关的。</li>
+</ul>
+</blockquote>
+
+<p><img src="/images/post/2014-09-04-afnetworking-guan-yu-wang-luo-diao-yong-shi-xu-tu/AFNNetworking_sequence_diagrams.jpg" alt="image" /></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/09/04/afnetworking-2-dot-0-suo-you-xiang-mu-gai-lan/">AFNetworking-2.0所有项目概览</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-09-04T19:31:00+08:00" pubdate data-updated="true">Sep 4<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/09/04/afnetworking-2-dot-0-suo-you-xiang-mu-gai-lan/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h4>AFNetworking-2.x下所有项目概览</h4>
+
+<p><img src="/images/post/2014-09-04-afnetworking-2-dot-0-suo-you-xiang-mu-gai-lan/AFNetworking_all_projects_overview.png" alt="image" /></p>
+
+<h4>AFNetworking子项目地址：<a href="https://github.com/AFNetworking">https://github.com/AFNetworking</a></h4>
+
+<p>子项目列表</p>
+
+<blockquote><ul>
+<li>1.<a href="https://github.com/AFNetworking/AFNetworkActivityLogger">AFNetworkActivityLogger</a></li>
+<li>2.<a href="https://github.com/AFNetworking/AFAmazonS3Client">AFAmazonS3Client</a></li>
+<li>3.<a href="https://github.com/AFNetworking/AFJSONRPCClient">AFJSONRPCClient</a></li>
+<li>4.<a href="https://github.com/AFNetworking/Xcode-Project-Templates">Xcode-Project-Templates</a></li>
+<li>5.<a href="https://github.com/AFNetworking/AFOnoResponseSerializer">AFOnoResponseSerializer</a></li>
+<li>6.<a href="https://github.com/AFNetworking/WebKit-AFNetworking">WebKit-AFNetworking</a></li>
+<li>7.<a href="https://github.com/AFNetworking/AFMsgPackSerialization">AFMsgPackSerialization</a></li>
+<li>8.<a href="https://github.com/AFNetworking/AFCoreImageResponseSerializer">AFCoreImageResponseSerializer</a></li>
+<li>9.<a href="https://github.com/AFNetworking/AFKissXMLRequestOperation">AFKissXMLRequestOperation</a></li>
+<li>10.<a href="https://github.com/AFNetworking/afnetworking.com">afnetworking.com</a></li>
+<li>11.<a href="https://github.com/AFNetworking/AFWebDAVManager">AFWebDAVManager</a></li>
+<li>12.<a href="https://github.com/AFNetworking/AFOAuth2Client">AFOAuth2Client</a></li>
+<li>13.<a href="https://github.com/AFNetworking/AFgzipRequestSerializer">AFgzipRequestSerializer</a></li>
+<li>14.<a href="https://github.com/AFNetworking/AFOAuth1Client">AFOAuth1Client</a></li>
+<li>15.<a href="https://github.com/AFNetworking/AFHTTPRequestOperationLogger">AFHTTPRequestOperationLogger</a></li>
+<li>16.<a href="https://github.com/AFNetworking/AFRocketClient">AFRocketClient</a></li>
+<li>17.<a href="https://github.com/AFNetworking/AFContentRequestOperations">AFContentRequestOperations</a></li>
+<li>18.<a href="https://github.com/AFNetworking/AFIncrementalStore">AFIncrementalStore</a></li>
+<li>19.<a href="https://github.com/AFNetworking/AFNetworking-ASIHTTPRequest">AFNetworking-ASIHTTPRequest</a></li>
+<li>20.<a href="https://github.com/AFNetworking/AFCollectionJSONRequestOperation">AFCollectionJSONRequestOperation</a></li>
+</ul>
+</blockquote>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/6/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/4/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>关于我</h1>
+  <p>律威,QQ:309235009 微信:ksnowlv</p>
+  <p>手机单机游戏/手机网游封神online/手机阅读/腾讯iOS地图客户端&实时公交&开放API(地图&街景)</p>
+  <p>目前在做淘宝iPad客户端&性能优化.</p>
+  <p>能做一点,是一点;不求大成,不求一万年;积少成多,水到渠成!</p>
+</section>
+<section>
+  <h1>最近发布</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/03/24/pmd-cha-jian-de-shi-yong/">PMD插件的使用</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/01/06/ios-64wei-gua-pei/">iOS-64位适配</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/01/04/nian-wei-li-zhi/">年尾离职</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/12/03/zu-zhi-wen-jian-bei-ituneshe-icloudtong-bu/">阻止文件被iTunes和iCloud同步</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/12/02/zlibyu-gzipjie-ya-suo-dui-bi/">ZLib与GZip解压缩对比</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>分类</h1>
+    <ul id="category-list"><li><a href='/blog/categories/androidcha-jian/'>Android插件 (1)</a></li><li><a href='/blog/categories/c-slash-c-plus-plus/'>C/C++ (1)</a></li><li><a href='/blog/categories/git/'>git (6)</a></li><li><a href='/blog/categories/githubbo-ke/'>github博客 (8)</a></li><li><a href='/blog/categories/ios/'>iOS (19)</a></li><li><a href='/blog/categories/ios-memory/'>iOS-Memory (4)</a></li><li><a href='/blog/categories/ios-nei-cun/'>iOS-内存 (1)</a></li><li><a href='/blog/categories/ios-duo-xian-cheng/'>iOS-多线程 (1)</a></li><li><a href='/blog/categories/ios-an-quan/'>iOS-安全 (1)</a></li><li><a href='/blog/categories/ios-wang-luo/'>iOS-网络 (12)</a></li><li><a href='/blog/categories/ios-she-ji-mo-shi/'>iOS-设计模式 (1)</a></li><li><a href='/blog/categories/iosyou-hua/'>iOS优化 (1)</a></li><li><a href='/blog/categories/mac/'>Mac (3)</a></li><li><a href='/blog/categories/mac-duo-xian-cheng/'>Mac-多线程 (1)</a></li><li><a href='/blog/categories/nginx/'>nginx (3)</a></li><li><a href='/blog/categories/php/'>php (3)</a></li><li><a href='/blog/categories/python/'>python (12)</a></li><li><a href='/blog/categories/swift/'>swift (11)</a></li><li><a href='/blog/categories/uml/'>UML (8)</a></li><li><a href='/blog/categories/xcode/'>Xcode (11)</a></li><li><a href='/blog/categories/chan-pin-she-ji/'>产品设计 (2)</a></li><li><a href='/blog/categories/gong-ju/'>工具 (1)</a></li><li><a href='/blog/categories/shu-ju-ku/'>数据库 (2)</a></li><li><a href='/blog/categories/sheng-huo-pian-duan/'>生活片段 (10)</a></li><li><a href='/blog/categories/zhi-ye-sheng-ya/'>职业生涯 (7)</a></li><li><a href='/blog/categories/du-shu/'>读书 (2)</a></li></ul>
+</section>
+<section>
+  <h1>外部链接</h1>
+    <ul id="外部链接">
+    	<li><a href="https://developer.apple.com">苹果开发者中心</a> </li>
+    	<li><a href="http://stackoverflow.com/questions/tagged/ios">stackoverflow</a></li>
+    	<li><a href="http://ksnowlv.blog.163.com/blog/#m=0">ksnowlv网易博客</a></li>
+	</ul>
+</section>
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - 律威 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+
+  <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1253538110'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/z_stat.php%3Fid%3D1253538110%26online%3D1' type='text/javascript'%3E%3C/script%3E"));</script>
+
+  <script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F4c1727a94ea20751730e8a556dbdbf82' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+</p>
+
+
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'ksnowlv';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+
+</body>
+</html>

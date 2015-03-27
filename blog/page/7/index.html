@@ -1,0 +1,1038 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>ksnowlv</title>
+  <meta name="author" content="律威">
+
+  
+  <meta name="description" content="1.下载SDK. 微信SDK网址：微信SDK。 iOS版本的，可以在 资源中心&ndash;>移动应用开发&ndash;>微信支付功能 中下载相关文档和SDK。 2.集成iOS SDK前的准备。 同样需要签约申请，审核。 3.iOS SDK配置信息更新。 待写 4.集成支付相关功能。 总体感受: &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://ksnowlv.github.io/blog/page/7">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="ksnowlv" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.useso.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.useso.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.useso.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+     _gaq.push(['_setAccount', 'UA-39546615-2']);
+    // _gaq.push(['_trackPageview']);
+
+    // (function() {
+    //   var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    //   ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    //   var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    // })();
+
+    _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src='http://droidyue-tools.qiniudn.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">ksnowlv</a></h1>
+  
+    <h2>回顾过去,总结以往;立足现在,铭记当下;技术为主,笔记而已.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:ksnowlv.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客首页</a></li>
+  <li><a href="/blog/archives">文章列表</a></li>
+  <!-- <li><a href="/about-me">关于我</a></li>
+ -->
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/08/28/wei-xin-zhi-fu-ios-sdk-ji-cheng/">微信支付iOS-SDK集成</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-08-28T20:02:00+08:00" pubdate data-updated="true">Aug 28<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/08/28/wei-xin-zhi-fu-ios-sdk-ji-cheng/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h4>1.下载SDK.</h4>
+
+<p>   微信SDK网址：<a href="https://open.weixin.qq.com">微信SDK</a>。</p>
+
+<p>   iOS版本的，可以在</p>
+
+<p>   <strong>资源中心</strong>&ndash;><strong>移动应用开发</strong>&ndash;><strong>微信支付功能</strong></p>
+
+<p>   中下载相关文档和SDK。</p>
+
+<p><img src="/images/post/2014-08-28-wei-xin-zhi-fu-ios-sdk-ji-cheng/wechat_use.png" alt="image" /></p>
+
+<h4>2.集成<strong>iOS SDK</strong>前的准备。</h4>
+
+<p>同样需要签约申请，审核。</p>
+
+<h4>3.iOS SDK配置信息更新。</h4>
+
+<p>待写</p>
+
+<h4>4.集成支付相关功能。</h4>
+
+<p><strong>总体感受:对于开发者来说，微信SDK官网真是比支付宝SDK官网好用的太多了&hellip;</strong></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/08/28/zhi-fu-bao-ios-sdk-ji-cheng/">支付宝iOS-SDK集成</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-08-28T19:33:00+08:00" pubdate data-updated="true">Aug 28<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/08/28/zhi-fu-bao-ios-sdk-ji-cheng/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h4>1.下载SDK.</h4>
+
+<p>   支付宝API网址：<a href="http://club.alipay.com/read-htm-tid-9976972.html">支付宝SDK</a>。iOS版本的，可以在无线产品中下载。</p>
+
+<p><img src="/images/post/2014-08-28-zhi-fu-bao-ios-sdk-ji-cheng/iOS_Android_API_download.png" alt="image" /></p>
+
+<h4>2.集成<strong>iOS SDK</strong>前的准备。</h4>
+
+<p><img src="/images/post/2014-08-28-zhi-fu-bao-ios-sdk-ji-cheng/API_use.png" alt="image" /></p>
+
+<h4>3.iOS SDK配置信息更新。</h4>
+
+<p>签约通过后，在<strong>iOS</strong>版本<strong>AlipaySdkDemo</strong>目录下找到<strong>PartnerConfig.h</strong>文件，更新配置信息。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="c1">//合作身份者id，以2088开头的16位纯数字</span>
+</span><span class='line'><span class="cp">#define PartnerID @&quot;&quot;</span>
+</span><span class='line'><span class="c1">//收款支付宝账号</span>
+</span><span class='line'><span class="cp">#define SellerID  @&quot;&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//安全校验码（MD5）密钥，以数字和字母组成的32位字符</span>
+</span><span class='line'><span class="cp">#define MD5_KEY @&quot;&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//商户私钥，自助生成</span>
+</span><span class='line'><span class="cp">#define PartnerPrivKey @&quot;&quot;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//支付宝公钥</span>
+</span><span class='line'><span class="cp">#define AlipayPubKey   @&quot;MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCnxj/9qwVfgoUh/y2W89L6BkRAFljhNhgPdyPuBV64bfQNN1PjbCzkIM6qRdKBoLPXmKKMiFYnkd6rAoprih3/PrQEB/VsW8OoM8fxn67UDYuyBTqA23MML9q1+ilIZwBC2AQ2UBVOrFXfFl75p6/B5KsiNG9zpgmLCUYuLkxpLQIDAQAB&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>4.集成支付相关功能。</h4>
+
+<p><strong>总体感受:支付宝SDK官网真做的粗糙呃。</strong></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/08/27/ios-zhong-bu-wan-quan-zai-fu-view-frame-zhong-de-view-ru-he-xiang-ying-shi-jian/">iOS中不完全在父UIView frame中的UIView如何响应事件</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-08-27T23:13:00+08:00" pubdate data-updated="true">Aug 27<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/08/27/ios-zhong-bu-wan-quan-zai-fu-view-frame-zhong-de-view-ru-he-xiang-ying-shi-jian/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>iOS开发中，如何使一个不完全在父<strong>UIView的frame</strong>中的<strong>UIView</strong>响应事件呢？</p>
+
+<p>可以通过在父<strong>UIView</strong>中重写<strong>pointInside:withEvent</strong>即可.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">pointInside:</span><span class="p">(</span><span class="n">CGPoint</span><span class="p">)</span><span class="nv">point</span> <span class="nf">withEvent:</span><span class="p">(</span><span class="n">UIEvent</span> <span class="o">*</span><span class="p">)</span><span class="nv">event</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="n">UIView</span> <span class="o">*</span><span class="n">subview</span> <span class="k">in</span> <span class="n">self</span><span class="p">.</span><span class="n">subviews</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">CGPoint</span> <span class="n">subviewPoint</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span> <span class="nl">convertPoint:</span><span class="n">point</span> <span class="nl">toView:</span><span class="n">subview</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">if</span> <span class="p">([</span><span class="n">subview</span> <span class="nl">pointInside:</span><span class="n">subviewPoint</span> <span class="nl">withEvent:</span><span class="n">event</span><span class="p">])</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="k">return</span> <span class="n">YES</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="p">[</span><span class="n">super</span> <span class="nl">pointInside:</span><span class="n">point</span> <span class="nl">withEvent:</span><span class="n">event</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>在腾讯地图sdk中关于标注覆盖物<strong>(QAnnotationView)</strong>弹出的气泡采用该方法。</p>
+
+<blockquote><ul>
+<li>气泡是标注的子<strong>UIView</strong>,但是，并不完全在标注的<strong>frame</strong>中。</li>
+<li>如果使气泡可以响应事件，则在<strong>QAnnotationView</strong>中重写<strong>pointInside:withEvent</strong></li>
+</ul>
+</blockquote>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/08/27/ios-zhong-tou-chuan-uitableview-xiang-ying-xia-ceng-view-shi-jian/">iOS中透穿UITableView响应下层view事件</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-08-27T20:52:00+08:00" pubdate data-updated="true">Aug 27<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/08/27/ios-zhong-tou-chuan-uitableview-xiang-ying-xia-ceng-view-shi-jian/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/post/2014-08-27-ios-zhong-tou-chuan-uitableview-xiang-ying-xia-ceng-view-shi-jian/homepage_1.png" alt="image" /></p>
+
+<!--**图2**
+
+![image](/images/post/2014-08-27-ios-zhong-tou-chuan-uitableview-xiang-ying-xia-ceng-view-shi-jian/homepage_2.png)
+-->
+
+
+<h4>1.具体场景：淘宝iPad首页改版时,在拖动首页<strong>UITableview</strong>列表(见2区)时，banner页面保持不动（1区黑色透明层下面）,banner页面可以响应左右滑动，点击事件，</h4>
+
+<blockquote><ul>
+<li>如果拖动到banner页面下半部时，此时，松手首页<strong>UITableview</strong>列表，自动回到原来位置;</li>
+<li>如果拖动到banner页面上半部时，此时，松手首页<strong>UITableview</strong>列表，自动回到banner页面顶部;</li>
+<li>其它:实际上1区黑色透明层应该是全透明的,为了大家更好地了解下面的实现方案。</li>
+</ul>
+</blockquote>
+
+<h4>2.实现方案</h4>
+
+<ul>
+<li>如果把bannerview,首页<strong>UITableview</strong>列表放到一个<strong>UIScrollView</strong>中，需要每次都重置bannerview的纵向坐标，还需要把首页<strong>UITableview</strong>列表作为一个普通的view嵌入到<strong>UIScrollView</strong>中，它的拖动等事件由<strong>UIScrollView</strong>操控，比较麻烦。</li>
+<li>如果把bannerview,首页<strong>UITableview</strong>列表放到一个普通的<strong>UIView</strong>中，更麻烦。</li>
+</ul>
+
+
+<p> 综合考虑下，这种场景可以使用<strong>UITableView的透穿方案</strong>比较好。</p>
+
+<pre><code>1.首页UITableview与banner页面放到同一个父View中，首页tableview在banner页面上面。
+2.首页UITableview添加一个和banner页面大小完全一样，完全透明的tableHeaderView
+3.穿透首页UITableview的处理。
+</code></pre>
+
+<h4>3.实现细节和关键点。</h4>
+
+<p>继承<strong>UITableview</strong>,添加穿透<strong>UITableview</strong>的处理。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="k">-</span><span class="p">(</span><span class="n">UIView</span><span class="o">*</span><span class="p">)</span> <span class="nf">hitTest:</span><span class="p">(</span><span class="n">CGPoint</span><span class="p">)</span><span class="nv">point</span> <span class="nf">withEvent:</span><span class="p">(</span><span class="n">UIEvent</span> <span class="o">*</span><span class="p">)</span><span class="nv">event</span><span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">UIView</span><span class="o">*</span> <span class="n">tmpView</span> <span class="o">=</span> <span class="p">[</span><span class="n">super</span> <span class="nl">hitTest:</span><span class="n">point</span> <span class="nl">withEvent:</span><span class="n">event</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">tmpView</span><span class="p">.</span><span class="n">superview</span> <span class="o">==</span> <span class="n">self</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nb">nil</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">tmpView</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>debug时的截图</strong>
+<img src="/images/post/2014-08-27-ios-zhong-tou-chuan-uitableview-xiang-ying-xia-ceng-view-shi-jian/tableview_debug.png" alt="image" /></p>
+
+<p>处理的关键点在于<strong>判断条件</strong></p>
+
+<p><strong>tmpView.superview == self</strong>!</p>
+
+<p>如果需要穿透<strong>UIView</strong>，则变更为<strong>tmpView == self</strong></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/08/25/ba-yue-xiang-yu/">八月相遇</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-08-25T22:22:00+08:00" pubdate data-updated="true">Aug 25<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/08/25/ba-yue-xiang-yu/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>   八月二十二晚上，从杭州又一次乘坐东航M9181到回到北京，飞机晚点一个小时，到达首都机场时，因摆渡车未到，又在飞机上多呆了半个小时。</p>
+
+<p>   凌晨两点多坐首都机场到友谊宾馆的机场大巴，不到半小时就跑到了四通桥西公交站。使用滴滴打车打车到家已经是凌晨3点整。我拥抱着我一个有余未见的老婆。</p>
+
+<p>   早上7点半起来了，坐车去远洋未来广场见一位老朋友和两位素未蒙面的朋友的朋友，聊聊近况，聊聊一些想法；</p>
+
+<p>   这是一个最好的时代，也是一个最坏的时代；
+   对于渴望积极求变的人来说，是一段难得的机遇。
+   对于墨守成规的人来说，也许，在未来会面临想不到的困境。
+   一切在于自己的选择；真正的勇敢者是做了再说，抑或是做好了再说；</p>
+
+<p>   对于谈到o2o，我觉得，前景是光明的；但是，也许就像趴在玻璃上的苍蝇，出口难觅。
+   像大众点评，58，一样苦熬数十年，在当下，很大可能是死路一条。
+   人家当时在别人不关注时默默成长，而目前是o2o大热时期，然后o2o又是短期内看不到啥明显转机和爆发点。大家都在安慰自己，赌自己可能赢，虽然知道基本上，这是十死0.1生的事情。</p>
+
+<p>   在我看来。也许，离钱更近的互联网金融目前看较为靠谱些，有成长突围的可能性的，它的商业模式是比较明确的。</p>
+
+<p>   互联网，移动互联网，是改造传统行业，而不是彻底的颠覆；如果要有颠覆，可能是在个别领域。</p>
+
+<p>   像电商，互联网金融，仅仅是改变交易的方式，形态，或者说，生产方式，改造着我们生活的形态，而不是彻底颠覆商业，金融行业。</p>
+
+<p>   全都颠覆了，自己和自己玩，玩的起来么？能玩大么？</p>
+
+<p>   晚上3点多，离开远洋未来广场，去安慧桥东的物美，买了一些蔬菜，瓜果和月饼。中秋节是不能和老婆，朋友一些过了。就提前体味一下中秋吧。同在一片天涯，共享明日的天涯明月吧。</p>
+
+<p>   晚上见到了久未重逢的亮和红，他们海外，一年也就来回两次。很庆幸，此次可以见到他们。聊聊近况，聊聊在海外的生活，发展，深为他们高兴。</p>
+
+<p>   多年老友，能见面也是很难得。good luck!愿你们在海外平安，快乐。</p>
+
+<p>   人生之中，莫过于寻觅到自己有无数可能性的未来。这也是许多人的梦。也是我们共同的梦！</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/08/22/kuai-su-xue-xi/">快速学习的捷径</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-08-22T23:46:00+08:00" pubdate data-updated="true">Aug 22<span>nd</span>, 2014</time>
+        
+         | <a href="/blog/2014/08/22/kuai-su-xue-xi/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>   做为一个IT技术人员，如何快速学习呢？</p>
+
+<p>  <strong>理论基础+实践应用，快速构建融会贯通，构建自生长延伸的知识体系!</strong></p>
+
+<p>  <strong>如果你要理解一个新编程技术点，不妨直接动手做个demo，看看实践结果如何，而不是仅仅停留在我知道某个概念，看过多少书!</strong></p>
+
+<p>  你会发现，你背下来的东西，你当时理解的东西，也许很快就会“物归原主”;
+  而那些你亲手动手做过的，若干时间后，你甚至可以清楚地记得当时是怎么一个“折腾”过程。</p>
+
+<p>  <strong>动手，会让你学习“快起来”。能应用到实际的东西，才理解的更透彻。</strong></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/08/21/ios-xia-chang-yong-diao-shi-fang-fa/">iOS下常用调试方法</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-08-21T20:10:00+08:00" pubdate data-updated="true">Aug 21<span>st</span>, 2014</time>
+        
+         | <a href="/blog/2014/08/21/ios-xia-chang-yong-diao-shi-fang-fa/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><strong>1.预编译器内置的宏可用于c/c++/Objective-C</strong></p>
+
+<ul>
+<li><p>__func__ :当前函数名</p></li>
+<li><p>__LINE__ :当前代码行号</p></li>
+<li><p>__FILE__ :文件名</p></li>
+<li><p>__PRETTY_FUNCTION__ :当前函数名</p></li>
+</ul>
+
+
+<p><strong>2.在Objective-C中常用的表达式</strong></p>
+
+<ul>
+<li>NSStringFromSelector(_cmd)  :当前selector</li>
+<li>NSStringFromClass           :   class名</li>
+<li>[NSThread callStackSymbols] :   线程调用栈</li>
+</ul>
+
+
+<p><code>_cmd</code>是<code>objective-c</code>的方法中内置的变量。</p>
+
+<p><strong>3.常用日志函数</strong></p>
+
+<ul>
+<li>NSLog</li>
+<li>print</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/08/21/mac-nginx-xia-codeigniteryu-ming-fu-wu-fang-wen/">Mac-nginx下codeigniter域名服务访问</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-08-21T11:35:00+08:00" pubdate data-updated="true">Aug 21<span>st</span>, 2014</time>
+        
+         | <a href="/blog/2014/08/21/mac-nginx-xia-codeigniteryu-ming-fu-wu-fang-wen/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>我们通过localhost访问php页面，如何使用自定义域名服务在本地生效呢？</p>
+
+<h4>1.修改nginx配置文件。</h4>
+
+<p>文件位置:<code>/usr/local/etc/nginx/nginx.conf</code>,内容如下:</p>
+
+<pre><code> server {
+    listen       80;
+    #域名服务支持
+    server_name  ksnowlv.com www.ksnowlv.com;
+    #目标目录
+    root   /Users/ksnowlv/Movies/PHP/CodeIgniter;
+
+    # redirect server error pages to the static page /50x.html
+    #
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root   html;
+    }
+
+
+     # set expiration of assets to MAX for caching
+    location ~* \.(ico|css|js|gif|jpe?g|png)(\?[0-9]+)?$ {
+            expires max;
+            log_not_found off;
+    }
+
+    location / {
+            # Check if a file or directory index file exists, else route it to index.php.
+            try_files $uri $uri/ /index.php;
+    }
+
+    # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
+    #
+    location ~ \.php$ {
+        #root           /Users/ksnowlv/Movies/PHP/CodeIgniter;
+        fastcgi_pass   127.0.0.1:9000;
+        fastcgi_index  index.php;
+        fastcgi_param  SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include        fastcgi_params;
+    }
+
+}
+</code></pre>
+
+<h4>2.添加ip和域名服务的绑定。</h4>
+
+<p> 打开<code>etc</code>目录下的<code>hosts</code>文件,在文件末尾添加对域名服务的支持。</p>
+
+<pre><code># Host Database
+#
+# localhost is used to configure the loopback interface
+# when the system is booting.  Do not change this entry.
+##
+127.0.0.1   localhost
+255.255.255.255 broadcasthost
+::1             localhost 
+fe80::1%lo0 localhost
+#添加对域名服务www.ksnowlv.com的支持。
+127.0.0.1    www.ksnowlv.com  
+</code></pre>
+
+<h4>3.修改codeigniter中php配置文件对域名服务的支持。</h4>
+
+<p>编辑<code>Codeigiter/application/configconfig.php</code>文件。</p>
+
+<p><strong>原有的</strong></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="x">$config[&#39;base_url&#39;]   = &quot;&quot;;</span>
+</span><span class='line'>
+</span><span class='line'><span class="x">$config[&#39;index_page&#39;]     = &quot;&quot;;</span>
+</span><span class='line'>
+</span><span class='line'><span class="x">$config[&#39;uri_protocol&#39;]   = &quot;AUTO&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>修改为</strong></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="x">$config[&#39;base_url&#39;]   = &#39;http://ksnowlv.com/&#39;;</span>
+</span><span class='line'>
+</span><span class='line'><span class="x">$config[&#39;index_page&#39;]     = &quot;&quot;;</span>
+</span><span class='line'>
+</span><span class='line'><span class="x">$config[&#39;uri_protocol&#39;]   = &#39;REQUEST_URI&#39;;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>3.启动nginx和php服务。</h4>
+
+<pre><code>#如果已启动过nginx服务，可以使用sudo nginx -s reload 来重启.
+ksnowlv@ksnowlvdeMacBook-Pro~/Movies/PHP$sudo nginx
+Password:
+ksnowlv@ksnowlvdeMacBook-Pro~/Movies/PHP$sudo php-fpm
+ksnowlv@ksnowlvdeMacBook-Pro~/Movies/PHP$
+</code></pre>
+
+<p> 此时<code>nginx</code>和<code>php</code>服务启动完成。</p>
+
+<h4>4.在浏览器打开<code>http://www.ksnowlv.com/index.php</code>，即可看到<code>Welcome to CodeIgniter!</code>欢迎页面。</h4>
+
+<p><img src="/images/post/2014-08-21-mac-nginx-xia-codeigniteryu-ming-fu-wu-fang-wen/codeigniter_url_page.png" alt="image" /></p>
+
+<p>至此，关于<code>CodeIgniter</code>的基本安装配置已经OK.下一步,直接投入实战吧!</p>
+
+<p><strong>另外</strong>:和磊兄聊的时候,原来已经投身手机游戏开发,赞一个!</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/08/21/mac-nginx-xia-codeigniterde-an-zhuang-pei-zhi/">Mac-nginx下CodeIgniter的安装配置</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-08-21T09:46:00+08:00" pubdate data-updated="true">Aug 21<span>st</span>, 2014</time>
+        
+         | <a href="/blog/2014/08/21/mac-nginx-xia-codeigniterde-an-zhuang-pei-zhi/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>   经过筛选对比,php开发框架，我选择了<a href="https://ellislab.com/codeigniter">CodeIgniter</a><code>2.2</code>版本。</p>
+
+<h4>1.下载解压即可。其目录结构：</h4>
+
+<p><img src="/images/post/2014-08-21-mac-nginx-xia-codeigniterde-an-zhuang-pei-zhi/codeigniter_dir.png" alt="image" /></p>
+
+<p>详情参看相关开发文档</p>
+
+<h4>2.修改nginx配置文件。</h4>
+
+<p>在<code>/usr/local/etc/nginx</code>打开<code>nginx.conf</code>进行编辑。
+主要修改点:<code>root</code>目录指向<code>codeigniter</code>目录.完整内容如下：</p>
+
+<pre><code>server {
+    listen       8080;
+    server_name  localhost;
+
+    #charset koi8-r;
+
+    #access_log  logs/host.access.log  main;
+
+    location / {
+        root   /Users/ksnowlv/Movies/PHP/CodeIgniter;
+        index  index.html index.htm index.php;
+    }
+
+    #error_page  404              /404.html;
+
+    # redirect server error pages to the static page /50x.html
+    #
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root   html;
+    }
+
+    # proxy the PHP scripts to Apache listening on 127.0.0.1:80
+    #
+    #location ~ \.php$ {
+    #    proxy_pass   http://127.0.0.1;
+    #}
+
+    # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
+    #
+    location ~ \.php$ {
+        root           /Users/ksnowlv/Movies/PHP/CodeIgniter;
+        fastcgi_pass   127.0.0.1:9000;
+        fastcgi_index  index.php;
+        fastcgi_param  SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include        fastcgi_params;
+    }
+
+    # deny access to .htaccess files, if Apache's document root
+    # concurs with nginx's one
+    #
+    #location ~ /\.ht {
+    #    deny  all;
+    #}
+}
+</code></pre>
+
+<p>当时在这折腾了半天，试了不少坑爹的做法。</p>
+
+<h4>3.启动nginx和php服务。</h4>
+
+<pre><code>#如果已启动过nginx服务，可以使用sudo nginx -s reload 来重启.
+ksnowlv@ksnowlvdeMacBook-Pro~/Movies/PHP$sudo nginx
+Password:
+ksnowlv@ksnowlvdeMacBook-Pro~/Movies/PHP$sudo php-fpm
+ksnowlv@ksnowlvdeMacBook-Pro~/Movies/PHP$
+</code></pre>
+
+<p> 此时<code>nginx</code>和<code>php</code>服务启动完成。</p>
+
+<h4>4.在浏览器打开<code>http://localhost:8080/index.php</code>，即可看到<code>Welcome to CodeIgniter!</code>欢迎页面。</h4>
+
+<p><img src="/images/post/2014-08-21-mac-nginx-xia-codeigniterde-an-zhuang-pei-zhi/codeigniter_page.png" alt="image" /></p>
+
+<p><strong>其它</strong>:和凡兄聊的时候,原来已经身在大百度做智能交通,good luck!</p>
+
+<p><strong>能做自己喜欢做的事，挺爽!</strong></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/08/20/mac-xia-sha-si-zhan-yong-mou-ge-duan-kou-de-jin-cheng/">Mac下杀死占用某个端口的进程</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-08-20T19:20:00+08:00" pubdate data-updated="true">Aug 20<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/08/20/mac-xia-sha-si-zhan-yong-mou-ge-duan-kou-de-jin-cheng/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><code>Mac</code>下启动<code>nginx</code>服务时，经常会遇见到端口被占用的情况。</p>
+
+<p>如何杀死占用相应端口的进程呢？</p>
+
+<h4>1.查看占用该端口的进程。</h4>
+
+<p>格式:<strong>lsof -i:port</strong>   port:端口号</p>
+
+<h4>2.杀死进程。</h4>
+
+<p>格式:<strong>kill PID</strong>   PID:进程的PID</p>
+
+<h4>3.示例</h4>
+
+<pre><code>ksnowlv@ksnowlvdeMacBook-Pro~$lsof -i:80
+COMMAND    PID    USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
+com.apple  640 ksnowlv   13u  IPv4 0x5c463434d35d8295      0t0  TCP 10.68.187.236:56236-&gt;117.79.146.98:http (ESTABLISHED)
+com.apple  640 ksnowlv   15u  IPv4 0x5c463434d3534295      0t0  TCP 10.68.187.236:56237-&gt;117.79.146.98:http (ESTABLISHED)
+com.apple  640 ksnowlv   16u  IPv4 0x5c463434d3534295      0t0  TCP 10.68.187.236:56237-&gt;117.79.146.98:http (ESTABLISHED)
+com.apple  640 ksnowlv   17u  IPv4 0x5c463434cb37aa7d      0t0  TCP 10.68.187.236:56239-&gt;117.79.146.98:http (ESTABLISHED)
+com.apple  640 ksnowlv   19u  IPv4 0x5c463434cb369a7d      0t0  TCP 10.68.187.236:56238-&gt;202.102.85.61:http (ESTABLISHED)
+com.apple  640 ksnowlv   20u  IPv4 0x5c463434d35d8295      0t0  TCP 10.68.187.236:56236-&gt;117.79.146.98:http (ESTABLISHED)
+com.apple  640 ksnowlv   22u  IPv4 0x5c463434cb37aa7d      0t0  TCP 10.68.187.236:56239-&gt;117.79.146.98:http (ESTABLISHED)
+com.apple  640 ksnowlv   24u  IPv4 0x5c463434cb369a7d      0t0  TCP 10.68.187.236:56238-&gt;202.102.85.61:http (ESTABLISHED)
+com.apple  640 ksnowlv   26u  IPv4 0x5c463434cb369295      0t0  TCP 10.68.187.236:56242-&gt;103.245.222.134:http (ESTABLISHED)
+com.apple  640 ksnowlv   28u  IPv4 0x5c463434d443b295      0t0  TCP 10.68.187.236:56241-&gt;117.79.146.98:http (ESTABLISHED)
+com.apple  640 ksnowlv   30u  IPv4 0x5c463434d443b295      0t0  TCP 10.68.187.236:56241-&gt;117.79.146.98:http (ESTABLISHED)
+com.apple  640 ksnowlv   31u  IPv4 0x5c463434cb369295      0t0  TCP 10.68.187.236:56242-&gt;103.245.222.134:http (ESTABLISHED)
+AliWangwa 2170 ksnowlv   13u  IPv4 0x5c463434d35faa7d      0t0  TCP 10.68.187.236:56234-&gt;203.208.49.174:http (ESTABLISHED)
+AliWangwa 2170 ksnowlv   15u  IPv4 0x5c463434d35faa7d      0t0  TCP 10.68.187.236:56234-&gt;203.208.49.174:http (ESTABLISHED)
+ksnowlv@ksnowlvdeMacBook-Pro~$kill 2170
+ksnowlv@ksnowlvdeMacBook-Pro~$kill 640
+ksnowlv@ksnowlvdeMacBook-Pro~$lsof -i:80
+ksnowlv@ksnowlvdeMacBook-Pro~$
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/8/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/6/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>关于我</h1>
+  <p>律威,QQ:309235009 微信:ksnowlv</p>
+  <p>手机单机游戏/手机网游封神online/手机阅读/腾讯iOS地图客户端&实时公交&开放API(地图&街景)</p>
+  <p>目前在做淘宝iPad客户端&性能优化.</p>
+  <p>能做一点,是一点;不求大成,不求一万年;积少成多,水到渠成!</p>
+</section>
+<section>
+  <h1>最近发布</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/03/24/pmd-cha-jian-de-shi-yong/">PMD插件的使用</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/01/06/ios-64wei-gua-pei/">iOS-64位适配</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/01/04/nian-wei-li-zhi/">年尾离职</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/12/03/zu-zhi-wen-jian-bei-ituneshe-icloudtong-bu/">阻止文件被iTunes和iCloud同步</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/12/02/zlibyu-gzipjie-ya-suo-dui-bi/">ZLib与GZip解压缩对比</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>分类</h1>
+    <ul id="category-list"><li><a href='/blog/categories/androidcha-jian/'>Android插件 (1)</a></li><li><a href='/blog/categories/c-slash-c-plus-plus/'>C/C++ (1)</a></li><li><a href='/blog/categories/git/'>git (6)</a></li><li><a href='/blog/categories/githubbo-ke/'>github博客 (8)</a></li><li><a href='/blog/categories/ios/'>iOS (19)</a></li><li><a href='/blog/categories/ios-memory/'>iOS-Memory (4)</a></li><li><a href='/blog/categories/ios-nei-cun/'>iOS-内存 (1)</a></li><li><a href='/blog/categories/ios-duo-xian-cheng/'>iOS-多线程 (1)</a></li><li><a href='/blog/categories/ios-an-quan/'>iOS-安全 (1)</a></li><li><a href='/blog/categories/ios-wang-luo/'>iOS-网络 (12)</a></li><li><a href='/blog/categories/ios-she-ji-mo-shi/'>iOS-设计模式 (1)</a></li><li><a href='/blog/categories/iosyou-hua/'>iOS优化 (1)</a></li><li><a href='/blog/categories/mac/'>Mac (3)</a></li><li><a href='/blog/categories/mac-duo-xian-cheng/'>Mac-多线程 (1)</a></li><li><a href='/blog/categories/nginx/'>nginx (3)</a></li><li><a href='/blog/categories/php/'>php (3)</a></li><li><a href='/blog/categories/python/'>python (12)</a></li><li><a href='/blog/categories/swift/'>swift (11)</a></li><li><a href='/blog/categories/uml/'>UML (8)</a></li><li><a href='/blog/categories/xcode/'>Xcode (11)</a></li><li><a href='/blog/categories/chan-pin-she-ji/'>产品设计 (2)</a></li><li><a href='/blog/categories/gong-ju/'>工具 (1)</a></li><li><a href='/blog/categories/shu-ju-ku/'>数据库 (2)</a></li><li><a href='/blog/categories/sheng-huo-pian-duan/'>生活片段 (10)</a></li><li><a href='/blog/categories/zhi-ye-sheng-ya/'>职业生涯 (7)</a></li><li><a href='/blog/categories/du-shu/'>读书 (2)</a></li></ul>
+</section>
+<section>
+  <h1>外部链接</h1>
+    <ul id="外部链接">
+    	<li><a href="https://developer.apple.com">苹果开发者中心</a> </li>
+    	<li><a href="http://stackoverflow.com/questions/tagged/ios">stackoverflow</a></li>
+    	<li><a href="http://ksnowlv.blog.163.com/blog/#m=0">ksnowlv网易博客</a></li>
+	</ul>
+</section>
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - 律威 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+
+  <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1253538110'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/z_stat.php%3Fid%3D1253538110%26online%3D1' type='text/javascript'%3E%3C/script%3E"));</script>
+
+  <script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F4c1727a94ea20751730e8a556dbdbf82' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+</p>
+
+
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'ksnowlv';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+
+</body>
+</html>

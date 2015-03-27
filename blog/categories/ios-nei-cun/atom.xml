@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: iOS-内存 | ksnowlv]]></title>
+  <link href="http://ksnowlv.github.io/blog/categories/ios-nei-cun/atom.xml" rel="self"/>
+  <link href="http://ksnowlv.github.io/"/>
+  <updated>2015-03-27T11:30:49+08:00</updated>
+  <id>http://ksnowlv.github.io/</id>
+  <author>
+    <name><![CDATA[律威]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[iOS系统对象重用]]></title>
+    <link href="http://ksnowlv.github.io/blog/2014/09/05/ios-xi-tong-dui-xiang-zhong-yong/"/>
+    <updated>2014-09-05T16:24:00+08:00</updated>
+    <id>http://ksnowlv.github.io/blog/2014/09/05/ios-xi-tong-dui-xiang-zhong-yong</id>
+    <content type="html"><![CDATA[<h4>当我们重复创建/销毁对象的操作时，iOS系统对象是否会被重用呢？</h4>
+
+<h4>结论:iOS系统较低概率会输出可重用的对象,so,注意内存使用效率[可用Allocation工具检测]。</h4>
+
+<blockquote><p>不要寄希望于系统对你低效的代码进行你想象中的优化!</p></blockquote>
+
+<h4>测试思路</h4>
+
+<pre><code>以0.1s为间隔的timer,周期性的创建UILabel/NSMutableData，观察它们内存地址变化情况？
+</code></pre>
+
+<h4>测试代码</h4>
+
+<p>``` objective-c</p>
+
+<ul>
+<li><p>(void)viewDidLoad {
+  [super viewDidLoad];
+  // Do any additional setup after loading the view, typically from a nib.</p>
+
+<p>  _timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(handleNewObject) userInfo:nil repeats:YES];
+}</p></li>
+<li><p>(void)didReceiveMemoryWarning {
+  [super didReceiveMemoryWarning];
+  // Dispose of any resources that can be recreated.
+}</p></li>
+<li><p>(void)handleNewObject{
+  UILabel <em>label = [[UILabel alloc] init];
+  NSMutableData </em>data = [[NSMutableData alloc] initWithCapacity:1024];
+  NSLog(@&ldquo;UILabel address = %p,NSMutableData address = %p&rdquo;,label,data);
+}</p></li>
+</ul>
+
+
+<p>```</p>
+
+<h4>截取部分日志情况</h4>
+
+<p>``` objective-c
+2014-09-05 16:22:43.564 DataReuseTest[70877:5448269] UILabel address = 0xba12bd0,NSMutableData address = 0xba06aa0
+2014-09-05 16:22:43.664 DataReuseTest[70877:5448269] UILabel address = 0xae104c0,NSMutableData address = 0xae19f70
+2014-09-05 16:22:43.764 DataReuseTest[70877:5448269] UILabel address = 0xbb0d7d0,NSMutableData address = 0xbb08710
+2014-09-05 16:22:43.864 DataReuseTest[70877:5448269] UILabel address = 0xba315f0,NSMutableData address = 0xba12330
+2014-09-05 16:22:43.964 DataReuseTest[70877:5448269] UILabel address = 0xae104c0,NSMutableData address = 0xae19f70
+2014-09-05 16:22:44.064 DataReuseTest[70877:5448269] UILabel address = 0xba315f0,NSMutableData address = 0xba12330
+2014-09-05 16:22:44.164 DataReuseTest[70877:5448269] UILabel address = 0xba315f0,NSMutableData address = 0xae0d9d0
+2014-09-05 16:22:44.263 DataReuseTest[70877:5448269] UILabel address = 0xba315f0,NSMutableData address = 0xba12330
+2014-09-05 16:22:44.364 DataReuseTest[70877:5448269] UILabel address = 0xba315f0,NSMutableData address = 0xba12330
+2014-09-05 16:22:44.464 DataReuseTest[70877:5448269] UILabel address = 0xae104c0,NSMutableData address = 0xae19f70
+2014-09-05 16:22:44.564 DataReuseTest[70877:5448269] UILabel address = 0xba315f0,NSMutableData address = 0xba12330
+2014-09-05 16:22:44.664 DataReuseTest[70877:5448269] UILabel address = 0xba315f0,NSMutableData address = 0xbb02d20
+2014-09-05 16:22:44.764 DataReuseTest[70877:5448269] UILabel address = 0xae104c0,NSMutableData address = 0xae19f70
+2014-09-05 16:22:44.864 DataReuseTest[70877:5448269] UILabel address = 0xba315f0,NSMutableData address = 0xba13490
+2014-09-05 16:22:44.963 DataReuseTest[70877:5448269] UILabel address = 0xba315f0,NSMutableData address = 0xba13490
+2014-09-05 16:22:45.064 DataReuseTest[70877:5448269] UILabel address = 0xae104c0,NSMutableData address = 0xae19f70
+2014-09-05 16:22:45.164 DataReuseTest[70877:5448269] UILabel address = 0xb84ea90,NSMutableData address = 0xb811d60</p>
+
+<p>```</p>
+]]></content>
+  </entry>
+  
+</feed>

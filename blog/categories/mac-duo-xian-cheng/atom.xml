@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Mac-多线程 | ksnowlv]]></title>
+  <link href="http://ksnowlv.github.io/blog/categories/mac-duo-xian-cheng/atom.xml" rel="self"/>
+  <link href="http://ksnowlv.github.io/"/>
+  <updated>2015-03-27T11:30:49+08:00</updated>
+  <id>http://ksnowlv.github.io/</id>
+  <author>
+    <name><![CDATA[律威]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Mac下NSDistributedLock同步性能]]></title>
+    <link href="http://ksnowlv.github.io/blog/2014/09/07/macxia-nsdistributedlocktong-bu-xing-neng/"/>
+    <updated>2014-09-07T14:56:00+08:00</updated>
+    <id>http://ksnowlv.github.io/blog/2014/09/07/macxia-nsdistributedlocktong-bu-xing-neng</id>
+    <content type="html"><![CDATA[<h4>Mac下<a href="https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/NSDistributedLock_Class/Reference/Reference.html">NSDistributedLock</a>也可以用来同步。</h4>
+
+<blockquote><ul>
+<li>可以用来限制对某些共享资源的访问，比如一个文件。</li>
+<li>没有实现<strong>NSLocking</strong>协议，所有没有<code>lock</code>方法。一个<code>lock</code>方法将会阻塞线程的执行，并要求系统以预定的速度轮询锁。</li>
+<li>它提供了一个<code>tryLock</code>方法，并让你决定是否轮询。访问结束后，可以通过调用unlock方法来释放它。</li>
+</ul>
+</blockquote>
+
+<p>我们使用该锁对<code>doucument</code>目录访问。</p>
+
+<p>``` objective-c</p>
+
+<pre><code>...        
+NSString *doucumentDir = [paths objectAtIndex:0];
+NSLog(@"doucumentDir = %@", doucumentDir);
+
+const NSInteger KRunTimes = 1000 * 1000;
+double curTime, lastTime;
+
+// NSDistributedLock
+NSDistributedLock *lock = [NSDistributedLock lockWithPath:doucumentDir];
+lastTime = CFAbsoluteTimeGetCurrent();
+
+for (NSInteger i = 0; i &lt; KRunTimes; ++i) {
+
+    if ([lock tryLock]) {
+        [lock unlock];
+    }
+}
+
+curTime = CFAbsoluteTimeGetCurrent();
+NSLog(@"@synchronized: %f ms", (curTime - lastTime) * 1000);
+</code></pre>
+
+<p>```</p>
+
+<h4>日志输出:</h4>
+
+<pre><code>2014-09-07 14:55:32.438 NSDistributedLockTest[4131:303] doucumentDir = /Users/ksnowlv/Documents
+2014-09-07 14:55:33.703 NSDistributedLockTest[4131:303] @synchronized: 1264.391005 ms
+</code></pre>
+
+<h4>结论：和其它同步锁相比，耗时是比较高的。</h4>
+]]></content>
+  </entry>
+  
+</feed>

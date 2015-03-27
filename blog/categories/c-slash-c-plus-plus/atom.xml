@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: C/C++ | ksnowlv]]></title>
+  <link href="http://ksnowlv.github.io/blog/categories/c-slash-c-plus-plus/atom.xml" rel="self"/>
+  <link href="http://ksnowlv.github.io/"/>
+  <updated>2015-03-27T11:30:49+08:00</updated>
+  <id>http://ksnowlv.github.io/</id>
+  <author>
+    <name><![CDATA[律威]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[ZLib与GZip解压缩对比]]></title>
+    <link href="http://ksnowlv.github.io/blog/2014/12/02/zlibyu-gzipjie-ya-suo-dui-bi/"/>
+    <updated>2014-12-02T20:51:00+08:00</updated>
+    <id>http://ksnowlv.github.io/blog/2014/12/02/zlibyu-gzipjie-ya-suo-dui-bi</id>
+    <content type="html"><![CDATA[<h3>1.ZLib与GZip解压缩</h3>
+
+<pre><code>ZLib库默认解压缩方法，并非GZip解压缩，而是ZLib的。
+zlib(RFC1950):一种格式，是对deflate进行了简单的封装； 
+gzip(RFC1952):一种格式，也是对deflate进行的封装.
+gzip与GZip是一种数据压缩格式，可以大体分为头部，数据部和尾部三个部分
+gzip数据头比zlib数据头要大，因为它保存了文件名和其他文件系统信息，事实上这是广泛使用的gzip文件的数据头格式。
+而zlib和gzip格式的区别仅仅是头部和尾部不一样，而实际的内容都是deflate编码的，即： gzip = gzip头(10字节) + deflate编码的实际内容 + gzip尾(8字节)
+</code></pre>
+
+<h3>ZLib头部</h3>
+
+<p>0x78,0x9c 是zlib数据头(非固定，参考RFC 1951)。或者0x0,0x0,0xFF,0xFF也可以实现正常解压缩，而00 00 FF FF是zlib容错方式的数据块头</p>
+
+<h4>GZip头部：</h4>
+
+<p>第一个字节0x1f(31),第二个字节为0x8b(139),标识为GZIP格式。第三个字节为0x08(8)，指示DEFLATE方法.目前只有一种，CM=8;</p>
+
+<h4>GZip尾部：</h4>
+
+<p>CRC32：4字节。原始(未压缩)数据的32位校验和。
+ISIZE：4字节。原始(未压缩)数据的长度的低32位。
+GZIP中字节排列顺序是LSB方式，即Little-Endian，与ZLIB中的相反</p>
+
+<h3>2.objective-c版本的ZLib与GZip解压缩</h3>
+
+<h4>ZLib压缩</h4>
+
+<h4>ZLib解压</h4>
+
+<h4>GZip压缩</h4>
+
+<pre><code>windowBits只有设置为MAX_WBITS + 16才能在在压缩文本中带header和trailer
+</code></pre>
+
+<h4>GZip解压</h4>
+
+<pre><code>windowBits只有设置为MAX_WBITS + 16才能在在压缩文本中带header和trailer
+</code></pre>
+
+<h3>3.代码示例</h3>
+
+<p>```objective-c
+NSString* hello = @&ldquo;helloabc123&rdquo;;</p>
+
+<pre><code>NSData *helloData = [NSData dataWithBytes:hello.UTF8String length:[hello lengthOfBytesUsingEncoding:NSUTF8StringEncoding]];
+</code></pre>
+
+<p>NSData *compressData = [CommonFuctions zlibCompressData:helloData];</p>
+
+<p>NSData *unCompressData = [CommonFuctions zlibUncompressData:compressData];</p>
+
+<p>NSString* string = [[NSString alloc] initWithData:unCompressData encoding:NSUTF8StringEncoding];</p>
+
+<p>NSLog(@&ldquo;Zlib compressData Length = %lu compressData = %@&rdquo;, (unsigned long)compressData.length,[compressData description]);</p>
+
+<p>NSData *compressDataGZip = [CommonFuctions gzipCompress:helloData];</p>
+
+<p>NSData *uncompressDataGZip = [CommonFuctions gzipUncompress:compressDataGZip];</p>
+
+<p>NSString* stringRes = [[NSString alloc] initWithData:uncompressDataGZip encoding:NSUTF8StringEncoding];;</p>
+
+<p>NSLog(@&ldquo;GZip compressData Length = %lu compressData = %@&rdquo;, (unsigned long)compressDataGZip.length,[compressDataGZip description]);</p>
+
+<p>```</p>
+
+<h3>4.日志输出：</h3>
+
+<p><code>objective-c
+2014-12-02 21:14:20.946 ZlibGZipTest[14417:4245959] Zlib compressData Length = 19 compressData = &lt;789ccb48 cdc9c94f 4c4a3634 32060019 9003d1&gt;
+2014-12-02 21:14:24.142 ZlibGZipTest[14417:4245959] GZip compressData Length = 31 compressData = &lt;1f8b0800 00000000 0003cb48 cdc9c94f 4c4a3634 32060012 e873880b 000000&gt;
+(lldb)
+</code></p>
+
+<h3>5.结论</h3>
+
+<h4>1.zlib默认压缩后比gzip小一点。</h4>
+
+<h4>2.zlib与gzip头尾对比。</h4>
+
+<ul>
+<li><strong>zlib头</strong>：789ccb48  <strong>zlib尾</strong>：32060019 9003d1</li>
+<li><strong>gzip头</strong>：1f8b0800 00000000 0003cb48 <strong>gzip尾</strong>：32060012 e873880b 000000</li>
+</ul>
+
+
+<p>两者相比差12个字节。</p>
+]]></content>
+  </entry>
+  
+</feed>

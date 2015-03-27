@@ -1,1 +1,1011 @@
-My Octopress Page is coming soon &hellip;
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>ksnowlv</title>
+  <meta name="author" content="律威">
+
+  
+  <meta name="description" content="PMD是一款静态代码分析工具，它能够自动检测各种潜在缺陷以及不安全或未优化的代码，更多地是集中在预先检测缺陷上 Checkstyle之类的其它工具可以检查代码是否遵循了约定和标准。 1.下载插件。 2.选择工程后，右键弹出菜单运行PMD 3.代码检查的分类情况 ">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://ksnowlv.github.io">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="ksnowlv" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.useso.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.useso.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.useso.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+     _gaq.push(['_setAccount', 'UA-39546615-2']);
+    // _gaq.push(['_trackPageview']);
+
+    // (function() {
+    //   var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    //   ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    //   var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    // })();
+
+    _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src='http://droidyue-tools.qiniudn.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">ksnowlv</a></h1>
+  
+    <h2>回顾过去,总结以往;立足现在,铭记当下;技术为主,笔记而已.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:ksnowlv.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客首页</a></li>
+  <li><a href="/blog/archives">文章列表</a></li>
+  <!-- <li><a href="/about-me">关于我</a></li>
+ -->
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/03/24/pmd-cha-jian-de-shi-yong/">PMD插件的使用</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-03-24T18:42:00+08:00" pubdate data-updated="true">Mar 24<span>th</span>, 2015</time>
+        
+         | <a href="/blog/2015/03/24/pmd-cha-jian-de-shi-yong/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><strong>PMD是</strong>一款静态代码分析工具，它能够自动检测各种潜在缺陷以及不安全或未优化的代码，更多地是集中在预先检测缺陷上</p>
+
+<p><strong>Checkstyle</strong>之类的其它工具可以检查代码是否遵循了约定和标准。</p>
+
+<h3>1.下载插件。</h3>
+
+<p><img src="/images/post/2015-03-24-pmd-cha-jian-de-shi-yong/pmd_1.jpg" alt="image" /></p>
+
+<h3>2.选择工程后，右键弹出菜单运行PMD</h3>
+
+<p><img src="/images/post/2015-03-24-pmd-cha-jian-de-shi-yong/pmd_2.jpg" alt="image" /></p>
+
+<h3>3.代码检查的分类情况</h3>
+
+<p><img src="/images/post/2015-03-24-pmd-cha-jian-de-shi-yong/pmd_3.jpg" alt="image" /></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/01/06/ios-64wei-gua-pei/">iOS-64位适配</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-01-06T21:31:00+08:00" pubdate data-updated="true">Jan 6<span>th</span>, 2015</time>
+        
+         | <a href="/blog/2015/01/06/ios-64wei-gua-pei/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>请参考苹果文档链接：<a href="https://developer.apple.com/library/ios/documentation/General/Conceptual/CocoaTouch64BitGuide/ConvertingYourAppto64-Bit/ConvertingYourAppto64-Bit.html">https://developer.apple.com/library/ios/documentation/General/Conceptual/CocoaTouch64BitGuide/ConvertingYourAppto64-Bit/ConvertingYourAppto64-Bit.html</a></p>
+
+<p>摘取几条如下：</p>
+
+<h3>指针不要转换为整数</h3>
+
+<p>   将指针类型转换成整型的情况一般很少,但是非要用指针类型的话,请确保你的变量地址足够大。</p>
+
+<p>   在 32 位中,这段代码运行正常,是因为 int 类型和 指针类型大小相同。
+   在 64 位中指针类型是比int类型的大,所以这个赋值将会丢失指针类型的数据。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="kt">int</span> <span class="o">*</span><span class="n">c</span> <span class="o">=</span> <span class="n">something</span> <span class="n">passed</span> <span class="k">in</span> <span class="n">as</span> <span class="n">an</span> <span class="n">argument</span><span class="p">....</span>
+</span><span class='line'><span class="kt">int</span> <span class="o">*</span><span class="n">d</span> <span class="o">=</span> <span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="p">)((</span><span class="kt">int</span><span class="p">)</span><span class="n">c</span> <span class="o">+</span> <span class="mi">4</span><span class="p">);</span> <span class="c1">// Incorrect.</span>
+</span><span class='line'><span class="kt">int</span> <span class="o">*</span><span class="n">d</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// Correct!</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>数据类型保持一致</h3>
+
+<p>   许多常见的程序错误都是应为数据类型用的不一致性导致的,尽管当你用了不 一样的数据类型的时候编译器给出了警告,如果你留意这些改变的话,它将会帮助你意识到这些问题。
+   方法调用的时候,方法接受的参数应该和调用的参数类型匹配。如果调用方法的参数比接收的方法的参数要大,这个值将会被截取。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">NSInteger</span> <span class="nf">PerformCalculation</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</span><span class='line'><span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="n">PerformCalculation</span><span class="p">();</span> <span class="c1">// incorrect</span>
+</span><span class='line'><span class="n">NSInteger</span> <span class="n">y</span> <span class="o">=</span> <span class="n">PerformCalculation</span><span class="p">();</span> <span class="c1">// correct!</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>使用方法函数的原型调度Objective-C的消息</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="nf">doSomething:</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="n">x</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+</span><span class='line'><span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="n">doSomethingElse</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="p">(</span><span class="o">*</span><span class="n">action</span><span class="p">)(</span><span class="kt">id</span><span class="p">,</span> <span class="kt">SEL</span><span class="p">,</span> <span class="kt">int</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="kt">int</span> <span class="p">(</span><span class="o">*</span><span class="p">)(</span><span class="kt">id</span><span class="p">,</span> <span class="kt">SEL</span><span class="p">,</span> <span class="kt">int</span><span class="p">))</span> <span class="n">objc_msgSend</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">action</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="k">@selector</span><span class="p">(</span><span class="nl">doSomething:</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>检查可变参数函数</h3>
+
+<p>如果你的方法使用了可变参数如fun(id self, SEL cmd, &hellip;)或者va_start, va_list, va_arg等宏，在iphone6真机测试此函数接收的参数是否正确。</p>
+
+<h3>isa指针不能直接访问</h3>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/01/04/nian-wei-li-zhi/">年尾离职</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-01-04T21:25:00+08:00" pubdate data-updated="true">Jan 4<span>th</span>, 2015</time>
+        
+         | <a href="/blog/2015/01/04/nian-wei-li-zhi/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>2014年过去了，我已经站在了2015的起点。</p>
+
+<p>站在2014年的尾巴上，我做了一个选择，离开淘宝。</p>
+
+<p>在淘宝的9个月的光阴里，出差七个半月的光景。与老婆聚少离多的日子，深感对不起我的她。</p>
+
+<p>工作方面，对其中波澜，也习以为常，尽心尽力去做就好。</p>
+
+<p>年终奖，股票，统统放下，嗷嗷叫地向前走吧。</p>
+
+<p>祝福自己，感谢老婆！祝愿家人在新的一年里开心快乐！</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/12/03/zu-zhi-wen-jian-bei-ituneshe-icloudtong-bu/">阻止文件被iTunes和iCloud同步</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-12-03T21:48:00+08:00" pubdate data-updated="true">Dec 3<span>rd</span>, 2014</time>
+        
+         | <a href="/blog/2014/12/03/zu-zhi-wen-jian-bei-ituneshe-icloudtong-bu/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>1.参考官方文档<a href="https://developer.apple.com/library/ios/#qa/qa1719/_index.html">How do I prevent files from being backed up to iCloud and iTunes?</a></h3>
+
+<h3>2.示例代码</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="k">+</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">addSkipBackupAttributeToItemAtPath:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">path</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kt">BOOL</span> <span class="n">success</span> <span class="o">=</span> <span class="n">NO</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">filePath</span> <span class="o">=</span> <span class="p">[</span><span class="n">path</span> <span class="n">fileSystemRepresentation</span><span class="p">];</span>
+</span><span class='line'>  <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">attrName</span> <span class="o">=</span> <span class="s">&quot;com.apple.MobileBackup&quot;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kt">void</span> <span class="o">*</span><span class="n">check</span> <span class="o">=</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">NSURLIsExcludedFromBackupKey</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">check</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// First try and remove the extended attribute if it is present</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="n">getxattr</span><span class="p">(</span><span class="n">filePath</span><span class="p">,</span> <span class="n">attrName</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">u_int8_t</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">result</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="c1">// The attribute exists, we need to remove it</span>
+</span><span class='line'>      <span class="kt">int</span> <span class="n">removeResult</span> <span class="o">=</span> <span class="n">removexattr</span><span class="p">(</span><span class="n">filePath</span><span class="p">,</span> <span class="n">attrName</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="n">removeResult</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Removed extended attribute on item at path %@&quot;</span><span class="p">,</span> <span class="n">path</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="n">NSURL</span> <span class="o">*</span><span class="n">url</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSURL</span> <span class="nl">fileURLWithPath:</span><span class="n">path</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">success</span> <span class="o">=</span> <span class="p">[</span><span class="n">url</span> <span class="nl">setResourceValue:</span><span class="p">[</span><span class="n">NSNumber</span> <span class="nl">numberWithBool:</span><span class="n">YES</span><span class="p">]</span>
+</span><span class='line'>                             <span class="nl">forKey:</span><span class="n">NSURLIsExcludedFromBackupKey</span>
+</span><span class='line'>                              <span class="nl">error:</span><span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'>  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// iOS 5.0.1 and lower</span>
+</span><span class='line'>    <span class="n">u_int8_t</span> <span class="n">attrValue</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span>
+</span><span class='line'>        <span class="n">setxattr</span><span class="p">(</span><span class="n">filePath</span><span class="p">,</span> <span class="n">attrName</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">attrValue</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">attrValue</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">success</span> <span class="o">=</span> <span class="p">(</span><span class="n">result</span> <span class="o">==</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Add skip backup attribute for item at path: %@, result: %d&quot;</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span>
+</span><span class='line'>        <span class="n">success</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">success</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<pre><code>   通过上述方法可以使该目录和该目录包含的所有文件和文件夹不被icloud和itunes同步了！
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/12/02/zlibyu-gzipjie-ya-suo-dui-bi/">ZLib与GZip解压缩对比</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-12-02T20:51:00+08:00" pubdate data-updated="true">Dec 2<span>nd</span>, 2014</time>
+        
+         | <a href="/blog/2014/12/02/zlibyu-gzipjie-ya-suo-dui-bi/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>1.ZLib与GZip解压缩</h3>
+
+<pre><code>ZLib库默认解压缩方法，并非GZip解压缩，而是ZLib的。
+zlib(RFC1950):一种格式，是对deflate进行了简单的封装； 
+gzip(RFC1952):一种格式，也是对deflate进行的封装.
+gzip与GZip是一种数据压缩格式，可以大体分为头部，数据部和尾部三个部分
+gzip数据头比zlib数据头要大，因为它保存了文件名和其他文件系统信息，事实上这是广泛使用的gzip文件的数据头格式。
+而zlib和gzip格式的区别仅仅是头部和尾部不一样，而实际的内容都是deflate编码的，即： gzip = gzip头(10字节) + deflate编码的实际内容 + gzip尾(8字节)
+</code></pre>
+
+<h3>ZLib头部</h3>
+
+<p>0x78,0x9c 是zlib数据头(非固定，参考RFC 1951)。或者0x0,0x0,0xFF,0xFF也可以实现正常解压缩，而00 00 FF FF是zlib容错方式的数据块头</p>
+
+<h4>GZip头部：</h4>
+
+<p>第一个字节0x1f(31),第二个字节为0x8b(139),标识为GZIP格式。第三个字节为0x08(8)，指示DEFLATE方法.目前只有一种，CM=8;</p>
+
+<h4>GZip尾部：</h4>
+
+<p>CRC32：4字节。原始(未压缩)数据的32位校验和。
+ISIZE：4字节。原始(未压缩)数据的长度的低32位。
+GZIP中字节排列顺序是LSB方式，即Little-Endian，与ZLIB中的相反</p>
+
+<h3>2.objective-c版本的ZLib与GZip解压缩</h3>
+
+<h4>ZLib压缩</h4>
+
+<h4>ZLib解压</h4>
+
+<h4>GZip压缩</h4>
+
+<pre><code>windowBits只有设置为MAX_WBITS + 16才能在在压缩文本中带header和trailer
+</code></pre>
+
+<h4>GZip解压</h4>
+
+<pre><code>windowBits只有设置为MAX_WBITS + 16才能在在压缩文本中带header和trailer
+</code></pre>
+
+<h3>3.代码示例</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">NSString</span><span class="o">*</span> <span class="n">hello</span> <span class="o">=</span> <span class="s">@&quot;helloabc123&quot;</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">NSData</span> <span class="o">*</span><span class="n">helloData</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSData</span> <span class="nl">dataWithBytes:</span><span class="n">hello</span><span class="p">.</span><span class="n">UTF8String</span> <span class="nl">length:</span><span class="p">[</span><span class="n">hello</span> <span class="nl">lengthOfBytesUsingEncoding:</span><span class="n">NSUTF8StringEncoding</span><span class="p">]];</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">NSData</span> <span class="o">*</span><span class="n">compressData</span> <span class="o">=</span> <span class="p">[</span><span class="n">CommonFuctions</span> <span class="nl">zlibCompressData:</span><span class="n">helloData</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">NSData</span> <span class="o">*</span><span class="n">unCompressData</span> <span class="o">=</span> <span class="p">[</span><span class="n">CommonFuctions</span> <span class="nl">zlibUncompressData:</span><span class="n">compressData</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">NSString</span><span class="o">*</span> <span class="n">string</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSString</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithData:</span><span class="n">unCompressData</span> <span class="nl">encoding:</span><span class="n">NSUTF8StringEncoding</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Zlib compressData Length = %lu compressData = %@&quot;</span><span class="p">,</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="p">)</span><span class="n">compressData</span><span class="p">.</span><span class="n">length</span><span class="p">,[</span><span class="n">compressData</span> <span class="n">description</span><span class="p">]);</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">NSData</span> <span class="o">*</span><span class="n">compressDataGZip</span> <span class="o">=</span> <span class="p">[</span><span class="n">CommonFuctions</span> <span class="nl">gzipCompress:</span><span class="n">helloData</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">NSData</span> <span class="o">*</span><span class="n">uncompressDataGZip</span> <span class="o">=</span> <span class="p">[</span><span class="n">CommonFuctions</span> <span class="nl">gzipUncompress:</span><span class="n">compressDataGZip</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">NSString</span><span class="o">*</span> <span class="n">stringRes</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSString</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithData:</span><span class="n">uncompressDataGZip</span> <span class="nl">encoding:</span><span class="n">NSUTF8StringEncoding</span><span class="p">];;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;GZip compressData Length = %lu compressData = %@&quot;</span><span class="p">,</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="p">)</span><span class="n">compressDataGZip</span><span class="p">.</span><span class="n">length</span><span class="p">,[</span><span class="n">compressDataGZip</span> <span class="n">description</span><span class="p">]);</span>
+</span><span class='line'>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>4.日志输出：</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="mi">2014</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mo">02</span> <span class="mi">21</span><span class="o">:</span><span class="mi">14</span><span class="o">:</span><span class="mf">20.946</span> <span class="n">ZlibGZipTest</span><span class="p">[</span><span class="mi">14417</span><span class="o">:</span><span class="mi">4245959</span><span class="p">]</span> <span class="n">Zlib</span> <span class="n">compressData</span> <span class="n">Length</span> <span class="o">=</span> <span class="mi">19</span> <span class="n">compressData</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">789</span><span class="n">ccb48</span> <span class="n">cdc9c94f</span> <span class="mi">4</span><span class="n">c4a3634</span> <span class="mi">32060019</span> <span class="mi">9003</span><span class="n">d1</span><span class="o">&gt;</span>
+</span><span class='line'><span class="mi">2014</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mo">02</span> <span class="mi">21</span><span class="o">:</span><span class="mi">14</span><span class="o">:</span><span class="mf">24.142</span> <span class="n">ZlibGZipTest</span><span class="p">[</span><span class="mi">14417</span><span class="o">:</span><span class="mi">4245959</span><span class="p">]</span> <span class="n">GZip</span> <span class="n">compressData</span> <span class="n">Length</span> <span class="o">=</span> <span class="mi">31</span> <span class="n">compressData</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mf">1f</span><span class="mi">8</span><span class="n">b0800</span> <span class="mo">00000000</span> <span class="mo">0003</span><span class="n">cb48</span> <span class="n">cdc9c94f</span> <span class="mi">4</span><span class="n">c4a3634</span> <span class="mi">32060012</span> <span class="n">e873880b</span> <span class="mo">000000</span><span class="o">&gt;</span>
+</span><span class='line'><span class="p">(</span><span class="n">lldb</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>5.结论</h3>
+
+<h4>1.zlib默认压缩后比gzip小一点。</h4>
+
+<h4>2.zlib与gzip头尾对比。</h4>
+
+<ul>
+<li><strong>zlib头</strong>：789ccb48  <strong>zlib尾</strong>：32060019 9003d1</li>
+<li><strong>gzip头</strong>：1f8b0800 00000000 0003cb48 <strong>gzip尾</strong>：32060012 e873880b 000000</li>
+</ul>
+
+
+<p>两者相比差12个字节。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/11/20/ios8-zhong-de-spdy-shi-yong/">iOS8中的spdy使用</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-11-20T10:56:00+08:00" pubdate data-updated="true">Nov 20<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/11/20/ios8-zhong-de-spdy-shi-yong/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>spdy需要客户端和服务端同时支持。</h3>
+
+<h4>1.spdy available on both OS X Yosemite and iOS 8</h4>
+
+<p>SPDY/2, SPDY/3, and SPDY/3.1 are supported Supported transparently by NSURLSession No source changes needed—it just works</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'> <span class="n">NSURL</span> <span class="o">*</span><span class="n">url</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSURL</span> <span class="nl">URLWithString:</span><span class="s">@&quot;https://www.example.com/&quot;</span><span class="p">];</span>
+</span><span class='line'>  <span class="n">NSURLSessionDataTask</span> <span class="o">*</span><span class="n">task</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSURLSession</span> <span class="n">sharedSession</span><span class="p">]</span>
+</span><span class='line'>        <span class="nl">dataTaskWithURL:</span><span class="n">url</span>
+</span><span class='line'>      <span class="nl">completionHandler:</span><span class="o">^</span><span class="p">(</span><span class="n">NSData</span> <span class="o">*</span><span class="n">data</span><span class="p">,</span> <span class="n">NSURLResponse</span> <span class="o">*</span><span class="n">response</span><span class="p">,</span>
+</span><span class='line'>                          <span class="n">NSError</span> <span class="o">*</span><span class="n">error</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>   <span class="p">}];</span>
+</span><span class='line'>  <span class="p">[</span><span class="n">task</span> <span class="n">resume</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>直接复用session,启用spdy.</p>
+
+<h4>2.SPDY does require server-side support<em> Client negotiates with server during TLS handshake</em> Uses <a href="https://">https://</a> URLs<em> Existing web server software and many CDNs already support SPDY Will not interfere with your NSURLProtocol subclasses</em> Apps might have their own implementation of SPDY or other protocols</h4>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/11/18/ios-shi-yong-openssl/">iOS使用OpenSSL</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-11-18T17:18:00+08:00" pubdate data-updated="true">Nov 18<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/11/18/ios-shi-yong-openssl/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><code>iOS</code>中<code>OpenSSL</code></p>
+
+<pre><code>If your app depends on OpenSSL,you should compile OpenSSL yourself 
+and statically link a known version of OpenSSL into your app. 
+This use of OpenSSL is possible on both OS X and iOS. However, 
+unless you are trying to maintain source compatibility with an existing open source project, 
+you should generally use a different API.
+</code></pre>
+
+<p>苹果建议采用系统原生的</p>
+
+<pre><code>Common Crypto and Security Transforms are the recommended alternatives for general encryption.
+ CFNetwork and Secure Transport are the recommended alternatives for secure communications.
+</code></pre>
+
+<p>如果你必须使用<code>OpenSSL</code>，可以直接源代码的形式或库的形式引入Xcode工程中。
+参考<a href="https://github.com/x2on/OpenSSL-for-iPhone">OpenSSL-for-iPhone</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/11/13/gei-iosying-yong-da-bu-ding/">给iOS应用打补丁</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-11-13T14:55:00+08:00" pubdate data-updated="true">Nov 13<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/11/13/gei-iosying-yong-da-bu-ding/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>当iOS App出现bug时，由于不能很快上架，如何紧急修复bug呢？</p>
+
+<p><strong>可以通过Lua给app打补丁</strong>。</p>
+
+<pre><code>将脚本放到后台服务器，App从服务器下载Lua代码，并在本地执行，实现了动态替换oc代码,快速修复bug。
+</code></pre>
+
+<blockquote><p>建议尽量少用，或不用。非紧急bug尽量不用。</p></blockquote>
+
+<h3>示例代码</h3>
+
+<h4>1.<a href="https://github.com/mmin18/Create-a-More-Flexible-App">Create-a-More-Flexible-App</a></h4>
+
+<h4>2.<a href="http://github.com/probablycorey/wax">Wax项目</a></h4>
+
+<h4>3.<a href="https://github.com/mmin18/WaxPatch">WaxPatch</a></h4>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/11/12/iOS-wang-luo-chang-lian-jie-yu-duan-lian-jie/">iOS网络长连接与短连接</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-11-12T15:15:00+08:00" pubdate data-updated="true">Nov 12<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/11/12/iOS-wang-luo-chang-lian-jie-yu-duan-lian-jie/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>长连接</h3>
+
+<pre><code>client与server先建立连接，连接建立后不断开，操持连接，然后进行数据的发送和接收。
+由于这种形式的网络通讯方式，网络连接一直存在。
+常用于P2P(点对点)通信。像IM类的产品
+</code></pre>
+
+<h3>短连接</h3>
+
+<pre><code>client与server每进行一次报文收发交易时才进行通讯连接，交易完毕后立即断开连接。
+此方式常用于一点对多点通讯。C/S通信。 
+</code></pre>
+
+<h3>长连接有两种：</h3>
+
+<h4>1. 基于socket的网络通讯。</h4>
+
+<blockquote><p>a.要对通讯协议格式，包括消息头，数据包头等特别清楚，可以实现同步异步机制，可以向客户端推送消息。</p>
+
+<p>b.更少的建立和关闭tcp连接，可以减少网络延时和开销。 在使用https连接时更显著。可以减少多次建立高消耗的SSL/TLS握手</p>
+
+<p>c.实现socket对各种不同类型的网络的穿透，才是真正的麻烦，在某些省份或地区是无法实现网络穿透的。</p></blockquote>
+
+<h4>2.基于http的网络通讯</h4>
+
+<blockquote><p>a.例如spdy协议，iOS8中，系统网络接口提供了对spdy的支持。</p>
+
+<p>b.即使是长连接，http也需要client先发起请求(<strong>除了spdy协议，spdy协议支持服务端推送</strong>)。在实际应用中有一些限制。</p></blockquote>
+
+<h4>总体为说，长连接的优点</h4>
+
+<pre><code>1.通过开启、关闭更少的TCP连接，节约CPU时间和内存. 
+2.通过减少TCP开启引起的包的数目，降低网络阻塞.
+</code></pre>
+
+<h4>缺点</h4>
+
+<pre><code>消耗服务器和客户端资源，像电量，网络流量等    
+</code></pre>
+
+<p>在保持长连时，需要发送一些心跳包.在iOS/android移动终端中，</p>
+
+<ul>
+<li>1.心跳信息是单方向的，只有终端发到应用服务器；</li>
+<li>2.心跳信息的周期比较长，比如旧版QQ的心跳周期为30s，新版QQ为180s，微信为300s，Google原生应用为1680s左右。</li>
+</ul>
+
+
+<h3>短连接</h3>
+
+<pre><code>多用于操作频繁、点对点的通讯，且连接数不是太多的情况，应用较为普遍。
+</code></pre>
+
+<p>参考资料：
+<a href="http://labs.chinamobile.com/mblog/31189_199441">试试把APP心跳的前因后果解释更简单明白？</a>
+<a href="http://labs.chinamobile.com/mblog/104209_199343">透视互联网APP的心跳机制</a>
+<a href="http://blog.csdn.net/totogogo/article/details/7329542">Android/iOS Notification feature</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/11/11/ios-she-bei-huo-qu-dns-ip/">iOS设备获取DNS-IP</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-11-11T17:56:00+08:00" pubdate data-updated="true">Nov 11<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/11/11/ios-she-bei-huo-qu-dns-ip/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>iOS设备如何获取DNS-IP呢？
+示例如下：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="cp">#include &lt;arpa/inet.h&gt;</span>
+</span><span class='line'><span class="cp">#include &lt;ifaddrs.h&gt;</span>
+</span><span class='line'><span class="cp">#include &lt;resolv.h&gt;</span>
+</span><span class='line'><span class="cp">#include &lt;dns.h&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">outPutDNSServers</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">res_state</span> <span class="n">res</span> <span class="o">=</span> <span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="n">__res_state</span><span class="p">));</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="n">res_ninit</span><span class="p">(</span><span class="n">res</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span> <span class="n">result</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">res</span><span class="o">-&gt;</span><span class="n">nscount</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="n">NSString</span> <span class="o">*</span><span class="n">s</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSString</span> <span class="n">stringWithUTF8String</span> <span class="o">:</span>  <span class="n">inet_ntoa</span><span class="p">(</span><span class="n">res</span><span class="o">-&gt;</span><span class="n">nsaddr_list</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">sin_addr</span><span class="p">)];</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%@&quot;</span><span class="p">,</span><span class="n">s</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>         <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%@&quot;</span><span class="p">,</span><span class="s">@&quot; res_init result != 0&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">res_nclose</span><span class="p">(</span><span class="n">res</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>另外添加<strong>libresolv.dylib</strong></p>
+
+<p>日志输出：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="mi">2014</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">11</span> <span class="mi">17</span><span class="o">:</span><span class="mi">52</span><span class="o">:</span><span class="mf">03.111</span> <span class="n">NetWorkInfoTest</span><span class="p">[</span><span class="mi">1870</span><span class="o">:</span><span class="mi">2041786</span><span class="p">]</span> <span class="mf">10.32.255.10</span>
+</span><span class='line'><span class="mi">2014</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">11</span> <span class="mi">17</span><span class="o">:</span><span class="mi">52</span><span class="o">:</span><span class="mf">03.112</span> <span class="n">NetWorkInfoTest</span><span class="p">[</span><span class="mi">1870</span><span class="o">:</span><span class="mi">2041786</span><span class="p">]</span> <span class="mf">10.32.222.10</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/2/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>关于我</h1>
+  <p>律威,QQ:309235009 微信:ksnowlv</p>
+  <p>手机单机游戏/手机网游封神online/手机阅读/腾讯iOS地图客户端&实时公交&开放API(地图&街景)</p>
+  <p>目前在做淘宝iPad客户端&性能优化.</p>
+  <p>能做一点,是一点;不求大成,不求一万年;积少成多,水到渠成!</p>
+</section>
+<section>
+  <h1>最近发布</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/03/24/pmd-cha-jian-de-shi-yong/">PMD插件的使用</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/01/06/ios-64wei-gua-pei/">iOS-64位适配</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/01/04/nian-wei-li-zhi/">年尾离职</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/12/03/zu-zhi-wen-jian-bei-ituneshe-icloudtong-bu/">阻止文件被iTunes和iCloud同步</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/12/02/zlibyu-gzipjie-ya-suo-dui-bi/">ZLib与GZip解压缩对比</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>分类</h1>
+    <ul id="category-list"><li><a href='/blog/categories/androidcha-jian/'>Android插件 (1)</a></li><li><a href='/blog/categories/c-slash-c-plus-plus/'>C/C++ (1)</a></li><li><a href='/blog/categories/git/'>git (6)</a></li><li><a href='/blog/categories/githubbo-ke/'>github博客 (8)</a></li><li><a href='/blog/categories/ios/'>iOS (19)</a></li><li><a href='/blog/categories/ios-memory/'>iOS-Memory (4)</a></li><li><a href='/blog/categories/ios-nei-cun/'>iOS-内存 (1)</a></li><li><a href='/blog/categories/ios-duo-xian-cheng/'>iOS-多线程 (1)</a></li><li><a href='/blog/categories/ios-an-quan/'>iOS-安全 (1)</a></li><li><a href='/blog/categories/ios-wang-luo/'>iOS-网络 (12)</a></li><li><a href='/blog/categories/ios-she-ji-mo-shi/'>iOS-设计模式 (1)</a></li><li><a href='/blog/categories/iosyou-hua/'>iOS优化 (1)</a></li><li><a href='/blog/categories/mac/'>Mac (3)</a></li><li><a href='/blog/categories/mac-duo-xian-cheng/'>Mac-多线程 (1)</a></li><li><a href='/blog/categories/nginx/'>nginx (3)</a></li><li><a href='/blog/categories/php/'>php (3)</a></li><li><a href='/blog/categories/python/'>python (12)</a></li><li><a href='/blog/categories/swift/'>swift (11)</a></li><li><a href='/blog/categories/uml/'>UML (8)</a></li><li><a href='/blog/categories/xcode/'>Xcode (11)</a></li><li><a href='/blog/categories/chan-pin-she-ji/'>产品设计 (2)</a></li><li><a href='/blog/categories/gong-ju/'>工具 (1)</a></li><li><a href='/blog/categories/shu-ju-ku/'>数据库 (2)</a></li><li><a href='/blog/categories/sheng-huo-pian-duan/'>生活片段 (10)</a></li><li><a href='/blog/categories/zhi-ye-sheng-ya/'>职业生涯 (7)</a></li><li><a href='/blog/categories/du-shu/'>读书 (2)</a></li></ul>
+</section>
+<section>
+  <h1>外部链接</h1>
+    <ul id="外部链接">
+    	<li><a href="https://developer.apple.com">苹果开发者中心</a> </li>
+    	<li><a href="http://stackoverflow.com/questions/tagged/ios">stackoverflow</a></li>
+    	<li><a href="http://ksnowlv.blog.163.com/blog/#m=0">ksnowlv网易博客</a></li>
+	</ul>
+</section>
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - 律威 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+
+  <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1253538110'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/z_stat.php%3Fid%3D1253538110%26online%3D1' type='text/javascript'%3E%3C/script%3E"));</script>
+
+  <script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F4c1727a94ea20751730e8a556dbdbf82' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+</p>
+
+
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'ksnowlv';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+
+</body>
+</html>

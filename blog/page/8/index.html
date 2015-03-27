@@ -1,0 +1,1004 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>ksnowlv</title>
+  <meta name="author" content="律威">
+
+  
+  <meta name="description" content="iOS集合类默认是浅拷贝，那如何深拷贝呢？ 1.集合类的浅拷贝: 1
+NSMutableArray *newNames = [[NSMutableArray alloc] initWithArray:names]; 2.集合类的深拷贝: 1
+NSMutableArray *newNames &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://ksnowlv.github.io/blog/page/8">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="ksnowlv" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.useso.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.useso.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.useso.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+     _gaq.push(['_setAccount', 'UA-39546615-2']);
+    // _gaq.push(['_trackPageview']);
+
+    // (function() {
+    //   var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    //   ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    //   var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    // })();
+
+    _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src='http://droidyue-tools.qiniudn.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">ksnowlv</a></h1>
+  
+    <h2>回顾过去,总结以往;立足现在,铭记当下;技术为主,笔记而已.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:ksnowlv.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客首页</a></li>
+  <li><a href="/blog/archives">文章列表</a></li>
+  <!-- <li><a href="/about-me">关于我</a></li>
+ -->
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/08/19/ios-ji-he-lei-shen-kao-bei/">iOS集合类深拷贝</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-08-19T19:42:00+08:00" pubdate data-updated="true">Aug 19<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/08/19/ios-ji-he-lei-shen-kao-bei/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>iOS集合类默认是浅拷贝，那如何深拷贝呢？</p>
+
+<h4>1.集合类的浅拷贝:</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">NSMutableArray</span> <span class="o">*</span><span class="n">newNames</span> <span class="o">=</span>  <span class="p">[[</span><span class="n">NSMutableArray</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithArray:</span><span class="n">names</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>2.集合类的深拷贝:</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">NSMutableArray</span> <span class="o">*</span><span class="n">newNames</span> <span class="o">=</span>  <span class="p">[[</span><span class="n">NSMutableArray</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithArray:</span><span class="n">names</span> <span class="nl">copyItems:</span><span class="n">YES</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>3.特殊场景下的集合类真正的深拷贝:</h4>
+
+<p>如果对于集合类中含有集合类的情况呢？
+要实现真正的深拷贝,可以通过序列化(<code>archive</code>)和反序列化(<code>unarchive</code>)该集合类。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">NSArray</span><span class="o">*</span> <span class="n">trueDeepCopyArray</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSKeyedUnarchiver</span> <span class="nl">unarchiveObjectWithData:</span>
+</span><span class='line'>                                      <span class="p">[</span><span class="n">NSKeyedArchiver</span> <span class="nl">archivedDataWithRootObject:</span><span class="n">names</span><span class="p">]];</span>
+</span><span class='line'>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>但是，这种代价相比较而言比较高，慎用!</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/08/19/macxia-an-zhuang-nginx-mysql-php/">Mac下配置nginx-mysql-php</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-08-19T10:10:00+08:00" pubdate data-updated="true">Aug 19<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/08/19/macxia-an-zhuang-nginx-mysql-php/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Mac上配置nginx,mysql,php开发环境</p>
+
+<h4>一.安装nginx.</h4>
+
+<p> 1.安装pcre.</p>
+
+<pre><code>brew install pcre
+</code></pre>
+
+<p> 2.安装nginx.</p>
+
+<pre><code> brew install nginx
+</code></pre>
+
+<p> 如遇见问题，可参考链接:<a href="http://ksnowlv.gitcafe.com/blog/2014/08/18/mac-xia-an-zhuang-nginx/">Mac下安装nginx</a></p>
+
+<h4>二.安装mysql.</h4>
+
+<p>从<a href="http://dev.mysql.com/downloads/mysql/">mysql官网</a>下载Mac版本安装即可。</p>
+
+<h4>三.安装配置php.</h4>
+
+<p><code>Mac</code>内置有<code>php</code>,但是我们选择装新版本的<code>php55</code>.</p>
+
+<pre><code>ksnowlv@ksnowlvdeMacBook-Pro~/Movies/PHP$brew install php55
+==&gt; Installing dependencies for php55: libpng, freetype, gettext, jpeg, unixodbc, homebrew/dupes/zlib, libtool
+==&gt; Installing php55 dependency: libpng
+....
+</code></pre>
+
+<p><code>php55</code>安装完成后,修改<code>nginx</code>配置文件。</p>
+
+<p>在<code>/usr/local/etc/nginx</code>目录中,打开<code>nginx.conf</code>,添加对php的支持。</p>
+
+<p><img src="/images/post/2014-08-19-macxia-an-zhuang-nginx-mysql-php/nginx_php_config.png" alt="image" /></p>
+
+<h4>四.测试php页面。</h4>
+
+<p>1.在<code>/usr/local/Cellar/nginx/1.6.1/html</code>目录下创建页面<code>index.php</code>.
+内容为：</p>
+
+<pre><code>&lt;?php phpinfo();?&gt;
+</code></pre>
+
+<p>2.在终端启动<code>PHP</code>和<code>nginx</code>服务</p>
+
+<pre><code>ksnowlv@ksnowlvdeMacBook-Pro~/Movies/PHP$SystemStarter php55-fpm restart
+ksnowlv@ksnowlvdeMacBook-Pro~/Movies/PHP$sudo nginx -s reload
+Password:
+ksnowlv@ksnowlvdeMacBook-Pro~/Movies/PHP$
+</code></pre>
+
+<p>3.在浏览器打开<code>http://localhost:8080/index.php</code>，就可以看到<code>php页面</code>。</p>
+
+<p><img src="/images/post/2014-08-19-macxia-an-zhuang-nginx-mysql-php/php_main_page.png" alt="image" /></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/08/18/mac-xia-an-zhuang-nginx/">Mac下安装nginx</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-08-18T20:08:00+08:00" pubdate data-updated="true">Aug 18<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/08/18/mac-xia-an-zhuang-nginx/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Mac下安装nginx,我使用的是Homebrew,Homebrew安装好的情况下。</p>
+
+<h4>1.先安装pcre.</h4>
+
+<pre><code>ksnowlv@ksnowlvdeMacBook-Pro~/Movies/PHP$brew install pcre
+ksnowlv@ksnowlvdeMacBook-Pro~/Movies/PHP$brew install pcre
+==&gt; Downloading https://downloads.sf.net/project/machomebrew/Bottles/pcre-8.35.mavericks.bottle.tar.gz
+Already downloaded: /Library/Caches/Homebrew/pcre-8.35.mavericks.bottle.tar.gz
+==&gt; Pouring pcre-8.35.mavericks.bottle.tar.gz
+#忽略该错误是要付出代价的，请看后面!!!!!
+Error: The `brew link` step did not complete successfully
+The formula built, but is not symlinked into /usr/local
+Could not symlink share/man/man1/pcre-config.1
+Target /usr/local/share/man/man1/pcre-config.1
+already exists. You may want to remove it:
+  rm /usr/local/share/man/man1/pcre-config.1
+#解决方法之一，注意!!!
+To force the link and overwrite all conflicting files:
+  brew link --overwrite pcre
+
+To list all files that would be deleted:
+  brew link --overwrite --dry-run pcre
+
+Possible conflicting files are:
+</code></pre>
+
+<p>静待pcre安装完即可。</p>
+
+<h4>2.安装nginx.</h4>
+
+<pre><code>ksnowlv@ksnowlvdeMacBook-Pro~/Movies/PHP$brew install nginx
+==&gt; Downloading https://downloads.sf.net/project/machomebrew/    Bottles/nginx-1.6.1.mavericks.bottle.tar.gz
+</code></pre>
+
+<p> 静待nginx安装完成即可。</p>
+
+<h4>如果安装出错，例如出现</h4>
+
+<pre><code> Error: You must `brew link pcre' before nginx can be installed   
+</code></pre>
+
+<p> 参考链接:<a href="http://ksnowlv.gitcafe.com/blog/2014/08/18/you-must-brew-link-pcre-before-nginx-can-be-installed/">http://ksnowlv.gitcafe.com/blog/2014/08/18/you-must-brew-link-pcre-before-nginx-can-be-installed/</a> 解决办法。</p>
+
+<h4>如果解决上述错误会怎么样呢？nginx环境安装不成功呗。</h4>
+
+<p>  在启动nginx时，<code>http://localhost:8080/</code>，页面一直显示<code>404</code>。</p>
+
+<h4>3.启动nginx。</h4>
+
+<pre><code>ksnowlv@ksnowlvdeMacBook-Pro~/Movies/PHP$sudo nginx
+Password:
+</code></pre>
+
+<p>输入正确密码后,在浏览器中打开<code>http://localhost:8080/</code>,即可看到<code>nginx欢迎页面</code></p>
+
+<p><img src="/images/post/2014-08-18-mac-xia-an-zhuang-nginx/welcome_nginx.png" alt="image" /></p>
+
+<p>可以使用<code>sudo nginx -s stop</code>关闭<code>nginx</code>服务。</p>
+
+<pre><code>ksnowlv@ksnowlvdeMacBook-Pro~/Movies/PHP$sudo nginx -s stop
+</code></pre>
+
+<h4>4.查看nginx版本信息和help</h4>
+
+<pre><code>ksnowlv@ksnowlvdeMacBook-Pro~/Movies/PHP$nginx -v
+nginx version: nginx/1.6.1
+
+ksnowlv@ksnowlvdeMacBook-Pro~/Movies/PHP$nginx -h
+nginx version: nginx/1.6.1
+Usage: nginx [-?hvVtq] [-s signal] [-c filename] [-p prefix] [-g directives]
+
+Options:
+  -?,-h         : this help
+  -v            : show version and exit
+  -V            : show version and configure options then exit
+  -t            : test configuration and exit
+  -q            : suppress non-error messages during configuration testing
+  -s signal     : send signal to a master process: stop, quit, reopen, reload
+  -p prefix     : set prefix path (default: /usr/local/Cellar/nginx/1.6.1/)
+  -c filename   : set configuration file (default: /usr/local/etc/nginx/nginx.conf)
+  -g directives : set global directives out of configuration file
+</code></pre>
+
+<p>总结:今天尝试把pcre,nginx在Mac上卸载一遍,重新安装时,才发现当时忽略</p>
+
+<pre><code>Error: You must `brew link pcre' before nginx can be installed
+</code></pre>
+
+<p>  是多大的灾难,一直是以为配置不对,前前后后检查配置文件&hellip;</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/08/18/you-must-brew-link-pcre-before-nginx-can-be-installed/">You Must `brew Link Pcre&#8217; Before Nginx Can Be Installed</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-08-18T19:53:00+08:00" pubdate data-updated="true">Aug 18<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/08/18/you-must-brew-link-pcre-before-nginx-can-be-installed/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>在使用Homebrew安装nginx时,会遇见如下错误:</p>
+
+<pre><code>ksnowlv@ksnowlvdeMacBook-Pro~/Movies/PHP$brew install nginx
+Error: You must `brew link pcre' before nginx can be installed
+ksnowlv@ksnowlvdeMacBook-Pro~/Movies/PHP$
+</code></pre>
+
+<p> 可使用命令<code>brew link --overwrite pcre</code>，强制链接并覆盖冲突的文件即可。</p>
+
+<pre><code>ksnowlv@ksnowlvdeMacBook-Pro~/Movies/PHP$brew link --overwrite pcre
+Linking /usr/local/Cellar/pcre/8.35... 133 symlinks created
+ksnowlv@ksnowlvdeMacBook-Pro~/Movies/PHP$brew install nginx
+</code></pre>
+
+<p>如果使用上述命令出错，则找到<code>/usr/local/Cellar/pcre</code>和<code>/usr/local/opt/pcre</code>的<code>pcre</code>目录干掉，重新安装pcre,再强制链接。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/08/17/mac-xia-da-jian-ji-yu-apachede-phpkai-fa-huan-jing/">Mac下搭建基于Apache的PHP开发环境</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-08-17T20:52:00+08:00" pubdate data-updated="true">Aug 17<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/08/17/mac-xia-da-jian-ji-yu-apachede-phpkai-fa-huan-jing/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h4>一.开启Apache服务。</h4>
+
+<pre><code>#输入sudo apachectl start命令,再输入密码
+ksnowlv@ksnowlvdeMacBook-Pro~/Movies/PHP$sudo apachectl start
+Password:
+
+#查看Apache版本信息
+ksnowlv@ksnowlvdeMacBook-Pro~/Movies/PHP$sudo apachectl -v
+Password:
+Server version: Apache/2.2.26 (Unix)
+Server built:   Dec 10 2013 22:09:38
+</code></pre>
+
+<p>此时在浏览器上输入<code>http://localhost</code>,会出现<code>It works!</code>页面。</p>
+
+<h4>二.启用PHP.</h4>
+
+<p>1.在<code>/etc/apache2/</code>目录下，打开<code>httpd.conf</code>，找到<code>LoadModule php5_module libexec/apache2/libphp5.so</code>,把<code>#</code>去掉，保存即可。</p>
+
+<p><img src="/images/post/2014-08-17-mac-xia-da-jian-ji-yu-apachede-phpkai-fa-huan-jing/use_php.png" alt="image" /></p>
+
+<p>2.复制<code>/Library/WebServer/Documents/index.html.en</code>文件到<code>/Library/WebServer/Documents/</code>目录下，重新命名为<code>index.php</code>
+  打开<code>index.php</code>,在<code>It works</code>后面加上<code>&lt;?php phpinfo(); ?&gt;</code></p>
+
+<p>3.重启Apache服务。</p>
+
+<pre><code>sudo apachectl restart
+</code></pre>
+
+<p>在浏览器中输入<code>http://localhost/index.php</code>，会出现一个显示php信息的页面.</p>
+
+<p> <img src="/images/post/2014-08-17-mac-xia-da-jian-ji-yu-apachede-phpkai-fa-huan-jing/php_page.png" alt="image" /></p>
+
+<h4>三.配置MySql.</h4>
+
+<p>1.在<a href="http://dev.mysql.com/downloads/mysql/">http://dev.mysql.com/downloads/mysql/</a>下载Mac版。选择<code>Mac OS X 10.8 (x86, 64-bit), DMG Archive</code>安装完即可。</p>
+
+<p>2.在<a href="http://www.phpmyadmin.net/home_page/downloads.php">http://www.phpmyadmin.net/home_page/downloads.php</a>下载<code>phpMyAdmin</code>,选择<code>phpMyAdmin-4.2.7-all-languages.7z</code>下载完成后，解压放进<code>/Library/WebServer/Documents/</code>，重命名为<code>phpmyadmin</code></p>
+
+<p>3.复制<code>/Library/WebServer/Documents/phpmyadmin/config.sample.inc.php</code>到<code>/Library/WebServer/Documents/phpmyadmin</code>目录下， 并命名为<code>config.inc.php</code></p>
+
+<p>4.编辑config.inc.php。</p>
+
+<pre><code>$cfg['Servers']]$i]['host'] = 'localhost';
+</code></pre>
+
+<p>修改为:</p>
+
+<pre><code>$cfg['Servers']]$i]['host'] = '127.0.0.1'; 
+</code></pre>
+
+<p>如果想要无密码登陆，则将其中的下面语句中的false改成true.</p>
+
+<pre><code>$cfg['Servers'][$i]['AllowNoPassword'] = false
+</code></pre>
+
+<p>5、在浏览器中输入<code>http://localhost/phpmyadmin</code>
+ 输入用户名&#8221;root&#8221;,按上一步的无密码操作即可直接登陆。</p>
+
+<p>  <img src="/images/post/2014-08-17-mac-xia-da-jian-ji-yu-apachede-phpkai-fa-huan-jing/mysql_page.png" alt="image" /></p>
+
+<h4>四.在Mac上使用<code>Sublime Text 2</code>开发PHP即可。</h4>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/08/17/clean-memory-slash-dirty-memory/">iOS中clean Memory/dirty Memory</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-08-17T16:45:00+08:00" pubdate data-updated="true">Aug 17<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/08/17/clean-memory-slash-dirty-memory/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>iOS系统中,有<code>clean memory</code>/<code>dirty memory</code>之分；</p>
+
+<h4>1.<code>clean memory</code>:可以被重新创建的内存块。包含以下三方面：</h4>
+
+<pre><code>1.系统framework
+2.应用的二进制执行文件.
+3.内存数据映射到文件。
+</code></pre>
+
+<h4>当你的App链接一个<code>framewrok</code>,<code>clean memory</code>会增加。绝大多数情况下，只有部分framework的二进制文件是通过物理内存加载的。</h4>
+
+<h4>2.<code>dirty memory</code>:除了<code>clean memory</code>之外所有的内存统称为<code>dirty memory</code>.<code>dirty memory</code>不能由系统重新创建。</h4>
+
+<h4>3.系统有内存压力时，例如内存警告。</h4>
+
+<h4>当有内存压力时，系统将会卸载一些<code>clean memory</code>。当系统需要该clean memory的数据时，系统将会重新创建。</h4>
+
+<h4>但是，有内存压力时，系统不能卸载<code>dirty memory</code>,因为iOS没有内存置换机制，<code>dirty memory</code>经常占有物理内存，当<code>dirty memory</code>达到一个上限，应用就会被&#8221;杀死&#8221;.所有的内存由系统回收。</h4>
+
+<h4>4.如何减少dirty memory呢？例如:</h4>
+
+<pre><code>  1.[NSData dataWithContentsOfMappedFile:]替代内存加载。
+  可惜该API现在不推荐使用。
+  2.使用[UIImage imageWithContentsOfFile:]替代[UIImage imageNamed]
+  3.降低内存占用。
+  4.适当的cache.
+</code></pre>
+
+<h4>5.如何发现定位dirty memory呢?可以参考<a href="http://liam.flookes.com/wp/2012/05/03/finding-ios-memory/">Finding iOS memory</a></h4>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/08/16/ios7-dot-1-frameworks/">iOS7.1-Frameworks</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-08-16T16:15:00+08:00" pubdate data-updated="true">Aug 16<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/08/16/ios7-dot-1-frameworks/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>iOS7.1 Frameworks</p>
+
+<p><img src="/images/post/2014-08-16-ios7-dot-1-frameworks/iOS7-1-Frameworks.png" alt="image" /></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/08/16/objective-c-clang-yu-bian-yi-hong/">Objective-C-Clang预编译宏</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-08-16T10:42:00+08:00" pubdate data-updated="true">Aug 16<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/08/16/objective-c-clang-yu-bian-yi-hong/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>针对Objective-C-,<a href="http://zh.wikipedia.org/wiki/Clang">Clang</a>编译器内置哪些宏呢？
+像平时看到的</p>
+
+<p><code>__BLOCK__</code>:是否支持block?</p>
+
+<p><code>__unsafe_unretained</code>:LLVM 编译器 3.0版本之后,可以在不使用ARC下,可用.</p>
+
+<p><code>__weak</code>:LLVM 编译器 3.0版本之后,可以在不使用ARC下,可用.</p>
+
+<p><code>__strong</code>:LLVM 编译器 3.0版本之后,可以在不使用ARC下,可用.</p>
+
+<p><code>__block</code>:块变量。</p>
+
+<p>等.</p>
+
+<p>那Clang编译器支持的所有宏定义可通过</p>
+
+<pre><code>clang -dM -E - &lt; /dev/null
+</code></pre>
+
+<p>命令查看
+ </div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/08/16/objective-c-clang-yu-bian-yi-hong/">阅读全文&rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/08/15/block-shi-yong-xian-zhi/">Block关键字使用限制</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-08-15T19:53:00+08:00" pubdate data-updated="true">Aug 15<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/08/15/block-shi-yong-xian-zhi/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><strong>__block</strong>变量有两个限制</p>
+
+<pre><code>1.不能是可变长度的数组。
+2.不能是包含C99可变长度数组的结构体。
+</code></pre>
+
+<h4>1.可变数组</h4>
+
+<h4>C99中的可变长数组（variable length array，简称VLA）</h4>
+
+<pre><code>可变长指的是编译期可变，数组定义时,其长度可为整数类型的表达式.
+</code></pre>
+
+<h4>C99中的可变改类型（variably modified type，简称VM）。</h4>
+
+<pre><code>一个含有源自VLA派生的完整声明器被称为可变改的。VM包含了VLA和指向VLA的指针;
+注意VM类型并没有创建新的类型种类，VLA和指向VLA的指针仍然属于数组类型和指针类型，
+是数组类型和指针类型的扩展
+</code></pre>
+
+<h4>总结:</h4>
+
+<h4>VLA虽然定义时长度可变，但还不是动态数组，在运行期内不能再改变;</h4>
+
+<p>代码示例:</p>
+
+<p><img src="/images/post/2014-08-15-__block-shi-yong-xian-zhi/var_length_demo.png" alt="image" /></p>
+
+<h4>而指针类型的数组是在运行期间确定下来的，而且在运行期间也是可以改变的。</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'>    <span class="n">__block</span> <span class="kt">char</span><span class="o">*</span> <span class="n">string</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">__block</span> <span class="n">size_t</span> <span class="n">stringLength</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kt">void</span> <span class="p">(</span><span class="o">^</span><span class="n">showMessage</span><span class="p">)(</span><span class="n">NSString</span> <span class="o">*</span><span class="n">message</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">showMessage</span> <span class="o">=</span> <span class="o">^</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="n">message</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="kt">int</span> <span class="n">length</span> <span class="o">=</span> <span class="p">[</span><span class="n">message</span> <span class="nl">lengthOfBytesUsingEncoding:</span><span class="n">NSUTF8StringEncoding</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">stringLength</span> <span class="o">=</span> <span class="p">(</span><span class="n">length</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">char</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">string</span> <span class="o">=</span> <span class="n">calloc</span><span class="p">(</span><span class="n">stringLength</span><span class="p">,</span><span class="n">stringLength</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">memcpy</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="p">[</span><span class="n">message</span> <span class="n">UTF8String</span><span class="p">],</span> <span class="n">stringLength</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;string = %s&quot;</span><span class="p">,</span><span class="n">string</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">showMessage</span><span class="p">(</span><span class="s">@&quot;hello world&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">string</span> <span class="o">&amp;&amp;</span> <span class="n">stringLength</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;string = %s, string[0] = %c&quot;</span><span class="p">,</span><span class="n">string</span><span class="p">,</span><span class="n">string</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">free</span><span class="p">(</span><span class="n">string</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">string</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>2.柔性数组结构成员</h4>
+
+<pre><code> 1.结构中的最后一个元素允许是未知大小的数组，这就叫做柔性数组成员；
+ 2.结构中的柔性数组成员前面必须至少一个其他成员。
+ 柔性数组成员允许结构中包含一个大小可变的数组。
+ sizeof返回的这种结构大小不包括柔性数组的内存。
+ 包含柔性数组成员的结构用malloc ()函数进行内存的动态分配。
+</code></pre>
+
+<h4>一种可变长度的结构 代码示例:</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="cp">#声明一结构体</span>
+</span><span class='line'><span class="k">typedef</span> <span class="k">struct</span> <span class="n">TStudent</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">number</span><span class="p">;</span>
+</span><span class='line'>    <span class="kt">char</span> <span class="n">name</span><span class="p">[];</span>
+</span><span class='line'><span class="p">}</span><span class="n">StudentType</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#创建一结构体</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">StudentType</span> <span class="o">*</span><span class="n">p</span> <span class="o">=</span> <span class="p">(</span><span class="n">StudentType</span> <span class="o">*</span><span class="p">)</span> <span class="n">malloc</span><span class="p">(</span> <span class="k">sizeof</span> <span class="p">(</span> <span class="n">StudentType</span> <span class="p">)</span><span class="o">+</span><span class="mi">10</span><span class="o">*</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">char</span><span class="p">));</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/08/15/xcode-other-link-flags-list/">Xcode-other-link-flags支持的参数</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-08-15T08:14:00+08:00" pubdate data-updated="true">Aug 15<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/08/15/xcode-other-link-flags-list/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h4>Xcode的&#8221;<code>other link flags</code>&ldquo;都支持哪些选项呢？可参考<a href="http://stackoverflow.com/questions/14497872/other-linker-flags-list">http://stackoverflow.com/questions/14497872/other-linker-flags-list</a>中提到的“ <code>man ld</code>”命令,在<code>Mac Terminal</code>下是有效的</h4>
+
+<pre><code>ksnowlv@ksnowlvdeMacBook-Pro~$man ld
+</code></pre>
+
+<p><img src="/images/post/2014-08-15-xcode-other-link-flags-list/overview.png" alt="image" /></p>
+
+<h4>我们常用<code>-ObjC</code>,<code>-all_load</code>,<code>-force_load</code></h4>
+
+<p><img src="/images/post/2014-08-15-xcode-other-link-flags-list/other_link_flag.png" alt="image" /></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/9/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/7/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>关于我</h1>
+  <p>律威,QQ:309235009 微信:ksnowlv</p>
+  <p>手机单机游戏/手机网游封神online/手机阅读/腾讯iOS地图客户端&实时公交&开放API(地图&街景)</p>
+  <p>目前在做淘宝iPad客户端&性能优化.</p>
+  <p>能做一点,是一点;不求大成,不求一万年;积少成多,水到渠成!</p>
+</section>
+<section>
+  <h1>最近发布</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/03/24/pmd-cha-jian-de-shi-yong/">PMD插件的使用</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/01/06/ios-64wei-gua-pei/">iOS-64位适配</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/01/04/nian-wei-li-zhi/">年尾离职</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/12/03/zu-zhi-wen-jian-bei-ituneshe-icloudtong-bu/">阻止文件被iTunes和iCloud同步</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/12/02/zlibyu-gzipjie-ya-suo-dui-bi/">ZLib与GZip解压缩对比</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>分类</h1>
+    <ul id="category-list"><li><a href='/blog/categories/androidcha-jian/'>Android插件 (1)</a></li><li><a href='/blog/categories/c-slash-c-plus-plus/'>C/C++ (1)</a></li><li><a href='/blog/categories/git/'>git (6)</a></li><li><a href='/blog/categories/githubbo-ke/'>github博客 (8)</a></li><li><a href='/blog/categories/ios/'>iOS (19)</a></li><li><a href='/blog/categories/ios-memory/'>iOS-Memory (4)</a></li><li><a href='/blog/categories/ios-nei-cun/'>iOS-内存 (1)</a></li><li><a href='/blog/categories/ios-duo-xian-cheng/'>iOS-多线程 (1)</a></li><li><a href='/blog/categories/ios-an-quan/'>iOS-安全 (1)</a></li><li><a href='/blog/categories/ios-wang-luo/'>iOS-网络 (12)</a></li><li><a href='/blog/categories/ios-she-ji-mo-shi/'>iOS-设计模式 (1)</a></li><li><a href='/blog/categories/iosyou-hua/'>iOS优化 (1)</a></li><li><a href='/blog/categories/mac/'>Mac (3)</a></li><li><a href='/blog/categories/mac-duo-xian-cheng/'>Mac-多线程 (1)</a></li><li><a href='/blog/categories/nginx/'>nginx (3)</a></li><li><a href='/blog/categories/php/'>php (3)</a></li><li><a href='/blog/categories/python/'>python (12)</a></li><li><a href='/blog/categories/swift/'>swift (11)</a></li><li><a href='/blog/categories/uml/'>UML (8)</a></li><li><a href='/blog/categories/xcode/'>Xcode (11)</a></li><li><a href='/blog/categories/chan-pin-she-ji/'>产品设计 (2)</a></li><li><a href='/blog/categories/gong-ju/'>工具 (1)</a></li><li><a href='/blog/categories/shu-ju-ku/'>数据库 (2)</a></li><li><a href='/blog/categories/sheng-huo-pian-duan/'>生活片段 (10)</a></li><li><a href='/blog/categories/zhi-ye-sheng-ya/'>职业生涯 (7)</a></li><li><a href='/blog/categories/du-shu/'>读书 (2)</a></li></ul>
+</section>
+<section>
+  <h1>外部链接</h1>
+    <ul id="外部链接">
+    	<li><a href="https://developer.apple.com">苹果开发者中心</a> </li>
+    	<li><a href="http://stackoverflow.com/questions/tagged/ios">stackoverflow</a></li>
+    	<li><a href="http://ksnowlv.blog.163.com/blog/#m=0">ksnowlv网易博客</a></li>
+	</ul>
+</section>
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - 律威 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+
+  <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1253538110'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/z_stat.php%3Fid%3D1253538110%26online%3D1' type='text/javascript'%3E%3C/script%3E"));</script>
+
+  <script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F4c1727a94ea20751730e8a556dbdbf82' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+</p>
+
+
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'ksnowlv';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+
+</body>
+</html>

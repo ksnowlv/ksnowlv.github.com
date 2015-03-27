@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: iOS-网络 | ksnowlv]]></title>
+  <link href="http://ksnowlv.github.io/blog/categories/ios-wang-luo/atom.xml" rel="self"/>
+  <link href="http://ksnowlv.github.io/"/>
+  <updated>2015-03-27T11:30:49+08:00</updated>
+  <id>http://ksnowlv.github.io/</id>
+  <author>
+    <name><![CDATA[律威]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[iOS8中的spdy使用]]></title>
+    <link href="http://ksnowlv.github.io/blog/2014/11/20/ios8-zhong-de-spdy-shi-yong/"/>
+    <updated>2014-11-20T10:56:00+08:00</updated>
+    <id>http://ksnowlv.github.io/blog/2014/11/20/ios8-zhong-de-spdy-shi-yong</id>
+    <content type="html"><![CDATA[<h3>spdy需要客户端和服务端同时支持。</h3>
+
+<h4>1.spdy available on both OS X Yosemite and iOS 8</h4>
+
+<p>SPDY/2, SPDY/3, and SPDY/3.1 are supported Supported transparently by NSURLSession No source changes needed—it just works</p>
+
+<p>``` objective-c
+ NSURL <em>url = [NSURL URLWithString:@&ldquo;<a href="https://www.example.com/">https://www.example.com/</a>&rdquo;];
+  NSURLSessionDataTask </em>task = [[NSURLSession sharedSession]</p>
+
+<pre><code>    dataTaskWithURL:url
+  completionHandler:^(NSData *data, NSURLResponse *response,
+                      NSError *error) {
+</code></pre>
+
+<p>   }];
+  [task resume];</p>
+
+<p>```</p>
+
+<p>直接复用session,启用spdy.</p>
+
+<h4>2.SPDY does require server-side support<em> Client negotiates with server during TLS handshake</em> Uses <a href="https://">https://</a> URLs<em> Existing web server software and many CDNs already support SPDY Will not interfere with your NSURLProtocol subclasses</em> Apps might have their own implementation of SPDY or other protocols</h4>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[iOS网络长连接与短连接]]></title>
+    <link href="http://ksnowlv.github.io/blog/2014/11/12/iOS-wang-luo-chang-lian-jie-yu-duan-lian-jie/"/>
+    <updated>2014-11-12T15:15:00+08:00</updated>
+    <id>http://ksnowlv.github.io/blog/2014/11/12/iOS-wang-luo-chang-lian-jie-yu-duan-lian-jie</id>
+    <content type="html"><![CDATA[<h3>长连接</h3>
+
+<pre><code>client与server先建立连接，连接建立后不断开，操持连接，然后进行数据的发送和接收。
+由于这种形式的网络通讯方式，网络连接一直存在。
+常用于P2P(点对点)通信。像IM类的产品
+</code></pre>
+
+<h3>短连接</h3>
+
+<pre><code>client与server每进行一次报文收发交易时才进行通讯连接，交易完毕后立即断开连接。
+此方式常用于一点对多点通讯。C/S通信。 
+</code></pre>
+
+<h3>长连接有两种：</h3>
+
+<h4>1. 基于socket的网络通讯。</h4>
+
+<blockquote><p>a.要对通讯协议格式，包括消息头，数据包头等特别清楚，可以实现同步异步机制，可以向客户端推送消息。</p>
+
+<p>b.更少的建立和关闭tcp连接，可以减少网络延时和开销。 在使用https连接时更显著。可以减少多次建立高消耗的SSL/TLS握手</p>
+
+<p>c.实现socket对各种不同类型的网络的穿透，才是真正的麻烦，在某些省份或地区是无法实现网络穿透的。</p></blockquote>
+
+<h4>2.基于http的网络通讯</h4>
+
+<blockquote><p>a.例如spdy协议，iOS8中，系统网络接口提供了对spdy的支持。</p>
+
+<p>b.即使是长连接，http也需要client先发起请求(<strong>除了spdy协议，spdy协议支持服务端推送</strong>)。在实际应用中有一些限制。</p></blockquote>
+
+<h4>总体为说，长连接的优点</h4>
+
+<pre><code>1.通过开启、关闭更少的TCP连接，节约CPU时间和内存. 
+2.通过减少TCP开启引起的包的数目，降低网络阻塞.
+</code></pre>
+
+<h4>缺点</h4>
+
+<pre><code>消耗服务器和客户端资源，像电量，网络流量等    
+</code></pre>
+
+<p>在保持长连时，需要发送一些心跳包.在iOS/android移动终端中，</p>
+
+<ul>
+<li>1.心跳信息是单方向的，只有终端发到应用服务器；</li>
+<li>2.心跳信息的周期比较长，比如旧版QQ的心跳周期为30s，新版QQ为180s，微信为300s，Google原生应用为1680s左右。</li>
+</ul>
+
+
+<h3>短连接</h3>
+
+<pre><code>多用于操作频繁、点对点的通讯，且连接数不是太多的情况，应用较为普遍。
+</code></pre>
+
+<p>参考资料：
+<a href="http://labs.chinamobile.com/mblog/31189_199441">试试把APP心跳的前因后果解释更简单明白？</a>
+<a href="http://labs.chinamobile.com/mblog/104209_199343">透视互联网APP的心跳机制</a>
+<a href="http://blog.csdn.net/totogogo/article/details/7329542">Android/iOS Notification feature</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[iOS设备获取DNS-IP]]></title>
+    <link href="http://ksnowlv.github.io/blog/2014/11/11/ios-she-bei-huo-qu-dns-ip/"/>
+    <updated>2014-11-11T17:56:00+08:00</updated>
+    <id>http://ksnowlv.github.io/blog/2014/11/11/ios-she-bei-huo-qu-dns-ip</id>
+    <content type="html"><![CDATA[<p>iOS设备如何获取DNS-IP呢？
+示例如下：</p>
+
+<p>``` objective-c</p>
+
+<h1>include &lt;arpa/inet.h></h1>
+
+<h1>include &lt;ifaddrs.h></h1>
+
+<h1>include &lt;resolv.h></h1>
+
+<h1>include &lt;dns.h></h1>
+
+<ul>
+<li><p>(void)outPutDNSServers
+{
+  res_state res = malloc(sizeof(struct __res_state));</p>
+
+<p>  int result = res_ninit(res);</p>
+
+<p>  if ( result == 0 )
+  {
+      for ( int i = 0; i &lt; res->nscount; i++ )
+      {
+          NSString *s = [NSString stringWithUTF8String :  inet_ntoa(res->nsaddr_list[i].sin_addr)];</p>
+
+<pre><code>      NSLog(@"%@",s);
+  }
+</code></pre>
+
+<p>  }
+  else
+       NSLog(@&ldquo;%@&rdquo;,@&ldquo; res_init result != 0&rdquo;);</p>
+
+<p>  res_nclose(res);</p></li>
+</ul>
+
+
+<p>}</p>
+
+<p>```</p>
+
+<p>另外添加<strong>libresolv.dylib</strong></p>
+
+<p>日志输出：</p>
+
+<p>``` objective-c
+2014-11-11 17:52:03.111 NetWorkInfoTest[1870:2041786] 10.32.255.10
+2014-11-11 17:52:03.112 NetWorkInfoTest[1870:2041786] 10.32.222.10</p>
+
+<p>```</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[CocoaSPDY理解]]></title>
+    <link href="http://ksnowlv.github.io/blog/2014/10/24/cocoaspdy-li-jie/"/>
+    <updated>2014-10-24T16:54:00+08:00</updated>
+    <id>http://ksnowlv.github.io/blog/2014/10/24/cocoaspdy-li-jie</id>
+    <content type="html"><![CDATA[<h3>源码见<a href="https://github.com/twitter/CocoaSPDY">https://github.com/twitter/CocoaSPDY</a></h3>
+
+<p>其类图如下：</p>
+
+<p><img src="/images/post/2014-10-24-cocoaspdy-li-jie/CocoaSPDY_class_overview.jpg" alt="image" /></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[iOS spdy概览]]></title>
+    <link href="http://ksnowlv.github.io/blog/2014/10/23/ios-spdy/"/>
+    <updated>2014-10-23T17:00:00+08:00</updated>
+    <id>http://ksnowlv.github.io/blog/2014/10/23/ios-spdy</id>
+    <content type="html"><![CDATA[<p> <a href="http://baike.baidu.com/view/2984528.htm?fr=aladdin">SPDY</a>是Google开发的基于TCP的应用层协议,谷歌表示，引入SPDY协议后，在实验室测试中页面加载速度比原先快64%。</p>
+
+<h3>1.SPDY相关资料</h3>
+
+<ul>
+<li>1.<a href="http://www.fireflysource.com/spdy/spdy-v3-cn.html">SPDY协议 &ndash; v3</a></li>
+<li>2.<a href="http://blog.csdn.net/hursing/article/details/22785475">SPDY、HTTP/2、QUIC协议</a></li>
+<li>3.<a href="http://www.chromium.org/spdy/spdy-whitepaper">SPDY: An experimental protocol for a faster web</a></li>
+<li>4.<a href="http://wufawei.com/2013/12/introduction-to-spdy/">SPDY简介</a></li>
+<li>5.<a href="http://spdycheck.org">spdycheck</a></li>
+</ul>
+
+
+<h3>2.SPDY开源项目</h3>
+
+<ul>
+<li>1.<a href="https://github.com/tatsuhiro-t/spdylay">spdylay</a>：C版本的开源库</li>
+<li>2.<a href="https://github.com/twitter/CocoaSPDY">CocoaSPDY</a>：Twitter推出用于iOS和Mac OS X的SPDY框架，适用于iOS和Mac OS X的SPDY/3.1</li>
+<li>3.<a href="https://github.com/locationlabs/SPDY-for-iPhone.git">SPDY-for-iPhone</a></li>
+<li>4.<a href="https://github.com/Voxer/iSPDY">iSPDY</a>，可参见博客<a href="http://engineering.voxer.com/2014/01/03/ispdy-released/">http://engineering.voxer.com/2014/01/03/ispdy-released/</a></li>
+<li>5.<a href="http://www.chromium.org/spdy/">The Chromium Projects</a></li>
+</ul>
+
+
+<h3>3.其它</h3>
+
+<ul>
+<li><ol>
+<li>iOS 8 和优胜美地开始支持SPDY协议，可参考wwdc 2014中的<a href="http://devstreaming.apple.com/videos/wwdc/2014/707xx1o5tdjnvg9/707/707_whats_new_in_foundation_networking.pdf?dl=1">What&rsquo;s New in Foundation Networking</a></li>
+</ol>
+</li>
+<li><ol>
+<li>目前iOS spdy的实现方案是针对<strong>NSURLConnection</strong>或<strong>NSURLSession</strong>通过<strong>NSURLProtocol</strong>进行拦截。那对于非使用这两种方式实现的网络模块无效果。同时，一个app当中可能会出现多个<strong>NSURLProtocol</strong>拦截的场景，要避免拦截失效的情况。</li>
+</ol>
+</li>
+<li>3.下面会介绍下Twitter推出用于iOS和Mac OS X的SPDY框架- <a href="https://github.com/twitter/CocoaSPDY">CocoaSPDY</a>:大体采用的实现方案是类似的，处理细节上可能会有差异。</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

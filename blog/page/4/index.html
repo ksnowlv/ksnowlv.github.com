@@ -1,0 +1,3133 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>ksnowlv</title>
+  <meta name="author" content="律威">
+
+  
+  <meta name="description" content="一.swift中闭包 swift中的闭包格式 1
+2
+3
+{ (parameters) -&gt; return type in statements
+} 1. swift block, without any arguments and without return value 1
+2
+3
+4 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://ksnowlv.github.io/blog/page/4">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="ksnowlv" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.useso.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.useso.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.useso.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+     _gaq.push(['_setAccount', 'UA-39546615-2']);
+    // _gaq.push(['_trackPageview']);
+
+    // (function() {
+    //   var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    //   ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    //   var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    // })();
+
+    _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src='http://droidyue-tools.qiniudn.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">ksnowlv</a></h1>
+  
+    <h2>回顾过去,总结以往;立足现在,铭记当下;技术为主,笔记而已.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:ksnowlv.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客首页</a></li>
+  <li><a href="/blog/archives">文章列表</a></li>
+  <!-- <li><a href="/about-me">关于我</a></li>
+ -->
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/09/11/swift-bi-bao/">Swift闭包</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-09-11T19:46:00+08:00" pubdate data-updated="true">Sep 11<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/09/11/swift-bi-bao/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>一.swift中闭包</h3>
+
+<p>swift中的闭包格式</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="p">{</span> <span class="p">(</span><span class="n">parameters</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="k">return</span> <span class="n">type</span> <span class="k">in</span>
+</span><span class='line'>    <span class="n">statements</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>1. swift block, without any arguments and without return value</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'> <span class="n">typealias</span> <span class="n">funcBlockA</span> <span class="o">=</span> <span class="p">()</span> <span class="o">-&gt;</span> <span class="p">()</span>
+</span><span class='line'> <span class="n">typealias</span> <span class="n">funcBlockAA</span> <span class="o">=</span> <span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Void</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">var</span> <span class="nl">_funcBlockA:</span><span class="n">funcBlockA</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Void</span> <span class="k">in</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">println</span><span class="p">(</span><span class="s">&quot;***block without any arguments and without return value&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>2.swift block with arguments and  return value</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">var</span> <span class="nl">_funcBlockB:</span><span class="n">funcBlockB</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">(</span><span class="nl">stringA:</span><span class="n">String</span><span class="p">,</span> <span class="nl">stringB:</span><span class="n">String</span><span class="p">)</span> <span class="o">-&gt;</span><span class="n">String</span> <span class="k">in</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">println</span><span class="p">(</span><span class="s">&quot;***swift block with arguments and without any return value&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="p">(</span><span class="n">stringA</span> <span class="o">+</span> <span class="n">stringB</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<h4>3.swift block with arguments and  return value as function</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">var</span> <span class="nl">_funcBlockC:</span><span class="n">funcBlockC</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p">(</span><span class="nl">stringA:</span><span class="n">String</span><span class="p">,</span> <span class="nl">stringB:</span><span class="n">String</span><span class="p">)</span> <span class="o">-&gt;</span><span class="p">(</span><span class="n">String</span><span class="p">)</span><span class="o">-&gt;</span><span class="p">()</span> <span class="k">in</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">blockC</span><span class="p">(</span><span class="s">&quot;***wift block with arguments and  return value:\(stringA) and \(stringB)&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">blockC</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>4.swift block as function parameter and  return value as function with parameter and return value</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">var</span> <span class="nl">_funcBlockD:</span><span class="n">funcBlockD</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">(</span><span class="nl">stringA:</span><span class="n">String</span><span class="p">,</span> <span class="nl">stringB:</span><span class="n">String</span><span class="p">)</span> <span class="o">-&gt;</span><span class="p">(</span><span class="n">String</span><span class="p">)</span><span class="o">-&gt;</span><span class="p">(</span><span class="n">String</span><span class="p">)</span> <span class="k">in</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">blockD</span><span class="p">(</span><span class="s">&quot;***swift block as function parameter:\(stringA) and \(stringB)&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">blockD</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>二.示例</h3>
+
+<h4>1.示例代码</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">func</span> <span class="nf">blockC</span><span class="p">(</span><span class="nl">name:</span><span class="n">String</span><span class="p">)</span>  <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">println</span><span class="p">(</span><span class="s">&quot; blockC= (\(name))&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">func</span> <span class="n">blockD</span><span class="p">(</span><span class="nl">name:</span><span class="n">String</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">String</span>  <span class="p">{</span>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">result:</span><span class="n">String</span> <span class="o">=</span> <span class="s">&quot;blockD = &quot;</span> <span class="o">+</span> <span class="n">name</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">println</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">class</span> <span class="n">QBlock</span><span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//swift block, without any arguments and without return value</span>
+</span><span class='line'>    <span class="n">typealias</span> <span class="n">funcBlockA</span> <span class="o">=</span> <span class="p">()</span> <span class="o">-&gt;</span> <span class="p">()</span>
+</span><span class='line'>    <span class="n">typealias</span> <span class="n">funcBlockAA</span> <span class="o">=</span> <span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Void</span>
+</span><span class='line'>    <span class="c1">//swift block with arguments and return value</span>
+</span><span class='line'>    <span class="n">typealias</span> <span class="n">funcBlockB</span> <span class="o">=</span> <span class="p">(</span><span class="n">String</span><span class="p">,</span> <span class="n">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">String</span>
+</span><span class='line'>    <span class="c1">//swift block with arguments and  return value as function</span>
+</span><span class='line'>    <span class="n">typealias</span> <span class="n">funcBlockC</span> <span class="o">=</span> <span class="p">(</span><span class="n">String</span><span class="p">,</span> <span class="n">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">String</span><span class="p">)</span><span class="o">-&gt;</span><span class="p">()</span>
+</span><span class='line'>    <span class="c1">//swift block as function parameter and  return value as function with parameter and return value</span>
+</span><span class='line'>    <span class="n">typealias</span> <span class="n">funcBlockD</span> <span class="o">=</span> <span class="p">(</span><span class="n">String</span><span class="p">,</span> <span class="n">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">String</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">String</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">_funcBlockA:</span><span class="n">funcBlockA</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Void</span> <span class="k">in</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">println</span><span class="p">(</span><span class="s">&quot;***block without any arguments and without return value&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">_funcBlockB:</span><span class="n">funcBlockB</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>        <span class="p">(</span><span class="nl">stringA:</span><span class="n">String</span><span class="p">,</span> <span class="nl">stringB:</span><span class="n">String</span><span class="p">)</span> <span class="o">-&gt;</span><span class="n">String</span> <span class="k">in</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">println</span><span class="p">(</span><span class="s">&quot;***swift block with arguments and without any return value&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="p">(</span><span class="n">stringA</span> <span class="o">+</span> <span class="n">stringB</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">_funcBlockC:</span><span class="n">funcBlockC</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="p">(</span><span class="nl">stringA:</span><span class="n">String</span><span class="p">,</span> <span class="nl">stringB:</span><span class="n">String</span><span class="p">)</span> <span class="o">-&gt;</span><span class="p">(</span><span class="n">String</span><span class="p">)</span><span class="o">-&gt;</span><span class="p">()</span> <span class="k">in</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">blockC</span><span class="p">(</span><span class="s">&quot;***wift block with arguments and  return value:\(stringA) and \(stringB)&quot;</span><span class="p">)</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">blockC</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">_funcBlockD:</span><span class="n">funcBlockD</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>        <span class="p">(</span><span class="nl">stringA:</span><span class="n">String</span><span class="p">,</span> <span class="nl">stringB:</span><span class="n">String</span><span class="p">)</span> <span class="o">-&gt;</span><span class="p">(</span><span class="n">String</span><span class="p">)</span><span class="o">-&gt;</span><span class="p">(</span><span class="n">String</span><span class="p">)</span> <span class="k">in</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">blockD</span><span class="p">(</span><span class="s">&quot;***swift block as function parameter:\(stringA) and \(stringB)&quot;</span><span class="p">)</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">blockD</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">init</span><span class="p">(){</span>
+</span><span class='line'>        <span class="n">self</span><span class="p">.</span><span class="n">testMemberBlock</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>   <span class="n">private</span> <span class="n">func</span> <span class="n">testMemberBlock</span><span class="p">(){</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">///1. swift block, without any arguments and without return value</span>
+</span><span class='line'>        <span class="n">self</span><span class="p">.</span><span class="n">_funcBlockA</span><span class="p">()</span>
+</span><span class='line'>        <span class="c1">//swift block with arguments and without any return value</span>
+</span><span class='line'>        <span class="n">var</span> <span class="n">res</span> <span class="o">=</span>  <span class="n">self</span><span class="p">.</span><span class="n">_funcBlockB</span><span class="p">(</span><span class="s">&quot;ksnowlv&quot;</span><span class="p">,</span> <span class="s">&quot;kair&quot;</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">println</span><span class="p">(</span><span class="s">&quot;_funcBlockB = result = \(res)&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// //swift block with arguments and  return value as function</span>
+</span><span class='line'>        <span class="n">var</span> <span class="n">blockC</span>  <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">_funcBlockC</span><span class="p">(</span><span class="s">&quot;ksnowlv&quot;</span><span class="p">,</span> <span class="s">&quot;kair&quot;</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">blockC</span><span class="p">(</span><span class="s">&quot;go shopping&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">//swift block as function parameter and  return value as function with parameter and return value</span>
+</span><span class='line'>        <span class="n">var</span> <span class="n">blockD</span>  <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">_funcBlockD</span><span class="p">(</span><span class="s">&quot;ksnowlv&quot;</span><span class="p">,</span> <span class="s">&quot;kair&quot;</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">var</span> <span class="n">result</span> <span class="o">=</span>  <span class="n">blockD</span><span class="p">(</span><span class="s">&quot;go shopping&quot;</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">println</span><span class="p">(</span><span class="s">&quot;result blockD = \(result)&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>2.调用</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">var</span> <span class="n">block</span> <span class="o">=</span> <span class="n">QBlock</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>objective-c</p>
+
+<h4>3.日志</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="o">***</span><span class="n">block</span> <span class="n">without</span> <span class="n">any</span> <span class="n">arguments</span> <span class="n">and</span> <span class="n">without</span> <span class="k">return</span> <span class="n">value</span>
+</span><span class='line'><span class="o">***</span><span class="n">swift</span> <span class="n">block</span> <span class="n">with</span> <span class="n">arguments</span> <span class="n">and</span> <span class="n">without</span> <span class="n">any</span> <span class="k">return</span> <span class="n">value</span>
+</span><span class='line'><span class="n">_funcBlockB</span> <span class="o">=</span> <span class="n">result</span> <span class="o">=</span> <span class="n">ksnowlvkair</span>
+</span><span class='line'> <span class="n">blockC</span><span class="o">=</span> <span class="p">(</span><span class="o">***</span><span class="n">wift</span> <span class="n">block</span> <span class="n">with</span> <span class="n">arguments</span> <span class="n">and</span>  <span class="k">return</span> <span class="nl">value:</span><span class="n">ksnowlv</span> <span class="n">and</span> <span class="n">kair</span><span class="p">)</span>
+</span><span class='line'> <span class="n">blockC</span><span class="o">=</span> <span class="p">(</span><span class="n">go</span> <span class="n">shopping</span><span class="p">)</span>
+</span><span class='line'><span class="n">blockD</span> <span class="o">=</span> <span class="o">***</span><span class="n">swift</span> <span class="n">block</span> <span class="n">as</span> <span class="n">function</span> <span class="nl">parameter:</span><span class="n">ksnowlv</span> <span class="n">and</span> <span class="n">kair</span>
+</span><span class='line'><span class="n">blockD</span> <span class="o">=</span> <span class="n">go</span> <span class="n">shopping</span>
+</span><span class='line'><span class="n">result</span> <span class="n">blockD</span> <span class="o">=</span> <span class="n">blockD</span> <span class="o">=</span> <span class="n">go</span> <span class="n">shopping</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>三.小结</h3>
+
+<ul>
+<li>1.与objective-c中的闭包在使用方法上类似，大体上相同，语法格式上的差异。</li>
+<li>2.在内存管理方面:objective-c中需要注意循环引用导致的内存泄漏。而swift依然需要注意该问题。</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/09/11/swift-wei-tuo/">Swift委托</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-09-11T13:59:00+08:00" pubdate data-updated="true">Sep 11<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/09/11/swift-wei-tuo/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>swift中的委托和objective-c中的类似。</p>
+
+<h3>一.协议支持required/optional</h3>
+
+<p>如果协议是optional协议</p>
+
+<h4>1.协议接口存在与否的判断,</h4>
+
+<p> 调用方法、属性、下标索引等前面需要加上一个?</p>
+
+<blockquote><p>1.如果是nil值，也就是Optional.None，会跳过后面的操作不执行;</p>
+
+<p>2.如果有值，就是Optional.Some，就会拆包(unwrap)，然后对拆包后的值执行后面的操作，来保证执行这个操作的安全性.</p></blockquote>
+
+<h4>2.声明与必选协议的不同之处。可选协议需要@objc</h4>
+
+<h3>二.示例</h3>
+
+<p>1.完整示例代码</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="cm">/**</span>
+</span><span class='line'><span class="cm">游戏状态</span>
+</span><span class='line'><span class="cm">*/</span>
+</span><span class='line'><span class="k">enum</span> <span class="n">QQGameState</span> <span class="o">:</span><span class="n">Int</span><span class="p">{</span>
+</span><span class='line'>    <span class="k">case</span> <span class="n">QQGameStateNone</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span class='line'>    <span class="k">case</span> <span class="n">QQGameStateStart</span> <span class="o">=</span> <span class="mi">1</span>
+</span><span class='line'>    <span class="k">case</span> <span class="n">QQGameStatePlaying</span> <span class="o">=</span> <span class="mi">2</span>
+</span><span class='line'>    <span class="k">case</span> <span class="n">QQGameStatePause</span> <span class="o">=</span> <span class="mi">3</span>
+</span><span class='line'>    <span class="k">case</span> <span class="n">QQGameStateGameOver</span> <span class="o">=</span> <span class="mi">4</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/**</span>
+</span><span class='line'><span class="cm">游戏Delegate</span>
+</span><span class='line'><span class="cm">*/</span>
+</span><span class='line'><span class="err">@</span><span class="n">objc</span> <span class="n">protocol</span> <span class="n">QQGameDelegate</span><span class="p">{</span>
+</span><span class='line'>    <span class="n">func</span> <span class="n">notifyPlayerState</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">optional</span> <span class="n">func</span> <span class="n">notifyGameState</span><span class="p">(</span><span class="nl">gameState:</span> <span class="n">Int</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">optional</span> <span class="n">func</span> <span class="n">notifyGameNotification</span><span class="p">(</span><span class="nl">gameNotification:</span> <span class="n">String</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/**</span>
+</span><span class='line'><span class="cm">游戏事件类</span>
+</span><span class='line'><span class="cm">*/</span>
+</span><span class='line'><span class="n">class</span> <span class="nl">QQGameStateEvent:</span><span class="n">QQGameDelegate</span><span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">func</span> <span class="n">notifyPlayerState</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">println</span><span class="p">(</span><span class="s">&quot;notifyPlayerState!!!&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">func</span> <span class="n">notifyGameNotification</span><span class="p">(</span><span class="nl">gameNotification:</span> <span class="n">String</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">println</span><span class="p">(</span><span class="s">&quot;game notification : \(gameNotification)&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/**</span>
+</span><span class='line'><span class="cm">游戏类</span>
+</span><span class='line'><span class="cm">*/</span>
+</span><span class='line'><span class="n">class</span> <span class="n">QQGame</span><span class="p">{</span>
+</span><span class='line'>    <span class="n">private</span> <span class="n">var</span> <span class="nl">_gameState:</span><span class="n">QQGameState</span> <span class="o">=</span> <span class="n">QQGameState</span><span class="p">.</span><span class="n">QQGameStateNone</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">private</span> <span class="n">var</span> <span class="nl">_gameDelegate:</span><span class="n">QQGameDelegate</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">private</span> <span class="n">var</span> <span class="nl">gameDelegate:</span><span class="n">QQGameDelegate</span><span class="p">{</span>
+</span><span class='line'>        <span class="n">get</span><span class="p">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">_gameDelegate</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="n">set</span><span class="p">{</span>
+</span><span class='line'>            <span class="n">self</span><span class="p">.</span><span class="n">_gameDelegate</span> <span class="o">=</span> <span class="n">newValue</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">init</span><span class="p">(){</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">self</span><span class="p">.</span><span class="n">_gameDelegate</span> <span class="o">=</span> <span class="n">QQGameStateEvent</span><span class="p">();</span>
+</span><span class='line'>        <span class="n">self</span><span class="p">.</span><span class="n">gameRunning</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">func</span> <span class="n">gameRunning</span><span class="p">(){</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">//game start</span>
+</span><span class='line'>        <span class="n">_gameDelegate</span><span class="p">.</span><span class="n">notifyGameState</span><span class="o">?</span><span class="p">(</span><span class="n">QQGameState</span><span class="p">.</span><span class="n">QQGameStateStart</span><span class="p">.</span><span class="n">toRaw</span><span class="p">());</span>
+</span><span class='line'>        <span class="c1">//game playing</span>
+</span><span class='line'>        <span class="n">_gameDelegate</span><span class="p">.</span><span class="n">notifyGameState</span><span class="o">?</span><span class="p">(</span><span class="n">QQGameState</span><span class="p">.</span><span class="n">QQGameStatePlaying</span><span class="p">.</span><span class="n">toRaw</span><span class="p">());</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">//game pause</span>
+</span><span class='line'>        <span class="n">_gameDelegate</span><span class="p">.</span><span class="n">notifyGameState</span><span class="o">?</span><span class="p">(</span><span class="n">QQGameState</span><span class="p">.</span><span class="n">QQGameStatePause</span><span class="p">.</span><span class="n">toRaw</span><span class="p">());</span>
+</span><span class='line'>        <span class="n">_gameDelegate</span><span class="p">.</span><span class="n">notifyGameNotification</span><span class="o">?</span><span class="p">(</span><span class="s">&quot;游戏停服更新!!!&quot;</span><span class="p">);</span>
+</span><span class='line'>        <span class="c1">//Game Over</span>
+</span><span class='line'>        <span class="n">_gameDelegate</span><span class="p">.</span><span class="n">notifyGameState</span><span class="o">?</span><span class="p">(</span><span class="n">QQGameState</span><span class="p">.</span><span class="n">QQGameStateGameOver</span><span class="p">.</span><span class="n">toRaw</span><span class="p">());</span>
+</span><span class='line'>        <span class="n">_gameDelegate</span><span class="p">.</span><span class="n">notifyGameNotification</span><span class="o">?</span><span class="p">(</span><span class="s">&quot;系统检测到你使用外挂，封号七天!!!&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">_gameDelegate</span><span class="p">.</span><span class="n">notifyPlayerState</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>2.调用</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">var</span> <span class="n">game</span> <span class="o">=</span>  <span class="n">QQGame</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>3.日志</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">game</span> <span class="n">notification</span> <span class="o">:</span> <span class="err">游戏停服更新</span><span class="o">!!!</span>
+</span><span class='line'><span class="n">game</span> <span class="n">notification</span> <span class="o">:</span> <span class="err">系统检测到你使用外挂，封号七天</span><span class="o">!!!</span>
+</span><span class='line'><span class="n">notifyPlayerState</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>三.小结</h3>
+
+<h4>1.?的使用场景:</h4>
+
+<ul>
+<li>1.声明Optional值变量</li>
+<li>2.在对Optional值操作中，用来判断是否能响应后面的操作</li>
+<li>3.用于安全调用protocol的optional方法</li>
+<li>4.使用 as? 向下转型(Downcast)</li>
+</ul>
+
+
+<h4>2.!使用场景</h4>
+
+<p>1.强制对Optional值进行拆包(unwrap)
+2.声明Implicitly Unwrapped Optionals值，一般用于类中的属性</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="err">@</span><span class="kt">IBOutlet</span> <span class="n">weak</span> <span class="n">var</span> <span class="nl">tableView:</span><span class="n">UITableView</span><span class="o">!</span>
+</span><span class='line'><span class="err">@</span><span class="kt">IBOutlet</span> <span class="n">weak</span>  <span class="n">var</span> <span class="nl">nameLabel:</span> <span class="n">ImplicitlyUnwrappedOptional</span><span class="o">&lt;</span><span class="n">UILabel</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>3.和objective-c协议用法类似，仅仅是细节上的差异。</h4>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/09/10/swift-xie-yi/">Swift协议</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-09-10T20:12:00+08:00" pubdate data-updated="true">Sep 10<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/09/10/swift-xie-yi/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>一.swift协议格式</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">protocol</span> <span class="err">协议名</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// protocol </span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>1.协议支持属性</h4>
+
+<blockquote><ul>
+<li>要求声明为变量属性，用var关键字做前缀。</li>
+<li>支持setter/getter</li>
+</ul>
+
+
+<p>其格式</p></blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">protocol</span> <span class="err">协议名</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">var</span> <span class="err">属性名</span><span class="o">:</span> <span class="err">类型</span> <span class="p">{</span> <span class="n">get</span> <span class="n">set</span> <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>2.协议支持方法(普通方法/类方法)</h4>
+
+<p>与类的普通方法和类方法声明语法相同，只是不用添加实现体。</p>
+
+<pre><code>协议是不允许给方法参数指定默认值。
+</code></pre>
+
+<h4>3.协议支持Mutating方法</h4>
+
+<p>   对值类型实例方法（即结构和枚举），你将可以将mutating关键字放在方法func关键字之前，表明该方法允许修改所属实例和/或实例的任何属性。</p>
+
+<blockquote><p>1.如果你标记一个协议实例方法为mutating， 当为一个类写此方法的实现时，你不需要写mutating关键字。</p>
+
+<p>2.mutating关键字只用于结构和枚举。</p></blockquote>
+
+<h4>4.协议可以组合，但是不会产生新协议</h4>
+
+<p>格式</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">protocol</span><span class="o">&lt;</span><span class="err">协议</span><span class="mi">1</span><span class="p">,</span> <span class="err">协议</span><span class="mi">2</span><span class="err">，</span><span class="p">...,</span><span class="err">协议</span><span class="n">n</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<h4>5.协议支持required/optional</h4>
+
+<p>如果协议是optional协议</p>
+
+<blockquote><p>1.协议接口存在与否的判断</p>
+
+<p>2.声明与必选协议的不同之处。可选协议需要@objc</p></blockquote>
+
+<h3>二.参考示例。</h3>
+
+<h4>1.完整示例</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">protocol</span> <span class="n">QBaseClassProtocol</span><span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">className:</span><span class="n">String</span><span class="p">{</span><span class="n">get</span><span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="err">@</span><span class="n">objc</span> <span class="n">protocol</span> <span class="n">QOutActionProtocol</span><span class="p">{</span>
+</span><span class='line'>    <span class="n">optional</span> <span class="n">func</span> <span class="n">gotoPark</span><span class="p">()</span> <span class="o">-&gt;</span><span class="n">Bool</span>
+</span><span class='line'>    <span class="n">optional</span> <span class="n">var</span> <span class="nl">goShopping:</span><span class="n">Bool</span><span class="p">{</span><span class="n">get</span><span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="n">class</span> <span class="n">QBaseClass</span> <span class="o">:</span><span class="n">QBaseClassProtocol</span><span class="p">,</span> <span class="n">QOutActionProtocol</span><span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">private</span> <span class="n">var</span> <span class="nl">_className:</span><span class="n">String</span> <span class="o">=</span> <span class="s">&quot;QBaseClass&quot;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">init</span><span class="p">(){</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//from QBaseClassProtocol</span>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">className:</span><span class="n">String</span><span class="p">{</span>
+</span><span class='line'>        <span class="n">get</span><span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="k">return</span> <span class="n">_className</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//from QOutActionProtocol</span>
+</span><span class='line'>    <span class="n">func</span> <span class="n">gotoPark</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Bool</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="n">true</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">func</span> <span class="n">test</span><span class="p">(){</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">println</span><span class="p">(</span><span class="s">&quot;className = \(_className)&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">var</span> <span class="nl">gotoPark:</span><span class="n">Bool</span>  <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">gotoPark</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">if</span> <span class="n">gotoPark</span><span class="p">{</span>
+</span><span class='line'>            <span class="n">println</span><span class="p">(</span><span class="s">&quot;I can go to park&quot;</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="k">else</span><span class="p">{</span>
+</span><span class='line'>            <span class="n">println</span><span class="p">(</span><span class="s">&quot;I can&#39;t go to park&quot;</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="c1">/// &#39;QBaseClass&#39; does not have a member named &#39;goShopping&#39;</span>
+</span><span class='line'>        <span class="c1">//self.goShopping()</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>2.调用</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">var</span> <span class="n">baseClass</span> <span class="o">=</span>  <span class="n">QBaseClass</span><span class="p">()</span>
+</span><span class='line'><span class="n">baseClass</span><span class="p">.</span><span class="n">test</span><span class="p">();</span>
+</span><span class='line'>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<h4>3.日志</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">className</span> <span class="o">=</span> <span class="n">QBaseClass</span>
+</span><span class='line'><span class="n">I</span> <span class="n">can</span> <span class="n">go</span> <span class="n">to</span> <span class="n">park</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>三.小结</h3>
+
+<p><code>swift</code>中协议大体与<code>objective-c</code>协议相同。主要区别点</p>
+
+<ul>
+<li><ol>
+<li><code>swift</code>支持属性，<code>objective-c</code>而不支持。</li>
+</ol>
+</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/09/10/charles-jie-bao-gong-ju/">Charles截包工具</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-09-10T16:27:00+08:00" pubdate data-updated="true">Sep 10<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/09/10/charles-jie-bao-gong-ju/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="http://www.charlesproxy.com/">Charles</a> 是一款<code>Mac</code>上好用的截包工具,可以让开发者查看所有连接互联网的<code>HTTP</code>通信，包括请求，响应和<code>HTTP</code>头信息等等,非常不错!</p>
+
+<p><img src="/images/post/2014-09-10-charles-jie-bao-gong-ju/charles_ui_overview.png" alt="image" /></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/09/10/swift-shu-xing-fang-wen/">Swift属性访问</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-09-10T10:35:00+08:00" pubdate data-updated="true">Sep 10<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/09/10/swift-shu-xing-fang-wen/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><code>objective-c</code>中<code>property</code>方法支持<code>assign/readonly/retain/readwrite</code>等。
+<code>swift</code>也支持类似这些属性。</p>
+
+<h3>一.swift属性方法</h3>
+
+<h4>1.readonly</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">var</span> <span class="nl">name:</span><span class="n">String</span><span class="p">{</span>
+</span><span class='line'>    <span class="n">get</span><span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">name</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<h4>2.read/write with backing store</h4>
+
+<p>如果发生<code>EXC_BAD_ACCESS</code>参考<a href="http://stackoverflow.com/questions/24025340/property-getters-and-setters">http://stackoverflow.com/questions/24025340/property-getters-and-setters</a></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="c1">//read/write Setters/Getters用来计算和获取属性，</span>
+</span><span class='line'><span class="c1">//并没有给成员变量实例分配存储,所以，会触发EXC_BAD_ACCESS.</span>
+</span><span class='line'><span class="n">private</span> <span class="n">var</span> <span class="nl">realAge:</span><span class="n">Int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">var</span> <span class="nl">age:</span><span class="n">Int</span><span class="p">{</span>
+</span><span class='line'>    <span class="n">get</span><span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">realAge</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">set</span><span class="p">{</span>
+</span><span class='line'>        <span class="n">realAge</span> <span class="o">=</span> <span class="n">newValue</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<h4>3.read/write  with backing store,信息隐藏，监控属性变化，附加额外处理</h4>
+
+<p>类似</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'>
+</span><span class='line'> <span class="k">@property</span><span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">retain</span><span class="p">)</span><span class="n">NSString</span> <span class="n">address</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>
+  实例变量自动为_address</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">private</span> <span class="n">var</span> <span class="n">_address</span> <span class="o">:</span><span class="n">String</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">{</span>
+</span><span class='line'>    <span class="n">willSet</span><span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>          <span class="n">println</span><span class="p">(</span><span class="s">&quot;old Value = \(_address) will clear,new value = \(newValue) will set&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">self</span><span class="p">.</span><span class="n">_address</span> <span class="o">=</span> <span class="n">newValue</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="n">didSet</span><span class="p">{</span>
+</span><span class='line'>        <span class="c1">//可以追回一些额外的处理逻辑</span>
+</span><span class='line'>         <span class="n">println</span><span class="p">(</span><span class="s">&quot;Property did set&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">var</span> <span class="n">address</span> <span class="o">:</span><span class="n">String</span><span class="p">{</span>
+</span><span class='line'>    <span class="n">get</span><span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">_address</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="n">set</span><span class="p">(</span><span class="n">newAddress</span><span class="p">){</span>
+</span><span class='line'>        <span class="k">if</span> <span class="n">newAddress</span> <span class="o">!=</span> <span class="n">_address</span><span class="p">{</span>
+</span><span class='line'>            <span class="n">self</span><span class="p">.</span><span class="n">_address</span> <span class="o">=</span> <span class="n">newAddress</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<h3>二.完整示例</h3>
+
+<h4>1.QBaseClass overview</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">class</span> <span class="n">QBaseClass</span><span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//read only</span>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">name:</span><span class="n">String</span><span class="p">{</span>
+</span><span class='line'>        <span class="n">get</span><span class="p">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">name</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//read/write Setters/Getters用来计算和获取属性，</span>
+</span><span class='line'>    <span class="c1">//并没有给成员变量实例分配存储,所以，会触发EXC_BAD_ACCESS.</span>
+</span><span class='line'>    <span class="n">private</span> <span class="n">var</span> <span class="nl">realAge:</span><span class="n">Int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">age:</span><span class="n">Int</span><span class="p">{</span>
+</span><span class='line'>        <span class="n">get</span><span class="p">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="n">realAge</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">set</span><span class="p">{</span>
+</span><span class='line'>            <span class="n">realAge</span> <span class="o">=</span> <span class="n">newValue</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//read/write  with backing store，</span>
+</span><span class='line'>    <span class="c1">//类似 @property(nonatomic, assign)NSInter number;变量自动为_number</span>
+</span><span class='line'>    <span class="n">private</span> <span class="n">var</span> <span class="nl">_number:</span><span class="n">UInt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">var</span> <span class="n">number</span> <span class="o">:</span><span class="n">UInt</span><span class="p">{</span>
+</span><span class='line'>        <span class="n">get</span><span class="p">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">_number</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="n">set</span><span class="p">(</span><span class="n">newNumber</span><span class="p">){</span>
+</span><span class='line'>            <span class="k">if</span> <span class="n">newNumber</span> <span class="o">!=</span> <span class="n">number</span><span class="p">{</span>
+</span><span class='line'>                <span class="n">self</span><span class="p">.</span><span class="n">_number</span> <span class="o">=</span> <span class="n">newNumber</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//read/write  with backing store,信息隐藏，监控属性变化，附加额外处理</span>
+</span><span class='line'>     <span class="c1">//类似 @property(nonatomic, retain)NSString address;变量自动为_address</span>
+</span><span class='line'>    <span class="n">private</span> <span class="n">var</span> <span class="n">_address</span> <span class="o">:</span><span class="n">String</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">{</span>
+</span><span class='line'>        <span class="n">willSet</span><span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="n">println</span><span class="p">(</span><span class="s">&quot;old Value = \(_address) will clear,new value = \(newValue) will set&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="n">self</span><span class="p">.</span><span class="n">_address</span> <span class="o">=</span> <span class="n">newValue</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="n">didSet</span><span class="p">{</span>
+</span><span class='line'>            <span class="c1">//可以追回一些额外的处理逻辑</span>
+</span><span class='line'>             <span class="n">println</span><span class="p">(</span><span class="s">&quot;Property did set&quot;</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">var</span> <span class="n">address</span> <span class="o">:</span><span class="n">String</span><span class="p">{</span>
+</span><span class='line'>        <span class="n">get</span><span class="p">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">_address</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="n">set</span><span class="p">(</span><span class="n">newAddress</span><span class="p">){</span>
+</span><span class='line'>            <span class="k">if</span> <span class="n">newAddress</span> <span class="o">!=</span> <span class="n">_address</span><span class="p">{</span>
+</span><span class='line'>                <span class="n">self</span><span class="p">.</span><span class="n">_address</span> <span class="o">=</span> <span class="n">newAddress</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">init</span><span class="p">(){</span>
+</span><span class='line'>        <span class="n">self</span><span class="p">.</span><span class="n">age</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>2.调用</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">var</span> <span class="nl">baseClass:</span><span class="n">QBaseClass</span> <span class="o">=</span> <span class="n">QBaseClass</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//baseClass.name = &quot;ksnowlv&quot;//报错</span>
+</span><span class='line'><span class="n">baseClass</span><span class="p">.</span><span class="n">address</span> <span class="o">=</span> <span class="s">&quot;北京海淀区&quot;</span>
+</span><span class='line'><span class="n">baseClass</span><span class="p">.</span><span class="n">age</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span>
+</span><span class='line'><span class="n">baseClass</span><span class="p">.</span><span class="n">number</span> <span class="o">=</span> <span class="mi">0917</span><span class="p">;</span>
+</span><span class='line'><span class="n">println</span><span class="p">(</span><span class="s">&quot;address =\(baseClass.address),age =\(baseClass.age),number =\(baseClass.number)&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>3.日志输出</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">old</span> <span class="n">Value</span> <span class="o">=</span>  <span class="n">will</span> <span class="n">clear</span><span class="p">,</span><span class="n">new</span> <span class="n">value</span> <span class="o">=</span> <span class="err">北京海淀区</span> <span class="n">will</span> <span class="n">set</span>
+</span><span class='line'><span class="n">Property</span> <span class="n">did</span> <span class="n">set</span>
+</span><span class='line'><span class="n">address</span> <span class="o">=</span><span class="err">北京海淀区</span><span class="p">,</span><span class="n">age</span> <span class="o">=</span><span class="mi">20</span><span class="p">,</span><span class="n">number</span> <span class="o">=</span><span class="mi">917</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>三.小结</h3>
+
+<p> 与<code>objective-c</code>中属性方法的不同之处：</p>
+
+<ul>
+<li><p>1.生成属性方法实例的方式不同。</p>
+
+<blockquote><p>1.<code>objective-c</code>中属性方法会自动为属性方法生成实例变量，为实例变量分配内存。</p>
+
+<p>2.而<code>swift</code>中属性方法仅仅是设置属性和获取属性，实例变量需要手动分配。</p></blockquote></li>
+<li><p>2.属性方法使用便捷性不同。</p>
+
+<blockquote><p><code>objective-c</code>的属性方法比较方便</p></blockquote></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/09/09/swift-lei-shu-xing-slash-fang-fa/">Swift类属性/方法</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-09-09T11:22:00+08:00" pubdate data-updated="true">Sep 9<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/09/09/swift-lei-shu-xing-slash-fang-fa/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>swift类的属性<strong>setter/getter</strong>，普通方法，类方法/变量，访问权限等。</p>
+
+<h4>1.setter/getter方法</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'>
+</span><span class='line'> <span class="n">var</span> <span class="err">变量名</span><span class="o">:</span><span class="err">变量类型</span><span class="p">{</span>
+</span><span class='line'>     <span class="n">get</span><span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="err">变量名</span><span class="p">;</span>
+</span><span class='line'>     <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>     <span class="n">set</span><span class="p">{</span>
+</span><span class='line'>        <span class="n">self</span><span class="p">.</span><span class="err">变量名</span> <span class="o">=</span> <span class="n">newValue</span><span class="p">;</span>
+</span><span class='line'>     <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>2.类方法和变量</h4>
+
+<p>使用<code>class</code>修饰的方法或变量</p>
+
+<p><code>类变量</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">class</span> <span class="n">var</span> <span class="err">变量名</span><span class="o">:</span> <span class="err">类型</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">get</span><span class="p">{</span>
+</span><span class='line'>     <span class="k">return</span>  <span class="err">类名</span><span class="p">.</span><span class="err">变量名</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>类方法</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">class</span> <span class="n">func</span> <span class="err">方法名</span><span class="o">-&gt;</span><span class="err">参数</span><span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="err">类名</span><span class="p">.</span><span class="err">类变量</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>3.常方法。使用final修饰的方法</h4>
+
+<p> <code>final</code> func 方法名</p>
+
+<h4>4.访问权限</h4>
+
+<blockquote><ul>
+<li>类/方法/变量可以由关键字<strong>public</strong>/<strong>internal</strong>/<strong>private</strong>.</li>
+<li>系统默认为<code>internal</code>,<code>private</code>可用于隐藏一些实现细节。</li>
+</ul>
+</blockquote>
+
+<p><code>public</code> 公有</p>
+
+<pre><code>标记为public的代码块一般用来建立API，这是最开放的权限，使得任何人只要导入这个模块，都可以访问使用。
+</code></pre>
+
+<p><code>internal</code> 内部</p>
+
+<pre><code>标记为internal的代码块，在整个应用（App bundle）或者框架（framework）的范围内都是可以访问的。
+</code></pre>
+
+<p><code>private</code> 私有</p>
+
+<pre><code>在哪里写的，就在哪里用。无论是类、变量、常量还是函数，一旦被标记为私有的，就只能在定义他们的源文件里使用，不能为别的文件所用。
+</code></pre>
+
+<h4>5.willSet/didSet</h4>
+
+<p>这两个属性用来监视属性的除初始化之外的属性值变化情况。</p>
+
+<p>示例代码如下。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">class</span> <span class="n">QPerson</span><span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">///类的全局变量</span>
+</span><span class='line'>    <span class="n">class</span> <span class="n">var</span> <span class="nl">sharedPersonNumber:</span> <span class="n">UInt</span> <span class="p">{</span>
+</span><span class='line'>        <span class="c1">// 这里返回一个 UInt 值</span>
+</span><span class='line'>        <span class="n">get</span><span class="p">{</span>
+</span><span class='line'>            <span class="k">return</span>  <span class="n">QPerson</span><span class="p">.</span><span class="n">sharedPersonNumber</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">set</span><span class="p">{</span>
+</span><span class='line'>            <span class="n">QPerson</span><span class="p">.</span><span class="n">sharedPersonNumber</span> <span class="o">=</span> <span class="n">newValue</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="cm">/**</span>
+</span><span class='line'><span class="cm">    类方法</span>
+</span><span class='line'><span class="cm">    :returns: 返回人员类的人数</span>
+</span><span class='line'><span class="cm">    */</span>
+</span><span class='line'>    <span class="n">final</span> <span class="n">class</span> <span class="n">func</span> <span class="n">countPerson</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">UInt</span><span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">QPerson</span><span class="p">.</span><span class="n">sharedPersonNumber</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">/// 普通成员变量</span>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">_address:</span><span class="n">String</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">_phoneNumber:</span><span class="n">String</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">/// setter/getter</span>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">name:</span><span class="n">String</span><span class="p">{</span>
+</span><span class='line'>        <span class="n">get</span><span class="p">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">name</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">set</span><span class="p">{</span>
+</span><span class='line'>            <span class="n">self</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">newValue</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">/// setter/getter</span>
+</span><span class='line'>    <span class="n">private</span> <span class="n">var</span> <span class="nl">_number:</span><span class="n">String</span><span class="p">{</span>
+</span><span class='line'>        <span class="n">get</span><span class="p">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">_number</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">set</span><span class="p">(</span><span class="n">number</span><span class="p">){</span>
+</span><span class='line'>            <span class="n">self</span><span class="p">.</span><span class="n">_number</span> <span class="o">=</span> <span class="n">number</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">age:</span> <span class="n">Int</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">willSet</span><span class="p">(</span><span class="n">age</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="n">NSLog</span><span class="p">(</span><span class="s">&quot;old age = \(self.age),new age = \(age)&quot;</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="n">didSet</span><span class="p">(</span><span class="n">age</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="n">NSLog</span><span class="p">(</span><span class="s">&quot;new age = \(self.age)&quot;</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">init</span><span class="p">(</span><span class="nl">name:</span><span class="n">String</span><span class="p">,</span> <span class="nl">number:</span><span class="n">String</span><span class="p">,</span> <span class="nl">address:</span><span class="n">NSString</span><span class="p">,</span> <span class="nl">phoneNumber:</span><span class="n">NSString</span><span class="p">){</span>
+</span><span class='line'>        <span class="n">self</span><span class="p">.</span><span class="n">age</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>        <span class="n">self</span><span class="p">.</span><span class="n">_address</span> <span class="o">=</span> <span class="n">address</span><span class="p">;</span>
+</span><span class='line'>        <span class="n">self</span><span class="p">.</span><span class="n">_phoneNumber</span> <span class="o">=</span> <span class="n">phoneNumber</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">deinit</span><span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/09/08/swift-ui-kong-jian-chu-ti-yan/">swift-UI-控件初体验</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-09-08T20:26:00+08:00" pubdate data-updated="true">Sep 8<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/09/08/swift-ui-kong-jian-chu-ti-yan/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>现在我们体验<strong>swift</strong>下UI控件的使用</h3>
+
+<blockquote><ul>
+<li><strong>UIButton</strong></li>
+<li><strong>UIImageView</strong></li>
+<li><strong>UILabel</strong></li>
+<li><strong>UITableView</strong></li>
+</ul>
+</blockquote>
+
+<h4>1.<strong>ViewController</strong>继承<code>UITableViewDataSource</code>，<code>UITableViewDelegate</code>，重写相应方法。</h4>
+
+<h4>2.声明<code>UIButton</code>/<code>UIImageView</code>/<code>UILabel</code>/UITableView四种控件和列表数据数组，定义按钮事件。</h4>
+
+<h4>3.控件及事件在IB连好。</h4>
+
+<p><img src="/images/post/2014-09-08-swift-ui-kong-jian-chu-ti-yan/swift_ui_overviw_ib.png" alt="image" /></p>
+
+<h4>完整代码</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">class</span> <span class="nl">ViewController:</span> <span class="n">UIViewController</span><span class="p">,</span><span class="n">UITableViewDataSource</span><span class="p">,</span><span class="n">UITableViewDelegate</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="err">@</span><span class="kt">IBOutlet</span> <span class="n">weak</span> <span class="n">var</span> <span class="nl">myButton:</span> <span class="n">UIButton</span><span class="o">!</span>
+</span><span class='line'>    <span class="err">@</span><span class="kt">IBOutlet</span> <span class="n">weak</span> <span class="n">var</span> <span class="nl">imageView:</span> <span class="n">UIImageView</span><span class="o">!</span>
+</span><span class='line'>    <span class="err">@</span><span class="kt">IBOutlet</span> <span class="n">weak</span> <span class="n">var</span> <span class="nl">label:</span><span class="n">UILabel</span><span class="o">!</span>
+</span><span class='line'>    <span class="err">@</span><span class="kt">IBOutlet</span> <span class="n">weak</span> <span class="n">var</span> <span class="nl">tableView:</span><span class="n">UITableView</span><span class="o">!</span>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">list:</span><span class="n">NSArray</span><span class="o">!</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">override</span> <span class="n">func</span> <span class="n">viewDidLoad</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">super</span><span class="p">.</span><span class="n">viewDidLoad</span><span class="p">()</span>
+</span><span class='line'>        <span class="c1">// Do any additional setup after loading the view, typically from a nib.</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">var</span> <span class="n">image</span> <span class="o">:</span> <span class="n">UIImage</span> <span class="o">=</span> <span class="n">UIImage</span><span class="p">(</span><span class="nl">named:</span><span class="s">&quot;qq_icon.jpg&quot;</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">self</span><span class="p">.</span><span class="n">list</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;kair&quot;</span><span class="p">,</span><span class="s">&quot;ksnowlv&quot;</span><span class="p">,</span><span class="s">&quot;snow&quot;</span><span class="p">,</span><span class="s">&quot;air&quot;</span><span class="p">,</span><span class="s">&quot;rain&quot;</span><span class="p">,</span><span class="s">&quot;krain&quot;</span><span class="p">,</span><span class="s">&quot;cloud&quot;</span><span class="p">,</span><span class="s">&quot;kcloud&quot;</span><span class="p">];</span>
+</span><span class='line'>        <span class="n">self</span><span class="p">.</span><span class="n">imageView</span><span class="p">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="p">;</span>
+</span><span class='line'>        <span class="n">self</span><span class="p">.</span><span class="n">label</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="s">&quot;ksnowlv&quot;</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">override</span> <span class="n">func</span> <span class="n">didReceiveMemoryWarning</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">super</span><span class="p">.</span><span class="n">didReceiveMemoryWarning</span><span class="p">()</span>
+</span><span class='line'>        <span class="c1">// Dispose of any resources that can be recreated.</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="err">@</span><span class="kt">IBAction</span> <span class="n">func</span> <span class="n">buttonClicked</span><span class="p">(</span><span class="nl">sender:</span> <span class="n">UIButton</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="c1">// The tag for each color was set in the storyboard for each button based</span>
+</span><span class='line'>        <span class="c1">// on the type of color.</span>
+</span><span class='line'>        <span class="n">var</span> <span class="nl">alertView:</span><span class="n">UIAlertView</span> <span class="o">=</span> <span class="n">UIAlertView</span><span class="p">(</span><span class="nl">title:</span> <span class="s">&quot;swift UIAlertView&quot;</span><span class="p">,</span> <span class="nl">message:</span> <span class="s">&quot;按钮被按下&quot;</span><span class="p">,</span> <span class="nl">delegate:</span> <span class="nb">nil</span><span class="p">,</span> <span class="nl">cancelButtonTitle:</span> <span class="s">&quot;ok&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">//title: String?, message: String?, delegate: AnyObject?, cancelButtonTitle: String?</span>
+</span><span class='line'>        <span class="n">alertView</span><span class="p">.</span><span class="n">show</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">func</span> <span class="n">tableView</span><span class="p">(</span><span class="nl">tableView:</span> <span class="n">UITableView</span><span class="p">,</span> <span class="n">numberOfRowsInSection</span> <span class="nl">section:</span> <span class="n">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Int</span><span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">list</span><span class="p">.</span><span class="n">count</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">func</span> <span class="n">tableView</span><span class="p">(</span><span class="nl">tableView:</span> <span class="n">UITableView</span><span class="p">,</span> <span class="n">cellForRowAtIndexPath</span> <span class="nl">indexPath:</span> <span class="n">NSIndexPath</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">UITableViewCell</span><span class="p">{</span>
+</span><span class='line'>        <span class="n">let</span> <span class="n">KTableViewCellIdentifier</span> <span class="o">=</span> <span class="s">&quot;tableViewCellIdentifier&quot;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">var</span> <span class="n">cell</span> <span class="o">=</span> <span class="n">tableView</span><span class="p">.</span><span class="n">dequeueReusableCellWithIdentifier</span><span class="p">(</span><span class="n">KTableViewCellIdentifier</span><span class="p">)</span> <span class="n">as</span> <span class="n">UITableViewCell</span><span class="o">!</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="n">cell</span> <span class="o">==</span> <span class="nb">nil</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="n">cell</span> <span class="o">=</span> <span class="n">UITableViewCell</span><span class="p">(</span><span class="nl">style:</span><span class="p">.</span><span class="n">Default</span><span class="p">,</span> <span class="nl">reuseIdentifier:</span> <span class="n">KTableViewCellIdentifier</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">var</span> <span class="n">rowIndex</span> <span class="o">=</span> <span class="n">indexPath</span><span class="p">.</span><span class="n">row</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">if</span> <span class="n">rowIndex</span> <span class="o">&lt;</span> <span class="n">self</span><span class="p">.</span><span class="n">list</span><span class="p">.</span><span class="n">count</span><span class="p">{</span>
+</span><span class='line'>            <span class="n">cell</span><span class="p">.</span><span class="n">textLabel</span><span class="o">?</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">list</span><span class="p">.</span><span class="n">objectAtIndex</span><span class="p">(</span><span class="n">rowIndex</span><span class="p">)</span> <span class="n">as</span> <span class="n">NSString</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="n">cell</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">func</span> <span class="n">tableView</span><span class="p">(</span><span class="nl">tableView:</span> <span class="n">UITableView</span><span class="p">,</span> <span class="n">heightForRowAtIndexPath</span> <span class="nl">indexPath:</span> <span class="n">NSIndexPath</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CGFloat</span><span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">if</span> <span class="n">self</span><span class="p">.</span><span class="n">tableView</span> <span class="o">==</span> <span class="n">tableView</span><span class="p">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="mi">50</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="mi">40</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>效果图</h4>
+
+<p><img src="/images/post/2014-09-08-swift-ui-kong-jian-chu-ti-yan/swift_run_overview.png" alt="image" /></p>
+
+<h4>小结</h4>
+
+<pre><code>和objective-c下使用方法类似，优化方法大体相同，你原来的开发经验依然是很有用的。
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/09/08/swift-de-lei-jie-gou-xie-yi-mei-ju/">Swift的类-结构-协议-枚举</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-09-08T15:38:00+08:00" pubdate data-updated="true">Sep 8<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/09/08/swift-de-lei-jie-gou-xie-yi-mei-ju/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>现在主要体验swift类(创建，销毁，继承/派生)，结构体，协议，枚举等方面的使用.</p>
+
+<h4>1.结构体和常量定义。</h4>
+
+<p>结构体定义其实与c/c++大体类似。示例如下:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">let</span> <span class="nl">QMapPointZero:</span><span class="n">QMapPoint</span> <span class="o">=</span> <span class="n">QMapPoint</span><span class="p">(</span><span class="nl">x:</span><span class="mi">0</span><span class="p">,</span><span class="nl">y:</span><span class="mi">0</span><span class="p">);</span>
+</span><span class='line'><span class="n">let</span> <span class="nl">QMapSizeZero:</span><span class="n">QMapSize</span> <span class="o">=</span> <span class="n">QMapSize</span><span class="p">(</span><span class="nl">width:</span><span class="mi">0</span><span class="p">,</span><span class="nl">height:</span><span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">struct</span> <span class="n">QMapPoint</span><span class="p">{</span>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">x:</span><span class="n">Int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">y:</span><span class="n">Int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">struct</span> <span class="n">QMapSize</span><span class="p">{</span>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">width:</span><span class="n">Int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">height:</span><span class="n">Int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>2.枚举定义(和c/c++中差别比较大)。</h4>
+
+<p> <code>swift</code>中，像类和其它类型命名类似，枚举可以拥有和它关联的方法。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'>
+</span><span class='line'><span class="k">enum</span> <span class="nl">QMapType:</span><span class="n">Int</span><span class="p">{</span>
+</span><span class='line'>    <span class="k">case</span> <span class="n">QMapTypeNone</span>
+</span><span class='line'>    <span class="k">case</span> <span class="n">QMapTypeNoraml</span>
+</span><span class='line'>    <span class="k">case</span> <span class="n">QMapTypeStreetView</span>
+</span><span class='line'>    <span class="k">case</span> <span class="n">QMapTypeTraffic</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">func</span> <span class="n">getMapType</span><span class="p">()</span> <span class="o">-&gt;</span><span class="n">Int</span><span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">switch</span> <span class="n">self</span><span class="p">{</span>
+</span><span class='line'>        <span class="k">case</span> <span class="p">.</span><span class="nl">QMapTypeNone:</span>
+</span><span class='line'>            <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">case</span> <span class="p">.</span><span class="nl">QMapTypeNoraml:</span>
+</span><span class='line'>            <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">case</span> <span class="p">.</span><span class="nl">QMapTypeStreetView:</span>
+</span><span class='line'>            <span class="k">return</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">case</span> <span class="p">.</span><span class="nl">QMapTypeTraffic:</span>
+</span><span class='line'>            <span class="k">return</span> <span class="mi">3</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">default</span><span class="o">:</span>
+</span><span class='line'>            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果访问这些枚举变量，需要通过枚举名来访问。以上为例就是通过<code>QMapType.QMapTypeNoraml</code>访问，如果要访问枚举变量的值，可通过<code>getMapType</code>访问。</p>
+
+<h4>3.关于协议/接口。</h4>
+
+<p>与objetive-c类似，不支持多继承，同样需要通过<code>protocol</code>声明定义，同样，分为必选协议和可选协议。但是，swift中的协议可以有成员变量。</p>
+
+<p>必选协议的声明</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">protocol</span> <span class="n">ShapeInterface</span><span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//成员变量</span>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">className:</span> <span class="n">String</span> <span class="p">{</span> <span class="n">get</span> <span class="p">}</span>
+</span><span class='line'>    <span class="c1">//协议默认属性为required</span>
+</span><span class='line'>    <span class="n">func</span> <span class="n">draw</span><span class="p">();</span>
+</span><span class='line'>    <span class="n">func</span> <span class="n">description</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">String</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>可选协议声明</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="err">@</span><span class="n">objc</span> <span class="n">protocol</span> <span class="n">QMapViewInterface</span><span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//成员变量</span>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">className:</span> <span class="n">String</span> <span class="p">{</span> <span class="n">get</span> <span class="p">}</span>
+</span><span class='line'>    <span class="n">func</span> <span class="n">mapView</span><span class="p">(</span><span class="nl">mapType:</span><span class="n">Int</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//协议默认属性为required</span>
+</span><span class='line'>    <span class="n">optional</span> <span class="n">func</span> <span class="nf">draw</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<h4>4.类的声明，定义，继承，派生等。</h4>
+
+<p>与<strong>c++</strong>/<strong>objective-c</strong>类似，支持面向对象，有构造初始化，有析构，支持继承/派生。</p>
+
+<p>我们声明shape类，继承<code>ShapeInterface</code>协议。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">class</span> <span class="nl">Shape:</span><span class="n">ShapeInterface</span><span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">className:</span> <span class="n">String</span> <span class="o">=</span> <span class="s">&quot;Shape&quot;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">name:</span><span class="n">NSString</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//可以看作初始化函数</span>
+</span><span class='line'>    <span class="n">init</span><span class="p">(</span><span class="nl">name:</span><span class="n">String</span><span class="p">){</span>
+</span><span class='line'>        <span class="n">self</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//可以看作析构函数</span>
+</span><span class='line'>    <span class="n">deinit</span><span class="p">{</span>
+</span><span class='line'>        <span class="n">print</span><span class="p">(</span><span class="s">&quot;Shape deinit&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">func</span> <span class="n">draw</span><span class="p">(){</span>
+</span><span class='line'>        <span class="n">print</span><span class="p">(</span><span class="s">&quot;shape name = \(name)</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">func</span> <span class="n">description</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">String</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">name</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">func</span> <span class="n">area</span><span class="p">()</span> <span class="o">-&gt;</span><span class="n">Double</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">func</span> <span class="n">circumference</span><span class="p">()</span> <span class="o">-&gt;</span><span class="n">Double</span><span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>5.示例:地图类和图形类</h3>
+
+<h4>地图类相关</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="c1">/// 地图坐标相关数据结构和常量定义</span>
+</span><span class='line'><span class="n">let</span> <span class="nl">QMapPointZero:</span><span class="n">QMapPoint</span> <span class="o">=</span> <span class="n">QMapPoint</span><span class="p">(</span><span class="nl">x:</span><span class="mi">0</span><span class="p">,</span><span class="nl">y:</span><span class="mi">0</span><span class="p">);</span>
+</span><span class='line'><span class="n">let</span> <span class="nl">QMapSizeZero:</span><span class="n">QMapSize</span> <span class="o">=</span> <span class="n">QMapSize</span><span class="p">(</span><span class="nl">width:</span><span class="mi">0</span><span class="p">,</span><span class="nl">height:</span><span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="k">struct</span> <span class="n">QMapPoint</span><span class="p">{</span>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">x:</span><span class="n">Int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">y:</span><span class="n">Int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="k">struct</span> <span class="n">QMapSize</span><span class="p">{</span>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">width:</span><span class="n">Int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">height:</span><span class="n">Int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">struct</span> <span class="n">QMapRect</span><span class="p">{</span>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">point:</span><span class="n">QMapPoint</span> <span class="o">=</span> <span class="n">QMapPointZero</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">size:</span><span class="n">QMapSize</span> <span class="o">=</span> <span class="n">QMapSizeZero</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/**</span>
+</span><span class='line'><span class="cm">地图支持底图类型</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">- QMapTypeNone:       初始化类型，无意义</span>
+</span><span class='line'><span class="cm">- QMapTypeNoraml:     普通地图</span>
+</span><span class='line'><span class="cm">- QMapTypeStreetView: 街景地图</span>
+</span><span class='line'><span class="cm">- QMapTypeTraffic:    实时路况地图</span>
+</span><span class='line'><span class="cm">*/</span>
+</span><span class='line'><span class="k">enum</span> <span class="nl">QMapType:</span><span class="n">Int</span><span class="p">{</span>
+</span><span class='line'>    <span class="k">case</span> <span class="n">QMapTypeNone</span>
+</span><span class='line'>    <span class="k">case</span> <span class="n">QMapTypeNoraml</span>
+</span><span class='line'>    <span class="k">case</span> <span class="n">QMapTypeStreetView</span>
+</span><span class='line'>    <span class="k">case</span> <span class="n">QMapTypeTraffic</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">func</span> <span class="n">getMapType</span><span class="p">()</span> <span class="o">-&gt;</span><span class="n">Int</span><span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">switch</span> <span class="n">self</span><span class="p">{</span>
+</span><span class='line'>        <span class="k">case</span> <span class="p">.</span><span class="nl">QMapTypeNone:</span>
+</span><span class='line'>            <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">case</span> <span class="p">.</span><span class="nl">QMapTypeNoraml:</span>
+</span><span class='line'>            <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">case</span> <span class="p">.</span><span class="nl">QMapTypeStreetView:</span>
+</span><span class='line'>            <span class="k">return</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">case</span> <span class="p">.</span><span class="nl">QMapTypeTraffic:</span>
+</span><span class='line'>            <span class="k">return</span> <span class="mi">3</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">default</span><span class="o">:</span>
+</span><span class='line'>            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/**</span>
+</span><span class='line'><span class="cm">*  地图View,支持地图显示，拖拽等</span>
+</span><span class='line'><span class="cm">*/</span>
+</span><span class='line'><span class="n">class</span> <span class="n">QMapView</span><span class="p">{</span>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">mapType:</span><span class="n">QMapType</span> <span class="o">=</span> <span class="n">QMapType</span><span class="p">.</span><span class="n">QMapTypeNone</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">mapRect:</span><span class="n">QMapRect</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">init</span><span class="p">(</span><span class="nl">mapType:</span><span class="n">QMapType</span><span class="p">){</span>
+</span><span class='line'>        <span class="n">self</span><span class="p">.</span><span class="n">mapType</span> <span class="o">=</span> <span class="n">mapType</span><span class="p">;</span>
+</span><span class='line'>        <span class="n">self</span><span class="p">.</span><span class="n">mapRect</span> <span class="o">=</span> <span class="n">QMapRect</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">func</span> <span class="n">setMapRect</span><span class="p">(</span><span class="nl">mapRect:</span><span class="n">QMapRect</span><span class="p">){</span>
+</span><span class='line'>        <span class="n">self</span><span class="p">.</span><span class="n">mapRect</span> <span class="o">=</span> <span class="n">mapRect</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">func</span> <span class="n">getMapRect</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">QMapRect</span><span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">mapRect</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">deinit</span><span class="p">{</span>
+</span><span class='line'>        <span class="n">print</span><span class="p">(</span><span class="s">&quot;QMapView deinit</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">func</span> <span class="n">draw</span><span class="p">(){</span>
+</span><span class='line'>        <span class="n">print</span><span class="p">(</span><span class="s">&quot;mapType = \(mapType.getMapType()) drawing</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/**</span>
+</span><span class='line'><span class="cm">*  地图协议，支持可选协议</span>
+</span><span class='line'><span class="cm">*/</span>
+</span><span class='line'><span class="err">@</span><span class="n">objc</span> <span class="n">protocol</span> <span class="n">QMapViewInterface</span><span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//成员变量</span>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">className:</span> <span class="n">String</span> <span class="p">{</span> <span class="n">get</span> <span class="p">}</span>
+</span><span class='line'>    <span class="n">func</span> <span class="n">mapView</span><span class="p">(</span><span class="nl">mapType:</span><span class="n">Int</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//协议默认属性为required</span>
+</span><span class='line'>    <span class="n">optional</span> <span class="n">func</span> <span class="nf">draw</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>调用：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">var</span> <span class="nl">mapView:</span><span class="n">QMapView</span> <span class="o">=</span> <span class="n">QMapView</span><span class="p">(</span><span class="nl">mapType:</span><span class="n">QMapType</span><span class="p">.</span><span class="n">QMapTypeNoraml</span><span class="p">);</span>
+</span><span class='line'><span class="n">var</span> <span class="n">mapSize</span> <span class="o">=</span>  <span class="n">QMapSize</span><span class="p">(</span><span class="nl">width:</span> <span class="n">Int</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">view</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">width</span><span class="p">),</span> <span class="nl">height:</span><span class="n">Int</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">view</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">height</span><span class="p">));</span>
+</span><span class='line'><span class="n">mapView</span><span class="p">.</span><span class="n">setMapRect</span><span class="p">(</span><span class="n">QMapRect</span><span class="p">(</span><span class="nl">point:</span> <span class="n">QMapPointZero</span><span class="p">,</span> <span class="nl">size:</span> <span class="n">mapSize</span><span class="p">));</span>
+</span><span class='line'><span class="n">mapView</span><span class="p">.</span><span class="n">draw</span><span class="p">();</span>
+</span><span class='line'><span class="n">print</span><span class="p">(</span><span class="s">&quot;mapView rect = {point = {\(mapView.mapRect.point.x),\(mapView.mapRect.point.y)},size = {\(mapView.mapRect.size.width),\(mapView.mapRect.size.height)}}</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>日志输出：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">mapType</span> <span class="o">=</span> <span class="mi">1</span> <span class="n">drawing</span>
+</span><span class='line'><span class="n">mapView</span> <span class="n">rect</span> <span class="o">=</span> <span class="p">{</span><span class="n">point</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">},</span><span class="n">size</span> <span class="o">=</span> <span class="p">{</span><span class="mi">320</span><span class="p">,</span><span class="mi">480</span><span class="p">}}</span>
+</span><span class='line'><span class="n">QMapView</span> <span class="n">deinit</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<h4>图形类(Shape类族)相关</h4>
+
+<p>Shape类族
+<img src="/images/post/2014-09-08-swift-de-lei-jie-gou-xie-yi-mei-ju/shape_class.jpg" alt="image" /></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="cm">/**</span>
+</span><span class='line'><span class="cm">*  图形接口</span>
+</span><span class='line'><span class="cm">*/</span>
+</span><span class='line'><span class="n">protocol</span> <span class="n">ShapeInterface</span><span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//成员变量</span>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">className:</span> <span class="n">String</span> <span class="p">{</span> <span class="n">get</span> <span class="p">}</span>
+</span><span class='line'>    <span class="c1">//协议默认属性为required</span>
+</span><span class='line'>    <span class="n">func</span> <span class="n">draw</span><span class="p">();</span>
+</span><span class='line'>    <span class="n">func</span> <span class="n">description</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">String</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/**</span>
+</span><span class='line'><span class="cm">*  图形基类</span>
+</span><span class='line'><span class="cm">*/</span>
+</span><span class='line'><span class="n">class</span> <span class="nl">Shape:</span><span class="n">ShapeInterface</span><span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">className:</span> <span class="n">String</span> <span class="o">=</span> <span class="s">&quot;Shape&quot;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">name:</span><span class="n">NSString</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//可以看作初始化函数</span>
+</span><span class='line'>    <span class="n">init</span><span class="p">(</span><span class="nl">name:</span><span class="n">String</span><span class="p">){</span>
+</span><span class='line'>        <span class="n">self</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//可以看作析构函数</span>
+</span><span class='line'>    <span class="n">deinit</span><span class="p">{</span>
+</span><span class='line'>        <span class="n">print</span><span class="p">(</span><span class="s">&quot;Shape deinit</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">func</span> <span class="n">draw</span><span class="p">(){</span>
+</span><span class='line'>        <span class="n">print</span><span class="p">(</span><span class="s">&quot;shape name = \(name)</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">func</span> <span class="n">description</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">String</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">name</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">func</span> <span class="n">area</span><span class="p">()</span> <span class="o">-&gt;</span><span class="n">Double</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">func</span> <span class="n">circumference</span><span class="p">()</span> <span class="o">-&gt;</span><span class="n">Double</span><span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="n">let</span> <span class="nl">KPI:</span><span class="n">Double</span> <span class="o">=</span> <span class="mf">3.14159265</span><span class="p">;</span>
+</span><span class='line'><span class="cm">/**</span>
+</span><span class='line'><span class="cm">*  圆类</span>
+</span><span class='line'><span class="cm">*/</span>
+</span><span class='line'><span class="n">class</span> <span class="n">Circle</span> <span class="o">:</span><span class="n">Shape</span><span class="p">{</span>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">center:</span><span class="n">Point</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">radius:</span><span class="n">Double</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">init</span><span class="p">(</span><span class="nl">name:</span><span class="n">String</span><span class="p">,</span> <span class="nl">center:</span><span class="n">Point</span><span class="p">,</span> <span class="nl">radius:</span><span class="n">Double</span><span class="p">){</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">self</span><span class="p">.</span><span class="n">center</span> <span class="o">=</span> <span class="n">center</span><span class="p">;</span>
+</span><span class='line'>        <span class="n">self</span><span class="p">.</span><span class="n">radius</span> <span class="o">=</span> <span class="n">radius</span><span class="p">;</span>
+</span><span class='line'>        <span class="n">super</span><span class="p">.</span><span class="n">init</span><span class="p">(</span><span class="nl">name:</span><span class="n">name</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">super</span><span class="p">.</span><span class="n">className</span> <span class="o">=</span> <span class="s">&quot;Circle&quot;</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">deinit</span><span class="p">{</span>
+</span><span class='line'>        <span class="n">print</span><span class="p">(</span><span class="s">&quot;Circle deinit</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">override</span> <span class="n">func</span> <span class="n">description</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">String</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">name</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">override</span> <span class="n">func</span> <span class="n">area</span><span class="p">()</span> <span class="o">-&gt;</span><span class="n">Double</span><span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="mf">3.14159265</span> <span class="o">*</span> <span class="n">pow</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">radius</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">override</span> <span class="n">func</span> <span class="n">circumference</span><span class="p">()</span> <span class="o">-&gt;</span><span class="n">Double</span><span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="n">KPI</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">radius</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/**</span>
+</span><span class='line'><span class="cm">*  正方形类</span>
+</span><span class='line'><span class="cm">*/</span>
+</span><span class='line'><span class="n">class</span> <span class="nl">Square:</span> <span class="n">Shape</span><span class="p">{</span>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">_size:</span><span class="n">Double</span><span class="o">!</span><span class="p">;</span><span class="c1">//加!后，可以不用添加self._size方法在init方法super.init之前</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">init</span><span class="p">(</span><span class="nl">name:</span><span class="n">String</span><span class="p">,</span> <span class="nl">size:</span><span class="n">Double</span><span class="p">){</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">super</span><span class="p">.</span><span class="n">init</span><span class="p">(</span><span class="nl">name:</span> <span class="n">name</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">super</span><span class="p">.</span><span class="n">className</span> <span class="o">=</span> <span class="s">&quot;Square&quot;</span><span class="p">;</span>
+</span><span class='line'>        <span class="n">_size</span> <span class="o">=</span> <span class="n">size</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">deinit</span><span class="p">{</span>
+</span><span class='line'>        <span class="n">print</span><span class="p">(</span><span class="s">&quot;Square deinit</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">override</span> <span class="n">func</span> <span class="n">area</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Double</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">pow</span><span class="p">(</span><span class="n">_size</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">override</span> <span class="n">func</span> <span class="n">circumference</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Double</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">_size</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>调用</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">var</span> <span class="nl">shape:</span><span class="n">Shape</span> <span class="o">=</span> <span class="n">Shape</span><span class="p">(</span><span class="nl">name:</span> <span class="s">&quot;Shape&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="n">shape</span><span class="p">.</span><span class="n">draw</span><span class="p">();</span>
+</span><span class='line'><span class="n">print</span><span class="p">(</span><span class="s">&quot;className = \(shape.className) shape:{description = \(shape.description()), area = \(shape.area()), circumference = \(shape.circumference())}</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">var</span> <span class="nl">circle:</span><span class="n">Circle</span> <span class="o">=</span> <span class="n">Circle</span><span class="p">(</span><span class="nl">name:</span> <span class="s">&quot;Circle&quot;</span><span class="p">,</span> <span class="nl">center:</span> <span class="n">Point</span><span class="p">(</span><span class="nl">v:</span> <span class="mi">10</span><span class="p">,</span> <span class="nl">h:</span> <span class="mi">20</span><span class="p">),</span> <span class="nl">radius:</span> <span class="mf">10.5</span><span class="p">);</span>
+</span><span class='line'><span class="n">circle</span><span class="p">.</span><span class="n">draw</span><span class="p">();</span>
+</span><span class='line'><span class="n">print</span><span class="p">(</span><span class="s">&quot;className = \(circle.className) circle:{description = \(circle.description()), area = \(circle.area()), circumference = \(circle.circumference())}</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">var</span> <span class="nl">square:</span><span class="n">Square</span> <span class="o">=</span> <span class="n">Square</span><span class="p">(</span><span class="nl">name:</span> <span class="s">&quot;Square&quot;</span><span class="p">,</span> <span class="nl">size:</span><span class="mi">4</span><span class="p">);</span>
+</span><span class='line'><span class="n">square</span><span class="p">.</span><span class="n">draw</span><span class="p">();</span>
+</span><span class='line'><span class="n">print</span><span class="p">(</span><span class="s">&quot;className = \(square.className) square:{description = \(square.description()), area = \(square.area()), circumference = \(square.circumference())}</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>
+日志输出</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">shape</span> <span class="n">name</span> <span class="o">=</span> <span class="n">Shape</span>
+</span><span class='line'><span class="n">className</span> <span class="o">=</span> <span class="n">Shape</span> <span class="nl">shape:</span><span class="p">{</span><span class="n">description</span> <span class="o">=</span> <span class="n">Shape</span><span class="p">,</span> <span class="n">area</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">circumference</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">}</span>
+</span><span class='line'><span class="n">shape</span> <span class="n">name</span> <span class="o">=</span> <span class="n">Circle</span>
+</span><span class='line'><span class="n">className</span> <span class="o">=</span> <span class="n">Circle</span> <span class="nl">circle:</span><span class="p">{</span><span class="n">description</span> <span class="o">=</span> <span class="n">Circle</span><span class="p">,</span> <span class="n">area</span> <span class="o">=</span> <span class="mf">346.3605896625</span><span class="p">,</span> <span class="n">circumference</span> <span class="o">=</span> <span class="mf">65.97344565</span><span class="p">}</span>
+</span><span class='line'><span class="n">shape</span> <span class="n">name</span> <span class="o">=</span> <span class="n">Square</span>
+</span><span class='line'><span class="n">className</span> <span class="o">=</span> <span class="n">Square</span> <span class="nl">square:</span><span class="p">{</span><span class="n">description</span> <span class="o">=</span> <span class="n">Square</span><span class="p">,</span> <span class="n">area</span> <span class="o">=</span> <span class="mf">16.0</span><span class="p">,</span> <span class="n">circumference</span> <span class="o">=</span> <span class="mf">16.0</span><span class="p">}</span>
+</span><span class='line'><span class="n">Square</span> <span class="n">deinit</span>
+</span><span class='line'><span class="n">Shape</span> <span class="n">deinit</span>
+</span><span class='line'><span class="n">Circle</span> <span class="n">deinit</span>
+</span><span class='line'><span class="n">Shape</span> <span class="n">deinit</span>
+</span><span class='line'><span class="n">Shape</span> <span class="n">deinit</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>
+小结:</p>
+
+<ul>
+<li>1.派生类的初始化顺序，先初始化基类，再初始化自身；析构顺序和初始化顺序相反，</li>
+<li>2.对象的创建顺序和析构顺序是相反的。</li>
+<li>3.如果派生类在类的外部调用基类的同名函数，如何调用呢？
+ 与<strong>objective-c</strong>/<strong>python</strong>中的调用都不太一样。可以使用声明基类指针的方式。</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'>   <span class="n">var</span> <span class="nl">squareShap:</span><span class="n">Shape</span> <span class="o">=</span> <span class="n">square</span><span class="p">;</span>
+</span><span class='line'>   <span class="n">squareShap</span><span class="p">.</span><span class="n">draw</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> <br/>
+参考链接：<a href="http://stackoverflow.com/questions/24021093/error-in-swift-class-property-not-initialized-at-super-init-call/24150540#24150540">http://stackoverflow.com/questions/24021093/error-in-swift-class-property-not-initialized-at-super-init-call/24150540#24150540</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/09/07/swiftji-chu-chu-tan/">Swift基础初探</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-09-07T21:25:00+08:00" pubdate data-updated="true">Sep 7<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/09/07/swiftji-chu-chu-tan/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>现在主要体验Swift基础语法，基本数据类型，集合类，控制逻辑(if-else,switch,for循环)等。
+示例及注释</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+<span class='line-number'>111</span>
+<span class='line-number'>112</span>
+<span class='line-number'>113</span>
+<span class='line-number'>114</span>
+<span class='line-number'>115</span>
+<span class='line-number'>116</span>
+<span class='line-number'>117</span>
+<span class='line-number'>118</span>
+<span class='line-number'>119</span>
+<span class='line-number'>120</span>
+<span class='line-number'>121</span>
+<span class='line-number'>122</span>
+<span class='line-number'>123</span>
+<span class='line-number'>124</span>
+<span class='line-number'>125</span>
+<span class='line-number'>126</span>
+<span class='line-number'>127</span>
+<span class='line-number'>128</span>
+<span class='line-number'>129</span>
+<span class='line-number'>130</span>
+<span class='line-number'>131</span>
+<span class='line-number'>132</span>
+<span class='line-number'>133</span>
+<span class='line-number'>134</span>
+<span class='line-number'>135</span>
+<span class='line-number'>136</span>
+<span class='line-number'>137</span>
+<span class='line-number'>138</span>
+<span class='line-number'>139</span>
+<span class='line-number'>140</span>
+<span class='line-number'>141</span>
+<span class='line-number'>142</span>
+<span class='line-number'>143</span>
+<span class='line-number'>144</span>
+<span class='line-number'>145</span>
+<span class='line-number'>146</span>
+<span class='line-number'>147</span>
+<span class='line-number'>148</span>
+<span class='line-number'>149</span>
+<span class='line-number'>150</span>
+<span class='line-number'>151</span>
+<span class='line-number'>152</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">func</span> <span class="nf">baseTest</span><span class="p">(){</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//:后面表示类型，也可以不加。</span>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">name:</span><span class="n">String</span> <span class="o">=</span> <span class="s">&quot;ksnow&quot;</span>
+</span><span class='line'>    <span class="c1">//常量声明</span>
+</span><span class='line'>    <span class="n">let</span> <span class="nl">KAge:</span><span class="n">UInt</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//Swift在字符串中插入变量名作为占位符，使用\()来提示Swift替换变量/常量名为其实际的值</span>
+</span><span class='line'>    <span class="n">println</span><span class="p">(</span><span class="s">&quot;name =\(name),age = \(KAge)&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//边界</span>
+</span><span class='line'>    <span class="n">println</span><span class="p">(</span><span class="s">&quot;UInt8 min =\(UInt8.min),UInt8 max =\(UInt8.max),UInt min =\(UInt.min) UInt max =\(UInt.max)&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//进制转换</span>
+</span><span class='line'>    <span class="n">let</span> <span class="n">KNum</span> <span class="o">=</span> <span class="mi">17</span><span class="c1">//不带前缀，默认十进制。</span>
+</span><span class='line'>    <span class="n">let</span> <span class="n">KNumBinaryInteger</span> <span class="o">=</span> <span class="mi">0</span><span class="n">b10001</span> <span class="c1">// 用前缀0b，表示二进制</span>
+</span><span class='line'>    <span class="n">let</span> <span class="n">KNumOctalInteger</span> <span class="o">=</span> <span class="mi">0</span><span class="n">o21</span> <span class="c1">// 用0o前缀，表示八进制</span>
+</span><span class='line'>    <span class="n">let</span> <span class="n">KNumhexadecimalInteger</span> <span class="o">=</span> <span class="mh">0x11</span> <span class="c1">// 以0x前缀 ,表示16进制。</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">println</span><span class="p">(</span><span class="s">&quot;17的十进制:\(KNum),二进制:\(KNumBinaryInteger),八进制:\(KNumOctalInteger),十六进制:\(KNumhexadecimalInteger)&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//强制类型转换</span>
+</span><span class='line'>    <span class="n">let</span> <span class="n">height</span> <span class="o">=</span> <span class="mf">3.24</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">let</span> <span class="n">weigth</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
+</span><span class='line'>    <span class="c1">//</span>
+</span><span class='line'>    <span class="n">var</span> <span class="n">totalNum</span> <span class="o">=</span> <span class="n">Double</span><span class="p">(</span><span class="n">weigth</span><span class="p">)</span> <span class="o">+</span> <span class="n">height</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">var</span> <span class="n">totalValue</span> <span class="o">=</span>  <span class="n">weigth</span> <span class="o">+</span> <span class="n">Int</span><span class="p">(</span><span class="n">height</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">println</span><span class="p">(</span><span class="s">&quot;totalNum = \(totalNum),totalValue =\(totalValue) &quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//bool</span>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">isHidden:</span><span class="n">Bool</span> <span class="o">=</span> <span class="n">true</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">isShow:</span><span class="n">Bool</span> <span class="o">=</span> <span class="n">false</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">println</span><span class="p">(</span><span class="s">&quot;isHidden = \(isHidden),isShow = \(isShow)&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//类型别名。</span>
+</span><span class='line'>    <span class="n">typealias</span> <span class="n">QInt8</span> <span class="o">=</span> <span class="n">Int8</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">typealias</span> <span class="n">QString</span> <span class="o">=</span> <span class="n">String</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">value:</span><span class="n">QInt8</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">key:</span><span class="n">QString</span> <span class="o">=</span> <span class="s">&quot;ksnowlv&quot;</span><span class="p">;</span>
+</span><span class='line'>    <span class="c1">//集合类：数组和字典</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">var</span> <span class="n">fruitList</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;apple&quot;</span><span class="p">,</span> <span class="s">&quot;pear&quot;</span><span class="p">,</span> <span class="s">&quot;banana&quot;</span><span class="p">,</span> <span class="s">&quot;orange&quot;</span><span class="p">]</span>
+</span><span class='line'>    <span class="n">fruitList</span> <span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="s">&quot;tomato&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">println</span><span class="p">(</span><span class="s">&quot;fruitList = \(fruitList)&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">println</span><span class="p">(</span><span class="s">&quot;value = \(value),key = \(key)&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">var</span> <span class="n">array</span> <span class="o">=</span>  <span class="n">Array</span><span class="o">&lt;</span><span class="n">Int</span><span class="o">&gt;</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="mf">0.</span><span class="p">.</span><span class="mf">.10</span><span class="p">{</span>
+</span><span class='line'>        <span class="n">array</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">println</span><span class="p">(</span><span class="s">&quot;array = \(array)&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">var</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">for</span> <span class="n">num</span> <span class="k">in</span> <span class="n">array</span><span class="p">{</span>
+</span><span class='line'>        <span class="n">count</span> <span class="o">+=</span> <span class="n">num</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">println</span><span class="p">(</span><span class="s">&quot;1...10 sum = \(count)&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">var</span> <span class="nl">personAddress:</span><span class="n">Dictionary</span> <span class="o">=</span> <span class="p">[</span>
+</span><span class='line'>        <span class="s">&quot;ksnow&quot;</span><span class="o">:</span> <span class="s">&quot;河南&quot;</span><span class="p">,</span>
+</span><span class='line'>        <span class="s">&quot;kair&quot;</span><span class="o">:</span> <span class="s">&quot;山东&quot;</span><span class="p">,</span>
+</span><span class='line'>        <span class="s">&quot;abc&quot;</span><span class="o">:</span> <span class="s">&quot;浙江&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">personAddress</span><span class="p">[</span><span class="s">&quot;snow&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;北京&quot;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">println</span><span class="p">(</span><span class="s">&quot;personAddress = \(personAddress)&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">personAddress</span><span class="p">[</span><span class="s">&quot;abc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">println</span><span class="p">(</span><span class="s">&quot;personAddress = \(personAddress)&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">var</span> <span class="n">shoppingDic</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;milk&quot;</span><span class="o">:</span><span class="mi">10</span><span class="p">,</span><span class="s">&quot;apple&quot;</span><span class="o">:</span><span class="mi">12</span><span class="p">,</span><span class="s">&quot;meat&quot;</span><span class="o">:</span><span class="mi">25</span><span class="p">,</span><span class="s">&quot;water&quot;</span><span class="o">:</span><span class="mi">3</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="n">price</span><span class="p">)</span> <span class="k">in</span> <span class="n">shoppingDic</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="n">println</span><span class="p">(</span><span class="s">&quot;shopping list:name = \(price)&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">let</span> <span class="n">http200Status</span> <span class="o">=</span> <span class="p">(</span><span class="nl">statusCode:</span> <span class="mi">200</span><span class="p">,</span> <span class="nl">description:</span> <span class="s">&quot;OK&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">println</span><span class="p">(</span><span class="s">&quot;The status code is \(http200Status.statusCode),description = \(http200Status.description)&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//控制结构</span>
+</span><span class='line'>    <span class="c1">//if</span>
+</span><span class='line'>    <span class="n">self</span><span class="p">.</span><span class="n">testIf</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//switch</span>
+</span><span class='line'>    <span class="n">var</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span class='line'>    <span class="k">switch</span> <span class="n">i</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">case</span> <span class="mi">0</span><span class="o">:</span>
+</span><span class='line'>        <span class="s">&quot;0&quot;</span> <span class="c1">//被输出</span>
+</span><span class='line'>        <span class="n">fallthrough</span>
+</span><span class='line'>    <span class="k">case</span> <span class="mi">1</span><span class="o">:</span>
+</span><span class='line'>        <span class="s">&quot;1&quot;</span> <span class="c1">//被输出</span>
+</span><span class='line'>    <span class="k">case</span> <span class="mi">2</span><span class="o">:</span>
+</span><span class='line'>        <span class="s">&quot;2&quot;</span>
+</span><span class='line'>    <span class="k">default</span><span class="o">:</span>
+</span><span class='line'>        <span class="s">&quot;default&quot;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">i</span> <span class="o">=</span> <span class="mi">15</span>
+</span><span class='line'>    <span class="k">switch</span> <span class="n">i</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">case</span> <span class="mi">0</span> <span class="p">...</span> <span class="mi">10</span><span class="o">:</span>
+</span><span class='line'>        <span class="s">&quot;0~10&quot;</span>
+</span><span class='line'>    <span class="k">case</span> <span class="mi">11</span> <span class="p">...</span> <span class="mi">20</span><span class="o">:</span>
+</span><span class='line'>        <span class="s">&quot;11~20&quot;</span> <span class="c1">//被输出</span>
+</span><span class='line'>    <span class="k">default</span><span class="o">:</span>
+</span><span class='line'>        <span class="s">&quot;default&quot;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//while</span>
+</span><span class='line'>    <span class="n">var</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">50</span><span class="p">{</span>
+</span><span class='line'>        <span class="n">sum</span> <span class="o">+=</span> <span class="n">i</span><span class="p">;</span>
+</span><span class='line'>        <span class="o">++</span><span class="n">i</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">println</span><span class="p">(</span><span class="s">&quot;while:1 ... 50 sum = \(sum)&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//do while</span>
+</span><span class='line'>    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">do</span><span class="p">{</span>
+</span><span class='line'>        <span class="n">sum</span> <span class="o">+=</span> <span class="n">i</span><span class="p">;</span>
+</span><span class='line'>        <span class="o">++</span><span class="n">i</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span><span class="k">while</span><span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="mi">50</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">println</span><span class="p">(</span><span class="s">&quot;do while:1 ... 50 sum = \(sum)&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">func</span> <span class="nf">testIf</span><span class="p">(</span><span class="nl">type:</span><span class="n">Int</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="n">type</span> <span class="o">==</span> <span class="mi">1</span><span class="p">{</span>
+</span><span class='line'>        <span class="n">println</span><span class="p">(</span><span class="s">&quot;type = 1,我出去了&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">else</span> <span class="k">if</span> <span class="n">type</span> <span class="o">==</span> <span class="mi">2</span><span class="p">{</span>
+</span><span class='line'>        <span class="n">println</span><span class="p">(</span><span class="s">&quot;type = 2,我回来了&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">println</span><span class="p">(</span><span class="s">&quot;type 不是1，不是2，我在家里呢&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>日志输出：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">name</span> <span class="o">=</span><span class="n">ksnow</span><span class="p">,</span><span class="n">age</span> <span class="o">=</span> <span class="mi">100</span>
+</span><span class='line'><span class="n">UInt8</span> <span class="n">min</span> <span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">UInt8</span> <span class="n">max</span> <span class="o">=</span><span class="mi">255</span><span class="p">,</span><span class="n">UInt</span> <span class="n">min</span> <span class="o">=</span><span class="mi">0</span> <span class="n">UInt</span> <span class="n">max</span> <span class="o">=</span><span class="mi">18446744073709551615</span>
+</span><span class='line'><span class="mi">17</span><span class="err">的十进制</span><span class="o">:</span><span class="mi">17</span><span class="p">,</span><span class="err">二进制</span><span class="o">:</span><span class="mi">17</span><span class="p">,</span><span class="err">八进制</span><span class="o">:</span><span class="mi">17</span><span class="p">,</span><span class="err">十六进制</span><span class="o">:</span><span class="mi">17</span>
+</span><span class='line'><span class="n">totalNum</span> <span class="o">=</span> <span class="mf">7.24</span><span class="p">,</span><span class="n">totalValue</span> <span class="o">=</span><span class="mi">7</span>
+</span><span class='line'><span class="n">isHidden</span> <span class="o">=</span> <span class="n">true</span><span class="p">,</span><span class="n">isShow</span> <span class="o">=</span> <span class="n">false</span>
+</span><span class='line'><span class="n">fruitList</span> <span class="o">=</span> <span class="p">[</span><span class="n">apple</span><span class="p">,</span> <span class="n">pear</span><span class="p">,</span> <span class="n">banana</span><span class="p">,</span> <span class="n">orange</span><span class="p">,</span> <span class="n">tomato</span><span class="p">]</span>
+</span><span class='line'><span class="n">value</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span><span class="n">key</span> <span class="o">=</span> <span class="n">ksnowlv</span>
+</span><span class='line'><span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>
+</span><span class='line'><span class="mf">1.</span><span class="p">.</span><span class="mf">.10</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">55</span>
+</span><span class='line'><span class="n">personAddress</span> <span class="o">=</span> <span class="p">[</span><span class="nl">abc:</span> <span class="err">浙江</span><span class="p">,</span> <span class="nl">kair:</span> <span class="err">山东</span><span class="p">,</span> <span class="nl">snow:</span> <span class="err">北京</span><span class="p">,</span> <span class="nl">ksnow:</span> <span class="err">河南</span><span class="p">]</span>
+</span><span class='line'><span class="n">personAddress</span> <span class="o">=</span> <span class="p">[</span><span class="nl">kair:</span> <span class="err">山东</span><span class="p">,</span> <span class="nl">snow:</span> <span class="err">北京</span><span class="p">,</span> <span class="nl">ksnow:</span> <span class="err">河南</span><span class="p">]</span>
+</span><span class='line'><span class="n">shopping</span> <span class="nl">list:</span><span class="n">name</span> <span class="o">=</span> <span class="mi">10</span>
+</span><span class='line'><span class="n">shopping</span> <span class="nl">list:</span><span class="n">name</span> <span class="o">=</span> <span class="mi">3</span>
+</span><span class='line'><span class="n">shopping</span> <span class="nl">list:</span><span class="n">name</span> <span class="o">=</span> <span class="mi">25</span>
+</span><span class='line'><span class="n">shopping</span> <span class="nl">list:</span><span class="n">name</span> <span class="o">=</span> <span class="mi">12</span>
+</span><span class='line'><span class="n">The</span> <span class="n">status</span> <span class="n">code</span> <span class="n">is</span> <span class="mi">200</span><span class="p">,</span><span class="n">description</span> <span class="o">=</span> <span class="n">OK</span>
+</span><span class='line'><span class="n">type</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span><span class="err">我出去了</span>
+</span><span class='line'><span class="k">while</span><span class="o">:</span><span class="mi">1</span> <span class="p">...</span> <span class="mi">50</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">1225</span>
+</span><span class='line'><span class="k">do</span> <span class="k">while</span><span class="o">:</span><span class="mi">1</span> <span class="p">...</span> <span class="mi">50</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">1225</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/09/07/xcode6-too-many-arguments-to-function-call-expected-0-have-2/">XCode6下Too Many Arguments to Function Call, Expected 0, Have 2解决办法</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-09-07T15:51:00+08:00" pubdate data-updated="true">Sep 7<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/09/07/xcode6-too-many-arguments-to-function-call-expected-0-have-2/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h4>在XCode6下，写了如下一段代码：</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'>   <span class="n">NSLock</span> <span class="o">*</span><span class="n">myLock</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSLock</span> <span class="n">new</span><span class="p">];</span>
+</span><span class='line'>   <span class="n">IMP</span> <span class="n">lockIMP</span> <span class="o">=</span> <span class="p">[</span><span class="n">myLock</span> <span class="nl">methodForSelector:</span><span class="n">lockSEL</span><span class="p">];</span>
+</span><span class='line'>   <span class="n">lockIMP</span><span class="p">(</span><span class="n">myLock</span><span class="p">,</span><span class="n">lockSEL</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>总是报错</p>
+
+<pre><code>“Too many arguments to function call, expected 0, have 2”
+</code></pre>
+
+<h4>后来发现在使用objc_msgSend编译时，与IMP报错类似。</h4>
+
+<h4>原来是LLVM升级后，增加一些默认设置</h4>
+
+<pre><code>objc_msgSend without a typecast is usually an error  
+Recommended build setting for strict checking
+</code></pre>
+
+<p>  那我们在<strong>Build Setting</strong>&ndash;><strong>Apple LLVM 6.0 &ndash; Preprocessing</strong>下，把<strong>Enable Strict Check for objc_msgSend Call</strong>设置为<code>NO</code>即可。</p>
+
+<p>   <img src="/images/post/2014-09-07-xcode6-too-many-arguments-to-function-call-expected-0-have-2/xcode_build_error_process.png" alt="image" /></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/5/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/3/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>关于我</h1>
+  <p>律威,QQ:309235009 微信:ksnowlv</p>
+  <p>手机单机游戏/手机网游封神online/手机阅读/腾讯iOS地图客户端&实时公交&开放API(地图&街景)</p>
+  <p>目前在做淘宝iPad客户端&性能优化.</p>
+  <p>能做一点,是一点;不求大成,不求一万年;积少成多,水到渠成!</p>
+</section>
+<section>
+  <h1>最近发布</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/03/24/pmd-cha-jian-de-shi-yong/">PMD插件的使用</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/01/06/ios-64wei-gua-pei/">iOS-64位适配</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/01/04/nian-wei-li-zhi/">年尾离职</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/12/03/zu-zhi-wen-jian-bei-ituneshe-icloudtong-bu/">阻止文件被iTunes和iCloud同步</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/12/02/zlibyu-gzipjie-ya-suo-dui-bi/">ZLib与GZip解压缩对比</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>分类</h1>
+    <ul id="category-list"><li><a href='/blog/categories/androidcha-jian/'>Android插件 (1)</a></li><li><a href='/blog/categories/c-slash-c-plus-plus/'>C/C++ (1)</a></li><li><a href='/blog/categories/git/'>git (6)</a></li><li><a href='/blog/categories/githubbo-ke/'>github博客 (8)</a></li><li><a href='/blog/categories/ios/'>iOS (19)</a></li><li><a href='/blog/categories/ios-memory/'>iOS-Memory (4)</a></li><li><a href='/blog/categories/ios-nei-cun/'>iOS-内存 (1)</a></li><li><a href='/blog/categories/ios-duo-xian-cheng/'>iOS-多线程 (1)</a></li><li><a href='/blog/categories/ios-an-quan/'>iOS-安全 (1)</a></li><li><a href='/blog/categories/ios-wang-luo/'>iOS-网络 (12)</a></li><li><a href='/blog/categories/ios-she-ji-mo-shi/'>iOS-设计模式 (1)</a></li><li><a href='/blog/categories/iosyou-hua/'>iOS优化 (1)</a></li><li><a href='/blog/categories/mac/'>Mac (3)</a></li><li><a href='/blog/categories/mac-duo-xian-cheng/'>Mac-多线程 (1)</a></li><li><a href='/blog/categories/nginx/'>nginx (3)</a></li><li><a href='/blog/categories/php/'>php (3)</a></li><li><a href='/blog/categories/python/'>python (12)</a></li><li><a href='/blog/categories/swift/'>swift (11)</a></li><li><a href='/blog/categories/uml/'>UML (8)</a></li><li><a href='/blog/categories/xcode/'>Xcode (11)</a></li><li><a href='/blog/categories/chan-pin-she-ji/'>产品设计 (2)</a></li><li><a href='/blog/categories/gong-ju/'>工具 (1)</a></li><li><a href='/blog/categories/shu-ju-ku/'>数据库 (2)</a></li><li><a href='/blog/categories/sheng-huo-pian-duan/'>生活片段 (10)</a></li><li><a href='/blog/categories/zhi-ye-sheng-ya/'>职业生涯 (7)</a></li><li><a href='/blog/categories/du-shu/'>读书 (2)</a></li></ul>
+</section>
+<section>
+  <h1>外部链接</h1>
+    <ul id="外部链接">
+    	<li><a href="https://developer.apple.com">苹果开发者中心</a> </li>
+    	<li><a href="http://stackoverflow.com/questions/tagged/ios">stackoverflow</a></li>
+    	<li><a href="http://ksnowlv.blog.163.com/blog/#m=0">ksnowlv网易博客</a></li>
+	</ul>
+</section>
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - 律威 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+
+  <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1253538110'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/z_stat.php%3Fid%3D1253538110%26online%3D1' type='text/javascript'%3E%3C/script%3E"));</script>
+
+  <script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F4c1727a94ea20751730e8a556dbdbf82' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+</p>
+
+
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'ksnowlv';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+
+</body>
+</html>

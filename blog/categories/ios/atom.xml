@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: iOS | ksnowlv]]></title>
+  <link href="http://ksnowlv.github.io/blog/categories/ios/atom.xml" rel="self"/>
+  <link href="http://ksnowlv.github.io/"/>
+  <updated>2015-03-27T11:30:49+08:00</updated>
+  <id>http://ksnowlv.github.io/</id>
+  <author>
+    <name><![CDATA[律威]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[iOS-64位适配]]></title>
+    <link href="http://ksnowlv.github.io/blog/2015/01/06/ios-64wei-gua-pei/"/>
+    <updated>2015-01-06T21:31:00+08:00</updated>
+    <id>http://ksnowlv.github.io/blog/2015/01/06/ios-64wei-gua-pei</id>
+    <content type="html"><![CDATA[<p>请参考苹果文档链接：<a href="https://developer.apple.com/library/ios/documentation/General/Conceptual/CocoaTouch64BitGuide/ConvertingYourAppto64-Bit/ConvertingYourAppto64-Bit.html">https://developer.apple.com/library/ios/documentation/General/Conceptual/CocoaTouch64BitGuide/ConvertingYourAppto64-Bit/ConvertingYourAppto64-Bit.html</a></p>
+
+<p>摘取几条如下：</p>
+
+<h3>指针不要转换为整数</h3>
+
+<p>   将指针类型转换成整型的情况一般很少,但是非要用指针类型的话,请确保你的变量地址足够大。</p>
+
+<p>   在 32 位中,这段代码运行正常,是因为 int 类型和 指针类型大小相同。
+   在 64 位中指针类型是比int类型的大,所以这个赋值将会丢失指针类型的数据。</p>
+
+<p>```objective-c
+int <em>c = something passed in as an argument&hellip;.
+int </em>d = (int <em>)((int)c + 4); // Incorrect.
+int </em>d = c + 1; // Correct!</p>
+
+<p>```</p>
+
+<h3>数据类型保持一致</h3>
+
+<p>   许多常见的程序错误都是应为数据类型用的不一致性导致的,尽管当你用了不 一样的数据类型的时候编译器给出了警告,如果你留意这些改变的话,它将会帮助你意识到这些问题。
+   方法调用的时候,方法接受的参数应该和调用的参数类型匹配。如果调用方法的参数比接收的方法的参数要大,这个值将会被截取。</p>
+
+<p><code>objective-c
+NSInteger PerformCalculation(void);
+int x = PerformCalculation(); // incorrect
+NSInteger y = PerformCalculation(); // correct!
+</code></p>
+
+<h3>使用方法函数的原型调度Objective-C的消息</h3>
+
+<p>```objective-c
+&ndash; (int) doSomething:(int) x { &hellip; }
+&ndash; (void) doSomethingElse {</p>
+
+<pre><code>int (*action)(id, SEL, int) = (int (*)(id, SEL, int)) objc_msgSend;
+action(self, @selector(doSomething:), 0);
+</code></pre>
+
+<p>}</p>
+
+<p>```</p>
+
+<h3>检查可变参数函数</h3>
+
+<p>如果你的方法使用了可变参数如fun(id self, SEL cmd, &hellip;)或者va_start, va_list, va_arg等宏，在iphone6真机测试此函数接收的参数是否正确。</p>
+
+<h3>isa指针不能直接访问</h3>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[阻止文件被iTunes和iCloud同步]]></title>
+    <link href="http://ksnowlv.github.io/blog/2014/12/03/zu-zhi-wen-jian-bei-ituneshe-icloudtong-bu/"/>
+    <updated>2014-12-03T21:48:00+08:00</updated>
+    <id>http://ksnowlv.github.io/blog/2014/12/03/zu-zhi-wen-jian-bei-ituneshe-icloudtong-bu</id>
+    <content type="html"><![CDATA[<h3>1.参考官方文档<a href="https://developer.apple.com/library/ios/#qa/qa1719/_index.html">How do I prevent files from being backed up to iCloud and iTunes?</a></h3>
+
+<h3>2.示例代码</h3>
+
+<p>```objective-c
++ (BOOL)addSkipBackupAttributeToItemAtPath:(NSString *)path {
+  BOOL success = NO;</p>
+
+<p>  const char <em>filePath = [path fileSystemRepresentation];
+  const char </em>attrName = &ldquo;com.apple.MobileBackup&rdquo;;</p>
+
+<p>  void <em>check = (void </em>)&NSURLIsExcludedFromBackupKey;
+  if (check != NULL) {</p>
+
+<pre><code>// First try and remove the extended attribute if it is present
+int result = getxattr(filePath, attrName, NULL, sizeof(u_int8_t), 0, 0);
+if (result != -1) {
+  // The attribute exists, we need to remove it
+  int removeResult = removexattr(filePath, attrName, 0);
+  if (removeResult == 0) {
+    NSLog(@"Removed extended attribute on item at path %@", path);
+  }
+}
+NSURL *url = [NSURL fileURLWithPath:path];
+success = [url setResourceValue:[NSNumber numberWithBool:YES]
+                         forKey:NSURLIsExcludedFromBackupKey
+                          error:nil];
+</code></pre>
+
+<p>  } else {</p>
+
+<pre><code>// iOS 5.0.1 and lower
+u_int8_t attrValue = 1;
+int result =
+    setxattr(filePath, attrName, &amp;attrValue, sizeof(attrValue), 0, 0);
+success = (result == 0);
+</code></pre>
+
+<p>  }
+  NSLog(@&ldquo;Add skip backup attribute for item at path: %@, result: %d&rdquo;, path,</p>
+
+<pre><code>    success);
+</code></pre>
+
+<p>  return success;
+}
+```</p>
+
+<pre><code>   通过上述方法可以使该目录和该目录包含的所有文件和文件夹不被icloud和itunes同步了！
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[给iOS应用打补丁]]></title>
+    <link href="http://ksnowlv.github.io/blog/2014/11/13/gei-iosying-yong-da-bu-ding/"/>
+    <updated>2014-11-13T14:55:00+08:00</updated>
+    <id>http://ksnowlv.github.io/blog/2014/11/13/gei-iosying-yong-da-bu-ding</id>
+    <content type="html"><![CDATA[<p>当iOS App出现bug时，由于不能很快上架，如何紧急修复bug呢？</p>
+
+<p><strong>可以通过Lua给app打补丁</strong>。</p>
+
+<pre><code>将脚本放到后台服务器，App从服务器下载Lua代码，并在本地执行，实现了动态替换oc代码,快速修复bug。
+</code></pre>
+
+<blockquote><p>建议尽量少用，或不用。非紧急bug尽量不用。</p></blockquote>
+
+<h3>示例代码</h3>
+
+<h4>1.<a href="https://github.com/mmin18/Create-a-More-Flexible-App">Create-a-More-Flexible-App</a></h4>
+
+<h4>2.<a href="http://github.com/probablycorey/wax">Wax项目</a></h4>
+
+<h4>3.<a href="https://github.com/mmin18/WaxPatch">WaxPatch</a></h4>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[iOS之Keychain]]></title>
+    <link href="http://ksnowlv.github.io/blog/2014/10/22/ios-zhi-keychain/"/>
+    <updated>2014-10-22T17:51:00+08:00</updated>
+    <id>http://ksnowlv.github.io/blog/2014/10/22/ios-zhi-keychain</id>
+    <content type="html"><![CDATA[<p>iOS之Keychain用途:提供了一种安全的保存私密信息的方式，每个ios程序都有一个独立的keychain存储,它保存的信息不会因App被删除而丢失，也可用于跨App共享keychain信息。见苹果开发文档<a href="https://developer.apple.com/library/ios/documentation/Security/Conceptual/keychainServConcepts/02concepts/concepts.html#//apple_ref/doc/uid/TP30000897-CH204-TP9">Keychain Services Programming Guide</a></p>
+
+<p>Keychain Services Reference关键的方法如下</p>
+
+<ul>
+<li>SecItemCopyMatching</li>
+<li>SecItemAdd</li>
+<li>SecItemUpdate</li>
+<li>SecItemDelete</li>
+</ul>
+
+
+<p>苹果官方提供了的demo程序<a href="https://developer.apple.com/library/ios/samplecode/GenericKeychain/Introduction/Intro.html">GenericKeychain</a>，使用苹果封装的<code>KeychainItemWrapper.h</code>和<code>KeychainItemWrapper.m</code>提供的接口即可。</p>
+
+<p>代码示例如下：</p>
+
+<p>``` objective-c</p>
+
+<pre><code>KeychainItemWrapper *uuid = [[KeychainItemWrapper alloc]
+                                     initWithIdentifier:@"UUID"
+                                     accessGroup:@"com.taobao.userinfo"];
+NSString *strUUID = [uuid objectForKey:(__bridge id)kSecValueData];
+
+if (strUUID.length == 0 )
+{
+    CFUUIDRef uuidRef = CFUUIDCreate(kCFAllocatorDefault);
+    strUUID =  CFBridgingRelease(CFUUIDCreateString (kCFAllocatorDefault,uuidRef));
+
+    [uuid setObject:strUUID forKey:(__bridge id)kSecValueData];
+
+    NSLog(@"create uuid");
+    CFRelease(uuidRef);
+}
+
+NSLog(@"uuid = %@",strUUID);
+</code></pre>
+
+<p>```</p>
+
+<p>可参考<a href="https://github.com/ksnowlv/KeyChainTest.git">源代码</a>，该工程中的<code>KeychainItemWrapper.h</code>和<code>KeychainItemWrapper.m</code>是支持<strong>ARC</strong>的。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[iOS push机制]]></title>
+    <link href="http://ksnowlv.github.io/blog/2014/10/21/ios-push-ji-zhi/"/>
+    <updated>2014-10-21T15:57:00+08:00</updated>
+    <id>http://ksnowlv.github.io/blog/2014/10/21/ios-push-ji-zhi</id>
+    <content type="html"><![CDATA[<h3>一. push原理</h3>
+
+<p>iOS push工作机制可以使用下图概括：
+<img src="/images/post/2014-10-21-ios-push-ji-zhi/apple_push_overview.png" alt="image" /></p>
+
+<ul>
+<li>Provider:应用自己的服务器；</li>
+<li>APNS:Apple Push Notification Service的简称，苹果Push服务器.</li>
+</ul>
+
+
+<p>可以简化为：
+<img src="/images/post/2014-10-21-ios-push-ji-zhi/apple_push_flow_diagram.jpg" alt="image" /></p>
+
+<h3>二. push执行时序</h3>
+
+<p>可由下图示意：</p>
+
+<p><img src="/images/post/2014-10-21-ios-push-ji-zhi/apple_push_timing_diagram.jpg" alt="image" /></p>
+
+<h3>三. push for iOS客户端-deviceToken</h3>
+
+<p><img src="/images/post/2014-10-21-ios-push-ji-zhi/apple_push_flow_diagram_for_client.jpg" alt="image" /></p>
+
+<h4>.关于客户端获取deviceToken</h4>
+
+<p>   服务端要发送push消息给某一设备还必须知道该设备的deviceToken。应用运行后获取到deviceToken，然后上传给服务器.
+   下面介绍如何获取deviceToken?</p>
+
+<ul>
+<li><ol>
+<li>应用必须先注册使用push功能。</li>
+</ol>
+</li>
+</ul>
+
+
+<p>``` objective-c
+&ndash; (BOOL)application:(UIApplication <em>)application didFinishLaunchingWithOptions:(NSDictionary </em>)launchOptions {</p>
+
+<pre><code>  [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeBadge)];
+</code></pre>
+
+<p>  }</p>
+
+<p>```</p>
+
+<ul>
+<li>2.在AppDelegate中添加下面方法来获取deviceToken：</li>
+</ul>
+
+
+<p>``` objective-c
+// Delegation methods
+&ndash; (void)application:(UIApplication <em>)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData </em>)devToken {</p>
+
+<pre><code>const void *devTokenBytes = [devToken bytes];
+self.registered = YES;
+[self sendProviderDeviceToken:devTokenBytes]; // custom method
+</code></pre>
+
+<p>}</p>
+
+<ul>
+<li>(void)application:(UIApplication <em>)app didFailToRegisterForRemoteNotificationsWithError:(NSError </em>)err {
+  NSLog(@&ldquo;Error in registration. Error: %@&rdquo;, err);
+}</li>
+</ul>
+
+
+<p>```</p>
+
+<p>应用获取到deviceToken后，上传给Provider，Provider就可以用这个deviceToken给这个设备push消息了。</p>
+
+<pre><code>通常情况下，deviceToken是不会改变的；有时同一台设备可能有不同的deviceToken。关于该主题可以搜索相关内容
+所以，当deviceToken改变时一定要通知服务器更新。
+</code></pre>
+
+<h3>四.push for provider</h3>
+
+<p>服务器配置好证书并拿到deviceToken后就可以向APNS发送消息了. 发送消息的格式有两种：</p>
+
+<ul>
+<li>1.简单消息格式</li>
+</ul>
+
+
+<p><img src="/images/post/2014-10-21-ios-push-ji-zhi/apple_push_payload_simple.png" alt="image" /></p>
+
+<p>``` objective-c</p>
+
+<p>static bool sendPayload(SSL <em>sslPtr, char </em>deviceTokenBinary, char *payloadBuff, size_t payloadLength)
+{</p>
+
+<pre><code>bool rtn = false;
+if (sslPtr &amp;&amp; deviceTokenBinary &amp;&amp; payloadBuff &amp;&amp; payloadLength)
+{
+    uint8_t command = 0; /* command number */
+    char binaryMessageBuff[sizeof(uint8_t) + sizeof(uint16_t) +
+        DEVICE_BINARY_SIZE + sizeof(uint16_t) + MAXPAYLOAD_SIZE];
+    /* message format is, |COMMAND|TOKENLEN|TOKEN|PAYLOADLEN|PAYLOAD| */
+    char *binaryMessagePt = binaryMessageBuff;
+    uint16_t networkOrderTokenLength = htons(DEVICE_BINARY_SIZE);
+    uint16_t networkOrderPayloadLength = htons(payloadLength);
+
+    /* command */
+    *binaryMessagePt++ = command;
+
+   /* token length network order */
+    memcpy(binaryMessagePt, &amp;networkOrderTokenLength, sizeof(uint16_t));
+    binaryMessagePt += sizeof(uint16_t);
+
+    /* device token */
+    memcpy(binaryMessagePt, deviceTokenBinary, DEVICE_BINARY_SIZE);
+    binaryMessagePt += DEVICE_BINARY_SIZE;
+
+    /* payload length network order */
+    memcpy(binaryMessagePt, &amp;networkOrderPayloadLength, sizeof(uint16_t));
+    binaryMessagePt += sizeof(uint16_t);
+
+    /* payload */
+    memcpy(binaryMessagePt, payloadBuff, payloadLength);
+    binaryMessagePt += payloadLength;
+    if (SSL_write(sslPtr, binaryMessageBuff, (binaryMessagePt - binaryMessageBuff)) &gt; 0)
+        rtn = true;
+}
+return rtn;
+</code></pre>
+
+<p>}</p>
+
+<p>```</p>
+
+<ul>
+<li>2.增强型消息格式
+<img src="/images/post/2014-10-21-ios-push-ji-zhi/apple_push_payload_Enhanced.png" alt="image" /></li>
+</ul>
+
+
+<p>``` objective-c</p>
+
+<p>static bool sendPayload(SSL <em>sslPtr, char </em>deviceTokenBinary, char *payloadBuff, size_t payloadLength)
+{
+  bool rtn = false;
+  if (sslPtr &amp;&amp; deviceTokenBinary &amp;&amp; payloadBuff &amp;&amp; payloadLength)
+  {</p>
+
+<pre><code>  uint8_t command = 1; /* command number */
+  char binaryMessageBuff[sizeof(uint8_t) + sizeof(uint32_t) + sizeof(uint32_t) + sizeof(uint16_t) +
+      DEVICE_BINARY_SIZE + sizeof(uint16_t) + MAXPAYLOAD_SIZE];
+  /* message format is, |COMMAND|ID|EXPIRY|TOKENLEN|TOKEN|PAYLOADLEN|PAYLOAD| */
+  char *binaryMessagePt = binaryMessageBuff;
+  uint32_t whicheverOrderIWantToGetBackInAErrorResponse_ID = 1234;
+  uint32_t networkOrderExpiryEpochUTC = htonl(time(NULL)+86400); // expire message if not delivered in 1 day
+  uint16_t networkOrderTokenLength = htons(DEVICE_BINARY_SIZE);
+  uint16_t networkOrderPayloadLength = htons(payloadLength);
+
+  /* command */
+  *binaryMessagePt++ = command;
+
+ /* provider preference ordered ID */
+ memcpy(binaryMessagePt, &amp;whicheverOrderIWantToGetBackInAErrorResponse_ID, sizeof(uint32_t));
+ binaryMessagePt += sizeof(uint32_t);
+
+ /* expiry date network order */
+ memcpy(binaryMessagePt, &amp;networkOrderExpiryEpochUTC, sizeof(uint32_t));
+ binaryMessagePt += sizeof(uint32_t);
+
+ /* token length network order */
+  memcpy(binaryMessagePt, &amp;networkOrderTokenLength, sizeof(uint16_t));
+  binaryMessagePt += sizeof(uint16_t);
+
+  /* device token */
+  memcpy(binaryMessagePt, deviceTokenBinary, DEVICE_BINARY_SIZE);
+  binaryMessagePt += DEVICE_BINARY_SIZE;
+
+  /* payload length network order */
+  memcpy(binaryMessagePt, &amp;networkOrderPayloadLength, sizeof(uint16_t));
+  binaryMessagePt += sizeof(uint16_t);
+
+  /* payload */
+  memcpy(binaryMessagePt, payloadBuff, payloadLength);
+  binaryMessagePt += payloadLength;
+  if (SSL_write(sslPtr, binaryMessageBuff, (binaryMessagePt - binaryMessageBuff)) &gt; 0)
+      rtn = true;
+</code></pre>
+
+<p>  }
+  return rtn;
+}</p>
+
+<p>```</p>
+
+<h3>五. push for iOS客户端-处理push消息</h3>
+
+<p>iOS系统收到push消息后，如果用户点击查看,</p>
+
+<ul>
+<li>1.如果应用已经启动，将调用application:didReceiveRemoteNotification的方法：</li>
+</ul>
+
+
+<p>``` objective-c
+ &ndash; (void)application:(UIApplication <em>)application didReceiveRemoteNotification:(NSDictionary </em>)userInfo {</p>
+
+<pre><code>  // userInfo 就是push消息Payload
+</code></pre>
+
+<p>  }</p>
+
+<p>```</p>
+
+<ul>
+<li>2.如果应用还没有启动，通过push冷启动后，仍然能在启动后获取Payload：</li>
+</ul>
+
+
+<p>``` objective-c</p>
+
+<ul>
+<li><p>(BOOL)application:(UIApplication<em>)application didFinishLaunchingWithOptions:(NSDictionary</em>)launchOptions {
+    NSDictionary* userInfo = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];</p>
+
+<p>}</p></li>
+</ul>
+
+
+<p>```</p>
+
+<h3>六.关于消息控制方面</h3>
+
+<p>  可以在application:didReceiveRemoteNotification控制消息的显示，消失。</p>
+
+<p>例如：</p>
+
+<p>``` objective-c
+[[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];</p>
+
+<p>```</p>
+
+<p>详情可参考苹果开发文档<a href="https://developer.apple.com/library/ios/documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/Chapters/ApplePushService.html#//apple_ref/doc/uid/TP40008194-CH100-SW5">Apple Push Notification Service</a></p>
+]]></content>
+  </entry>
+  
+</feed>

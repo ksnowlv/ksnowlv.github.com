@@ -1,0 +1,1442 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>ksnowlv</title>
+  <meta name="author" content="律威">
+
+  
+  <meta name="description" content="git revert撤销某次操作，此次操作之前的commit都会被保留。 因此revert 只會使commit继续往前,优点是可以针对某個 commit 進行还原 并且留下还原记录 git revert -n &lt;commit id&gt; #撤销某次操作，commit id为提交号
+git &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://ksnowlv.github.io/blog/page/12">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="ksnowlv" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.useso.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.useso.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.useso.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+     _gaq.push(['_setAccount', 'UA-39546615-2']);
+    // _gaq.push(['_trackPageview']);
+
+    // (function() {
+    //   var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    //   ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    //   var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    // })();
+
+    _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src='http://droidyue-tools.qiniudn.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">ksnowlv</a></h1>
+  
+    <h2>回顾过去,总结以往;立足现在,铭记当下;技术为主,笔记而已.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:ksnowlv.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客首页</a></li>
+  <li><a href="/blog/archives">文章列表</a></li>
+  <!-- <li><a href="/about-me">关于我</a></li>
+ -->
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/07/29/git-revert/">Git Revert</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-29T00:14:00+08:00" pubdate data-updated="true">Jul 29<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/07/29/git-revert/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h4><code>git revert</code>撤销某次操作，此次操作之前的commit都会被保留。</h4>
+
+<p>因此revert 只會使commit继续往前,优点是可以针对某個 commit 進行还原 并且留下还原记录</p>
+
+<pre><code>git revert -n &lt;commit id&gt;     #撤销某次操作，commit id为提交号
+git revert -n HEAD~&lt;number&gt;   #撤销某个版本，number为向前数的版本号。 
+</code></pre>
+
+<h4><code>git reset</code> 是撤销某次提交，但是此次之后的修改都会被退回到暂存区。</h4>
+
+<h4>1.撤销到某一个提交号的版本。</h4>
+
+<pre><code>git revert -n 08a94d26db3e7678d615625eb6c839729a21ac3f
+ksnowlv@ksnowlvdeMacBook-Pro~/Music/gittest$git status
+On branch master
+You are currently reverting commit 08a94d2.
+  (all conflicts fixed: run "git revert --continue")
+  (use "git revert --abort" to cancel the revert operation)
+
+Changes to be committed:
+  (use "git reset HEAD &lt;file&gt;..." to unstage)
+
+deleted:    1.txt
+
+ksnowlv@ksnowlvdeMacBook-Pro~/Music/gittest$
+</code></pre>
+
+<h4>2.撤销到某个版本。</h4>
+
+<pre><code>ksnowlv@ksnowlvdeMacBook-Pro~/Music/gittest$git revert -n HEAD~2
+ksnowlv@ksnowlvdeMacBook-Pro~/Music/gittest$ls
+a     a.txt
+ksnowlv@ksnowlvdeMacBook-Pro~/Music/gittest$git status
+On branch master
+You are currently reverting commit d5527c7.
+  (all conflicts fixed: run "git revert --continue")
+  (use "git revert --abort" to cancel the revert operation)
+
+Changes to be committed:
+  (use "git reset HEAD &lt;file&gt;..." to unstage)
+
+deleted:    1.txt
+new file:   a.txt
+new file:   a/a.txt
+
+ksnowlv@ksnowlvdeMacBook-Pro~/Music/gittest$
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/07/28/ping-guo-appnei-cun-zhan-yong-shang-xian/">iOS/iPad App内存占用上限(二)</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-28T11:13:00+08:00" pubdate data-updated="true">Jul 28<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/07/28/ping-guo-appnei-cun-zhan-yong-shang-xian/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h4>iOS/iPad App内存占用在打开许多App后，打开demo App,该demo App占用内存的上限能达到多少呢？</h4>
+
+<h4>使用下面的代码,点击按钮后，观察内存警告时，App被kill时的日志输出。</h4>
+
+<h5>内存警告时</h5>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">didReceiveMemoryWarning</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">super</span> <span class="n">didReceiveMemoryWarning</span><span class="p">];</span>
+</span><span class='line'>    <span class="c1">// Dispose of any resources that can be recreated.</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;------------------------memory warning&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">self</span> <span class="n">mallocMemory</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;------------------------memory warningx&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h5>手动触发该按钮事件后，等待被“kill”吧。</h5>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">startMallocEvent:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">_timer</span><span class="p">.</span><span class="n">isValid</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="p">[</span><span class="n">_timer</span> <span class="n">invalidate</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>   <span class="n">_timer</span> <span class="o">=</span>  <span class="p">[</span><span class="n">NSTimer</span> <span class="nl">scheduledTimerWithTimeInterval:</span><span class="mf">0.05</span> <span class="nl">target:</span><span class="n">self</span> <span class="nl">selector:</span><span class="k">@selector</span><span class="p">(</span><span class="n">mallocMemory</span><span class="p">)</span> <span class="nl">userInfo:</span><span class="nb">nil</span> <span class="nl">repeats:</span><span class="n">YES</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">mallocMemory</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">const</span> <span class="n">CGFloat</span> <span class="n">KMemoryLength</span> <span class="o">=</span> <span class="mf">1024.0f</span> <span class="o">*</span> <span class="mf">1024.0f</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">_pMemory</span><span class="p">[</span><span class="n">_count</span><span class="p">]</span>  <span class="o">=</span> <span class="n">malloc</span><span class="p">(</span><span class="n">KMemoryLength</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">memset</span><span class="p">(</span><span class="n">_pMemory</span><span class="p">[</span><span class="n">_count</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="n">KMemoryLength</span><span class="p">);</span>
+</span><span class='line'>    <span class="o">++</span><span class="n">_count</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//实际内存</span>
+</span><span class='line'>    <span class="k">struct</span> <span class="n">task_basic_info</span> <span class="n">info</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">mach_msg_type_number_t</span> <span class="n">size</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">info</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">kern_return_t</span> <span class="n">error</span> <span class="o">=</span> <span class="n">task_info</span><span class="p">(</span><span class="n">mach_task_self</span><span class="p">(),</span> <span class="n">TASK_BASIC_INFO</span><span class="p">,</span> <span class="p">(</span><span class="n">task_info_t</span><span class="p">)</span><span class="o">&amp;</span><span class="n">info</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">size</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kt">long</span> <span class="n">curMemorySize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>    <span class="kt">long</span> <span class="n">curVirtualMemorySize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">error</span> <span class="o">==</span> <span class="n">KERN_SUCCESS</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">curMemorySize</span> <span class="o">=</span> <span class="n">info</span><span class="p">.</span><span class="n">resident_size</span><span class="p">;</span>
+</span><span class='line'>        <span class="n">curVirtualMemorySize</span> <span class="o">=</span> <span class="n">info</span><span class="p">.</span><span class="n">virtual_size</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">mach_port_t</span> <span class="n">host_port</span> <span class="o">=</span> <span class="n">mach_host_self</span><span class="p">();</span>
+</span><span class='line'>    <span class="n">mach_msg_type_number_t</span> <span class="n">host_size</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">vm_statistics_data_t</span><span class="p">)</span> <span class="o">/</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">integer_t</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">vm_size_t</span> <span class="n">pagesize</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">vm_statistics_data_t</span> <span class="n">vm_stat</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">host_page_size</span><span class="p">(</span><span class="n">host_port</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">pagesize</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="n">host_statistics</span><span class="p">(</span><span class="n">host_port</span><span class="p">,</span> <span class="n">HOST_VM_INFO</span><span class="p">,</span> <span class="p">(</span><span class="n">host_info_t</span><span class="p">)</span><span class="o">&amp;</span><span class="n">vm_stat</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">host_size</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    <span class="kt">long</span> <span class="n">freeMemorySize</span> <span class="o">=</span>  <span class="n">vm_stat</span><span class="p">.</span><span class="n">free_count</span> <span class="o">*</span> <span class="n">pagesize</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;curMemorySize = %5.1fM,VirtualMemorySize = %5.1fM,freeMemorySize = %5.1fM&quot;</span><span class="p">,</span>
+</span><span class='line'>          <span class="n">curMemorySize</span><span class="o">/</span><span class="n">KMemoryLength</span><span class="p">,</span>
+</span><span class='line'>          <span class="n">curVirtualMemorySize</span><span class="o">/</span><span class="n">KMemoryLength</span><span class="p">,</span>
+</span><span class='line'>          <span class="n">freeMemorySize</span><span class="o">/</span><span class="n">KMemoryLength</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">uint64_t</span> <span class="n">physicalMemorySize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">uint64_t</span> <span class="n">userMemorySize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">mib</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">size_t</span> <span class="n">length</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">mib</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">CTL_HW</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">mib</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">HW_MEMSIZE</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">length</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">int64_t</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">sysctl</span><span class="p">(</span><span class="n">mib</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">physicalMemorySize</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">length</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">mib</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">HW_USERMEM</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">length</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">int64_t</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">sysctl</span><span class="p">(</span><span class="n">mib</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">userMemorySize</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">length</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;physicalMemorySize = %5.1fM,userMemorySize = %5.1fM&quot;</span><span class="p">,</span>
+</span><span class='line'>          <span class="n">physicalMemorySize</span><span class="o">/</span><span class="n">KMemoryLength</span><span class="p">,</span>
+</span><span class='line'>          <span class="n">userMemorySize</span><span class="o">/</span><span class="n">KMemoryLength</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>使用iPad mini2设备，统计7欠被杀死的情况。根据日志输出，整理其在被系统杀死时各项内存占用，如下：</h4>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> 序号  </th>
+<th>  内存(M)  </th>
+<th>  虚拟内存(M)  </th>
+<th>  空闲内存(M)  </th>
+<th>  物理内存(M)  </th>
+<th>  非内核内存(M)   </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td>1     </td>
+<td>192.1      </td>
+<td>  1275.4      </td>
+<td>30.2         </td>
+<td>976           </td>
+<td>815         </td>
+</tr>
+<tr>
+<td></td>
+<td>2     </td>
+<td>157.1      </td>
+<td>  1304.6      </td>
+<td>39.8         </td>
+<td>976           </td>
+<td>813         </td>
+</tr>
+<tr>
+<td></td>
+<td>3     </td>
+<td>151.7      </td>
+<td>  1277.4      </td>
+<td>29.1         </td>
+<td>976           </td>
+<td>821         </td>
+</tr>
+<tr>
+<td></td>
+<td>4     </td>
+<td>153.3      </td>
+<td>  1304.7      </td>
+<td>37.8         </td>
+<td>976           </td>
+<td>817.5       </td>
+</tr>
+<tr>
+<td></td>
+<td>5     </td>
+<td>138.3      </td>
+<td>  2073.9      </td>
+<td>29.7         </td>
+<td>976           </td>
+<td>817.9       </td>
+</tr>
+<tr>
+<td></td>
+<td>6     </td>
+<td>137.1      </td>
+<td>  2074.4      </td>
+<td>35.8         </td>
+<td>976           </td>
+<td>817.9       </td>
+</tr>
+</tbody>
+</table>
+
+
+<h4>结论：</h4>
+
+<pre><code>1.占有虚拟内存 &lt; 2G,非内核内存占用在820M左右，即为死亡线。
+2.内存警告线，离这个死亡线很近。
+3.实际内存占用不高，虚拟内存较高，也会被“kill”。
+根源：内存使用效率不高，dirty memory较高！
+</code></pre>
+
+<h4>因此，对内存的优化，需要集中两方面</h4>
+
+<p>1.内存的占用。</p>
+
+<p>2.内存的使用效率</p>
+
+<pre><code>这个会涉及到cache,可能会增加内存的占用。
+尽是提高clean memory，降低dirty memory。
+</code></pre>
+
+<h4>注：更详细的数据分析及结论，如果需要，可以联系我。</h4>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/07/27/ping-guo-appnei-cun-zhan-yong-shang-xian/">iOS/iPad App内存占用上限(一)</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-27T23:44:00+08:00" pubdate data-updated="true">Jul 27<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/07/27/ping-guo-appnei-cun-zhan-yong-shang-xian/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h4>iOS/iPad App内存占用在只有一个App运行时，该App占用内存的上限能达到多少呢？</h4>
+
+<h4>关闭设备上所有其它应用,测试 demo app 占用内存上限.</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">didReceiveMemoryWarning</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">super</span> <span class="n">didReceiveMemoryWarning</span><span class="p">];</span>
+</span><span class='line'>    <span class="c1">// Dispose of any resources that can be recreated.</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;------------------------memory warning&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">self</span> <span class="n">mallocMemory</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;------------------------memory warningx&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">startMallocEvent:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">_timer</span><span class="p">.</span><span class="n">isValid</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="p">[</span><span class="n">_timer</span> <span class="n">invalidate</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>   <span class="n">_timer</span> <span class="o">=</span>  <span class="p">[</span><span class="n">NSTimer</span> <span class="nl">scheduledTimerWithTimeInterval:</span><span class="mf">0.05</span> <span class="nl">target:</span><span class="n">self</span> <span class="nl">selector:</span><span class="k">@selector</span><span class="p">(</span><span class="n">mallocMemory</span><span class="p">)</span> <span class="nl">userInfo:</span><span class="nb">nil</span> <span class="nl">repeats:</span><span class="n">YES</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">mallocMemory</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">const</span> <span class="n">CGFloat</span> <span class="n">KMemoryLength</span> <span class="o">=</span> <span class="mf">1024.0f</span> <span class="o">*</span> <span class="mf">1024.0f</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">_pMemory</span><span class="p">[</span><span class="n">_count</span><span class="p">]</span>  <span class="o">=</span> <span class="n">malloc</span><span class="p">(</span><span class="n">KMemoryLength</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">memset</span><span class="p">(</span><span class="n">_pMemory</span><span class="p">[</span><span class="n">_count</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="n">KMemoryLength</span><span class="p">);</span>
+</span><span class='line'>    <span class="o">++</span><span class="n">_count</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//实际内存</span>
+</span><span class='line'>    <span class="k">struct</span> <span class="n">task_basic_info</span> <span class="n">info</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">mach_msg_type_number_t</span> <span class="n">size</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">info</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">kern_return_t</span> <span class="n">error</span> <span class="o">=</span> <span class="n">task_info</span><span class="p">(</span><span class="n">mach_task_self</span><span class="p">(),</span> <span class="n">TASK_BASIC_INFO</span><span class="p">,</span> <span class="p">(</span><span class="n">task_info_t</span><span class="p">)</span><span class="o">&amp;</span><span class="n">info</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">size</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kt">long</span> <span class="n">curMemorySize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>    <span class="kt">long</span> <span class="n">curVirtualMemorySize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">error</span> <span class="o">==</span> <span class="n">KERN_SUCCESS</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">curMemorySize</span> <span class="o">=</span> <span class="n">info</span><span class="p">.</span><span class="n">resident_size</span><span class="p">;</span>
+</span><span class='line'>        <span class="n">curVirtualMemorySize</span> <span class="o">=</span> <span class="n">info</span><span class="p">.</span><span class="n">virtual_size</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">mach_port_t</span> <span class="n">host_port</span> <span class="o">=</span> <span class="n">mach_host_self</span><span class="p">();</span>
+</span><span class='line'>    <span class="n">mach_msg_type_number_t</span> <span class="n">host_size</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">vm_statistics_data_t</span><span class="p">)</span> <span class="o">/</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">integer_t</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">vm_size_t</span> <span class="n">pagesize</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">vm_statistics_data_t</span> <span class="n">vm_stat</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">host_page_size</span><span class="p">(</span><span class="n">host_port</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">pagesize</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="n">host_statistics</span><span class="p">(</span><span class="n">host_port</span><span class="p">,</span> <span class="n">HOST_VM_INFO</span><span class="p">,</span> <span class="p">(</span><span class="n">host_info_t</span><span class="p">)</span><span class="o">&amp;</span><span class="n">vm_stat</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">host_size</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    <span class="kt">long</span> <span class="n">freeMemorySize</span> <span class="o">=</span>  <span class="n">vm_stat</span><span class="p">.</span><span class="n">free_count</span> <span class="o">*</span> <span class="n">pagesize</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;curMemorySize = %5.1fM,VirtualMemorySize = %5.1fM,freeMemorySize = %5.1fM&quot;</span><span class="p">,</span>
+</span><span class='line'>          <span class="n">curMemorySize</span><span class="o">/</span><span class="n">KMemoryLength</span><span class="p">,</span>
+</span><span class='line'>          <span class="n">curVirtualMemorySize</span><span class="o">/</span><span class="n">KMemoryLength</span><span class="p">,</span>
+</span><span class='line'>          <span class="n">freeMemorySize</span><span class="o">/</span><span class="n">KMemoryLength</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">uint64_t</span> <span class="n">physicalMemorySize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">uint64_t</span> <span class="n">userMemorySize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">mib</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">size_t</span> <span class="n">length</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">mib</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">CTL_HW</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">mib</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">HW_MEMSIZE</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">length</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">int64_t</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">sysctl</span><span class="p">(</span><span class="n">mib</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">physicalMemorySize</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">length</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">mib</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">HW_USERMEM</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">length</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">int64_t</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">sysctl</span><span class="p">(</span><span class="n">mib</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">userMemorySize</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">length</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;physicalMemorySize = %5.1fM,userMemorySize = %5.1fM&quot;</span><span class="p">,</span>
+</span><span class='line'>          <span class="n">physicalMemorySize</span><span class="o">/</span><span class="n">KMemoryLength</span><span class="p">,</span>
+</span><span class='line'>          <span class="n">userMemorySize</span><span class="o">/</span><span class="n">KMemoryLength</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>测试工具:使用苹果自带测试工具,点击按钮后, 直到 app 被系统杀死。被杀死时    内存占用情况如下：</h4>
+
+<pre><code>activity monitor 显示的内存占用为:468M.
+allocation 显示的内存占用为:681M. 
+</code></pre>
+
+<p>详情如下：</p>
+
+<p>   <img src="/images/post/2014-07-27-ping-guo-app-nei-cun-zhan-yong-shang-xian/1.png" alt="image" /></p>
+
+<p>  <img src="/images/post/2014-07-27-ping-guo-app-nei-cun-zhan-yong-shang-xian/2.png" alt="image" /></p>
+
+<p>连续几次结果在上述值多一点。</p>
+
+<pre><code>曾有相关资料介绍,单个 app 占用内存上限为 ram 值的一半。
+</code></pre>
+
+<p>看来是有道理的。尽管如此, 我们不能奢求用户只开咱们一个App这种理想化的条件。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/07/27/git-reset/">Git Reset</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-27T19:41:00+08:00" pubdate data-updated="true">Jul 27<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/07/27/git-reset/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>git reset三种撤消方式如下：</p>
+
+<h4>1.git reset &mdash;mixed：</h4>
+
+<pre><code>此为默认方式，不带任何参数的git reset，即时这种方式，它回退到某个版本，只保留源码，回退commit和index信息git 
+   也就是说：取消了commit ，取消了add
+</code></pre>
+
+<h4>2.reset &mdash;soft  HEAD～number</h4>
+
+<pre><code>回退到某个版本，只回退了commit的信息，不会恢复到index file一级。如果还要提交，直接commit即可
+也就是说取消了commit
+</code></pre>
+
+<h4>3.git reset &mdash;hard <version></h4>
+
+<pre><code>彻底回退到某个版本，本地的源码也会变为该版本的内容。
+也就是说取消了commit ，取消了add，取消源文件修改
+</code></pre>
+
+<h4>说明：<code>--soft</code>和<code>--hard</code>后面为版本号</h4>
+
+<p><code>HEAD~number</code>：<code>number</code>表示倒数第number次的提交结果</p>
+
+<p><code>&lt;version&gt;</code>:可以通过<code>git log</code>获取，参见下面的样例。</p>
+
+<h3>样例如下：</h3>
+
+<h4>1.撤消add:撤消提交到暂存区的文件</h4>
+
+<p>先添加一个文件</p>
+
+<pre><code>ksnowlvdeMacBook-Pro:gittest ksnowlv$ vim b.text
+ksnowlvdeMacBook-Pro:gittest ksnowlv$ git add .
+</code></pre>
+
+<p>查看当前git状态</p>
+
+<pre><code>ksnowlvdeMacBook-Pro:gittest ksnowlv$ git status
+On branch master
+Changes to be committed:
+  (use "git reset HEAD &lt;file&gt;..." to unstage)
+
+new file:   b.text
+</code></pre>
+
+<p>使用<code>git reset</code>或<code>git reset b.text</code>撤消</p>
+
+<pre><code>ksnowlvdeMacBook-Pro:gittest ksnowlv$ git reset
+</code></pre>
+
+<p>此时查看git状态</p>
+
+<pre><code>ksnowlvdeMacBook-Pro:gittest ksnowlv$ git status
+On branch master
+Untracked files:
+  (use "git add &lt;file&gt;..." to include in what will be committed)
+
+    b.text
+
+nothing added to commit but untracked files present (use "git add" to track)
+</code></pre>
+
+<h4>2.撤消commit:撤消commit到本地版本库的文件</h4>
+
+<p>先创建并添加c.txt文件</p>
+
+<pre><code>ksnowlvdeMacBook-Pro:gittest ksnowlv$ vim c.txt
+ksnowlvdeMacBook-Pro:gittest ksnowlv$ git add c.txt
+ksnowlvdeMacBook-Pro:gittest ksnowlv$ git commit -a -m "add c.txt"
+[master 66b155f] add c.txt
+ 1 file changed, 1 insertion(+)
+ create mode 100644 c.txt
+</code></pre>
+
+<p>使用git log查看提交日志</p>
+
+<pre><code>ksnowlvdeMacBook-Pro:gittest ksnowlv$ git log
+commit 66b155f5f76ae0b48129638d082432fa2fcd62c8
+Author: xxxx
+Date:   Sun Jul 27 20:10:04 2014 +0800
+
+add c.txt
+
+commit 5320bdfd1d64f24fdcc2a9edbd056e56fbbf13b7
+Author:  xxxx
+Date:   Sun Jul 27 19:31:22 2014 +0800
+
+add b.text
+
+commit 5636eace1f76c6fa548cb126324f9ec8ad8a4f04
+Author: xxxx
+Date:   Sun Jul 27 19:21:48 2014 +0800
+
+add new file
+</code></pre>
+
+<p> 撤消commit操作</p>
+
+<pre><code>ksnowlvdeMacBook-Pro:gittest ksnowlv$ git reset --hard 5636eace1f76c6fa548cb126324f9ec8ad8a4f04
+HEAD is now at 5636eac add new file
+</code></pre>
+
+<p>本地回退到该版本，如果想远程分支也回退到该版本，再强制推送到远程分支即可，</p>
+
+<pre><code>git push -f origin master
+</code></pre>
+
+<h4>3.将本地的状态回退到和远程的一样</h4>
+
+<p> 先将本地文件b.text修改下，观察是否回退到的远程.</p>
+
+<pre><code>ksnowlvdeMacBook-Pro:gittest ksnowlv$ vim b.text 
+ksnowlvdeMacBook-Pro:gittest ksnowlv$ git reset --hard origin/master
+HEAD is now at 804b9f4 modify b
+</code></pre>
+
+<p>b.text是和远程的相同的</p>
+
+<h4>4.使用<code>HEAD~number</code>撤消</h4>
+
+<pre><code>ksnowlvdeMacBook-Pro:gittest ksnowlv$ git reset --hard HEAD~1
+HEAD is now at 5636eac add new file
+ksnowlvdeMacBook-Pro:gittest ksnowlv$ ls
+a.text
+</code></pre>
+
+<p>再强制推送到远程分支，即回到了想回的状态。</p>
+
+<pre><code>git push -f origin master
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/07/27/mac-xia-git-ji-ben-ming-ling/">Mac下git基本命令</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-27T11:34:00+08:00" pubdate data-updated="true">Jul 27<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/07/27/mac-xia-git-ji-ben-ming-ling/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>持续整理中&hellip;</h2>
+
+<h4>git本地仓库由 git 维护的三棵“树”组成。</h4>
+
+<h5>第一棵是 <code>工作目录</code>：它持有实际文件；</h5>
+
+<h5>第二棵是 <code>暂存区(Index)</code>：它像个缓存区域，临时保存你的改动；</h5>
+
+<h4>第三棵是 <code>HEAD</code>:它指向你最后一次提交的结果。</h4>
+
+<h3>git 基本命令</h3>
+
+<h4>1.git help</h4>
+
+<pre><code>git --help              #git相关帮助
+git                     #git相关帮助
+git help -a             #available git commands in '/Applications/Xcode.app/Contents/Developer/usr/libexec/git-core'
+git help -g             #git使用指南
+git help &lt;command&gt;      #查看某一git命令的帮助
+</code></pre>
+
+<h4>2.git init</h4>
+
+<pre><code>git init         #初始化一个版本库
+</code></pre>
+
+<h4>3.git remote</h4>
+
+<pre><code>git remote             #列出已经存在的远程分支  
+git remote -v          #列出远程详细信息，每一个名字后面列出其远程url及动作
+git remote show origin #显示远程信息
+
+git remote add origin &lt;url&gt;                   #关联名称为origin的远程服务器代码库
+git remote set-url --push [name] [newUrl]     #修改远程仓库
+</code></pre>
+
+<h4>4.git add</h4>
+
+<pre><code>git add .              #添加当前修改的文件到暂存区ut切换
+git add --all          #添加当前修改的文件到暂存区
+git add *              #添加当前目录所有修改的文件到暂存区
+git add &lt;filename&gt;     #添加filename文件到暂存区 
+</code></pre>
+
+<h4>5.git commit</h4>
+
+<pre><code>git commit –m "注释"        #提交修改
+git commit -a –m "注释"     #提交所有的修改
+</code></pre>
+
+<h4>6.git push</h4>
+
+<pre><code>git push origin &lt;branchname&gt;            #推送你的更新到远程分支
+git push -u origin &lt;branchname&gt;         #将本地分支推到远程(如无远程分支则创建，用于初始化远程仓库)
+git push origin :&lt;branchname&gt;           #删除远程某一分支，某些情况下无效的。
+git push origin --delete &lt;branchname&gt;   #删除远程某一分支
+</code></pre>
+
+<h4>7.git branch</h4>
+
+<pre><code>git branch                   #列出本地所有的分支，若分支名前有*，则表示此分支为当前分支
+git branch &lt;branchname&gt;      #创建分支，不会切换到新分支，需要使用git checkout brannmae
+git checout –b &lt;branchname&gt;  #创建了分支，自动从当前工作分支切换到了该分支上。
+git branch –D  &lt;branchname&gt;  #删除本地分支
+git merge &lt;branchname&gt;       #自动合并分支改动，但是，可能会出现冲突。
+git checkout &lt;branchname&gt;    #切换到新分支，需要确保本地新分支是存在的
+git branch  --all            #本地所有的本地和远程对应的分支
+</code></pre>
+
+<h4>8.git pull</h4>
+
+<pre><code>git pull origin &lt;branchname&gt;  #获取(fetch)并且合并（merge）远端的改动。
+</code></pre>
+
+<h4>9.git clone</h4>
+
+<pre><code>    git clone &lt;filepath&gt;  #创建一个本地仓库的克隆版本 
+    git clone &lt;url&gt;       #克隆远端服务器上的仓库。
+</code></pre>
+
+<h4>10.git status</h4>
+
+<pre><code>git status    #当前的GIT状态，会指出当前没有可更新的，或者需要添加提交修改等
+</code></pre>
+
+<h4>11.git reset</h4>
+
+<pre><code>git reset                  #相当于git reset –mixed HEAD  
+git reset --hard HEAD      #回到上次提交时的状态 
+git reset HEAD &lt;filepath&gt;  #取消已经在暂存区里面等待被commit的文件
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/07/26/octopressbo-ke-ji-xu-yue-du/">Octopress博客继续阅读</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-26T20:56:00+08:00" pubdate data-updated="true">Jul 26<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/07/26/octopressbo-ke-ji-xu-yue-du/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>如果正文太长，不希望在首页直接显示完整内容，如何显示部分内容呢?</p>
+
+<h4>1.在_config.yml文件中，添加显示部分内容的支持。</h4>
+
+<pre><code>excerpt_link: "阅读全文&amp;rarr;"  
+excerpt_separator: "&lt;!--more--&gt;"
+</code></pre>
+
+<h4>2.在博客适当的位置加上一句</h4>
+
+<pre><code> &lt;!--more--&gt;
+</code></pre>
+
+<h4>后面的内容就会被按钮Read on→所替代，点击继续阅读。</h4>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/07/26/octopressdai-ma-gao-liang/">Octopress代码高亮</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-26T19:33:00+08:00" pubdate data-updated="true">Jul 26<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/07/26/octopressdai-ma-gao-liang/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>如何使用markdown文本中的代码高亮呢？</p>
+
+<h3>1.反引号代码块</h3>
+
+<p>   可以指定代码标题，语言，链接等等。语法格式如下：</p>
+
+<pre><code>``` [language] [title] [url] [link text]
+ 代码块
+```
+</code></pre>
+
+<p>以objective-c为例：</p>
+
+<pre><code>··· objective-c 
+    oc代码
+···
+</code></pre>
+
+<p>效果如下：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">self</span><span class="p">.</span><span class="n">backgroundColor</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIColor</span> <span class="n">redColor</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>2.Code Block代码块</h3>
+
+<p>   可以指定代码标题，语言，链接等等。语法格式如下：</p>
+
+<pre><code> { % codeblock [title] [lang:language] [url] [link text] % }
+  代码块
+ { % endcodeblock % }
+</code></pre>
+
+<p> 以objective-c为例：</p>
+
+<pre><code>{ % codeblock lang:objective-c  %} 
+    oc代码
+{ % endcodeblock  %} 
+</code></pre>
+
+<h4>注意:</h4>
+
+<h5>1.{或}与%不要有空格，不然，不起作用。</h5>
+
+<h5>2.如果上面语法中没有空格，会导致rake generate时出错.</h5>
+
+<p>效果如下：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'>
+</span><span class='line'><span class="n">self</span><span class="p">.</span><span class="n">backgroundColor</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIColor</span> <span class="n">redColor</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>3.更多代码高亮方式见：<a href="http://octopress.org/docs/blogging/code/">http://octopress.org/docs/blogging/code/</a></h3>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/07/26/octopressda-jian-githubbo-ke-xiang-guan-gai-nian/">Octopress搭建github博客相关概念</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-26T15:21:00+08:00" pubdate data-updated="true">Jul 26<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/07/26/octopressda-jian-githubbo-ke-xiang-guan-gai-nian/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>目前项目开发版本管理工具使用sourcetree，之前对git不太了解，所以，使用octopress搭建个github博客体验一把。</p>
+
+<p>那都会涉及到哪些内容呢？先了解下以下概念：</p>
+
+<h4><a href="https://www.ruby-lang.org/zh_cn/">ruby</a>:是一种面向对象、命令式、函数式、动态的通用编程语言,参见维基百科的解释：<a href="http://zh.wikipedia.org/zh/Ruby">http://zh.wikipedia.org/zh/Ruby</a></h4>
+
+<h4><a href="https://rvm.io/">rvm</a>:全称 ruby version manager：用于管理 Ruby 的版本的工具。</h4>
+
+<pre><code>便于安装Ruby环境，管理多个Ruby环境，管理开发的每个Ruby应用使用机器上哪个Ruby环境。
+Ruby环境不仅仅是Ruby本身，还包括依赖的第三方Ruby插件。都由RVM管理
+</code></pre>
+
+<h4><a href="http://rubygems.org/">RubyGem</a>：是一个用于对 Ruby组件进行打包的 Ruby 打包系统。 它提供一个分发 Ruby 程序和库的标准格式，还提供一个管理程序包安装的工具。</h4>
+
+<pre><code>RubyGems的功能类似于Linux下的apt-get。使用它可以方便第从远程服务器下载并安装Rails。
+打开命令行窗口(cmd)，输入执行命令 
+gem install rails --remote 
+或　gem install rails--include-dependencies。
+</code></pre>
+
+<h4><a href="http://bundler.io/">Bundler</a>：通过管理一个Ruby项目中的各个 Gem来管理整个项目的工具</h4>
+
+<pre><code>相当于多个RubyGems批处理运行。
+在配置文件gemfilel里说明你的应用依赖哪些第三方包。
+它自动帮你下载安装多个包，并且会下载这些包依赖的包
+</code></pre>
+
+<h4><a href="http://www.ibm.com/developerworks/cn/xml/x-cn-yamlintro/">YAML</a>:YAML 是一种比 XML 更敏捷的半结构化数据格式。</h4>
+
+<pre><code>YAML可以基于流来处理；
+YAML表达能力强，扩展性好。
+</code></pre>
+
+<p>   Octopress 使用 yaml 做配置文件.</p>
+
+<h4><a href="http://octopress.org/">Octopress</a>:是一个静态站点生成工具，不需要使用动态的数据库和相关处理.可以用来搭建博客。</h4>
+
+<h4><a href="http://git-scm.com/">Git</a>：Git是一个分布式版本控制／软件配置管理软件。参见维基百科的解释：<a href="http://zh.wikipedia.org/zh/Git">http://zh.wikipedia.org/zh/Git</a></h4>
+
+<h4><a href="http://">Markdown</a>：是一种轻量级标记语言。“使用易读易写的纯文本格式编写文档，然后转换成有效的XHTML(或者HTML)文档”。见维基百科解释：<a href="http://zh.wikipedia.org/wiki/Markdown">http://zh.wikipedia.org/wiki/Markdown</a></h4>
+
+<p>在mac上可以选择使用<a href="http://mouapp.com/">Mou</a></p>
+
+<h4><a href="https://github.com/">Github</a>:是一个共享虚拟主机服务，用于存放使用Git版本控制的软件代码和内容项目。见维基百科解释：<a href="http://zh.wikipedia.org/zh/GitHub">http://zh.wikipedia.org/zh/GitHub</a></h4>
+
+<h4>github pages:Github推出的静态网页，支持 Jekyll，也支持封装Jekyll的Octopress。</h4>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/07/26/mac-xia-ming-ling-xing-da-kai-app/">Mac下命令行打开App</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-26T09:56:00+08:00" pubdate data-updated="true">Jul 26<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/07/26/mac-xia-ming-ling-xing-da-kai-app/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h4>mac下如何使用命令行打开App呢？可以使用<strong><em>open</em></strong>命令。</h4>
+
+<p>例如：</p>
+
+<pre><code>open -a /Applications/mou.app
+</code></pre>
+
+<h4>可以查看下open都支持哪些参数</h4>
+
+<pre><code>ksnowlvdeMacBook-Pro:lvweigithubblog ksnowlv$ open
+Usage: open [-e] [-t] [-f] [-W] [-R] [-n] [-g] [-h] [-b &lt;bundle identifier&gt;] [-a &lt;application&gt;] [filenames] [--args arguments]
+Help: Open opens files from a shell.
+  By default, opens each file using the default application for that file.  
+  If the file is in the form of a URL, the file will be opened as a URL.
+Options: 
+  -a                Opens with the specified application.
+  -b                Opens with the specified application bundle identifier.
+  -e                Opens with TextEdit.
+  -t                Opens with default text editor.
+  -f                Reads input from standard input and opens with TextEdit.
+  -F  --fresh       Launches the app fresh, that is, without restoring windows. Saved persistent state is lost, excluding Untitled documents.
+  -R, --reveal      Selects in the Finder instead of opening.
+  -W, --wait-apps   Blocks until the used applications are closed (even if they were already running).
+      --args        All remaining arguments are passed in argv to the application's main() function instead of opened.
+  -n, --new         Open a new instance of the application even if one is already running.
+  -j, --hide        Launches the app hidden.
+  -g, --background  Does not bring the application to the foreground.
+  -h, --header      Searches header file locations for headers matching the given filenames, and opens them.
+</code></pre>
+
+<h4>如何使用mou打开markdown文件呢？</h4>
+
+<pre><code>open -a /Applications/mou.app /Users/ksnowlv/Movies/lvweigithubblog/source/_posts/2014-07-26-macxia-ming-ling-xing-da-kai-app.markdown
+</code></pre>
+
+<h4>正常打开，你可以定义一个脚本来做这件事。</h4>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/07/25/tian-jin-meng-ma-de-ri-zi-li/">天津猛犸的日子里</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-25T20:41:00+08:00" pubdate data-updated="true">Jul 25<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/07/25/tian-jin-meng-ma-de-ri-zi-li/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>因在当时的公司一些事，我在2008年9月开始寻找新的工作机会。</p>
+
+<p>当时收到天津猛犸的面试通知后，我欣然前往，这是天津比较有名的手机网游公司。当时面试完后即给了offer,于是，只有等待了。</p>
+
+<p>不曾想，一等将近一个月，十一国庆结束开始入职天津猛犸，开始我十分神往的手机网络游戏开发之旅：symbian平台的封神online手机网游移植。</p>
+
+<p>说是移植，实际上，是重做，共用一套数据和控制逻辑而已。入职时，游戏地图，人物，技能等模块基本就绪。我的主要工作就是地图之上的UI：UI框架(十几个基础控件)和登陆，角色，聊天，背包，技能栏等等.</p>
+
+<p>起初，代码移植，进展缓慢。后来，按功能模块开发，重新设计实现UI框架和基础控件，根据可能的需求，逐步完善。实践证明，如果不需要跨平台，按功能模块开发，相比直接代码移植，要高效的多。</p>
+
+<p>第一次对App性能这么敏感:内存占用，C/C++的陷阱。</p>
+
+<h4>1.内存占用</h4>
+
+<pre><code>优化背景:当时内存占用这块并没有出现瓶颈和问题，温哥指出我们可以做的更好。
+        review了整个工程的全部模块。
+优化结果:内存占用峰值由原来的3.5M左右，降低到1.5M左右。
+体会:业余的，着眼功能;专业的,着眼性能;
+人人可以做个功能，却不是人人都可以性能做到很好。
+</code></pre>
+
+<h4>2.C/C++的陷阱</h4>
+
+<pre><code>优化背景:当时整个网游App运行一天，可能不crash;有时运行,一两个小时，就挂了。
+优化结果:1.review整个工程各个模块关于指针，数组相关逻辑,代码级。
+        2.逐步开启一些模块，确定问题的查找范围，排查问题根源，果然发现一些“隐藏杀手”
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/13/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/11/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>关于我</h1>
+  <p>律威,QQ:309235009 微信:ksnowlv</p>
+  <p>手机单机游戏/手机网游封神online/手机阅读/腾讯iOS地图客户端&实时公交&开放API(地图&街景)</p>
+  <p>目前在做淘宝iPad客户端&性能优化.</p>
+  <p>能做一点,是一点;不求大成,不求一万年;积少成多,水到渠成!</p>
+</section>
+<section>
+  <h1>最近发布</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/03/24/pmd-cha-jian-de-shi-yong/">PMD插件的使用</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/01/06/ios-64wei-gua-pei/">iOS-64位适配</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/01/04/nian-wei-li-zhi/">年尾离职</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/12/03/zu-zhi-wen-jian-bei-ituneshe-icloudtong-bu/">阻止文件被iTunes和iCloud同步</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/12/02/zlibyu-gzipjie-ya-suo-dui-bi/">ZLib与GZip解压缩对比</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>分类</h1>
+    <ul id="category-list"><li><a href='/blog/categories/androidcha-jian/'>Android插件 (1)</a></li><li><a href='/blog/categories/c-slash-c-plus-plus/'>C/C++ (1)</a></li><li><a href='/blog/categories/git/'>git (6)</a></li><li><a href='/blog/categories/githubbo-ke/'>github博客 (8)</a></li><li><a href='/blog/categories/ios/'>iOS (19)</a></li><li><a href='/blog/categories/ios-memory/'>iOS-Memory (4)</a></li><li><a href='/blog/categories/ios-nei-cun/'>iOS-内存 (1)</a></li><li><a href='/blog/categories/ios-duo-xian-cheng/'>iOS-多线程 (1)</a></li><li><a href='/blog/categories/ios-an-quan/'>iOS-安全 (1)</a></li><li><a href='/blog/categories/ios-wang-luo/'>iOS-网络 (12)</a></li><li><a href='/blog/categories/ios-she-ji-mo-shi/'>iOS-设计模式 (1)</a></li><li><a href='/blog/categories/iosyou-hua/'>iOS优化 (1)</a></li><li><a href='/blog/categories/mac/'>Mac (3)</a></li><li><a href='/blog/categories/mac-duo-xian-cheng/'>Mac-多线程 (1)</a></li><li><a href='/blog/categories/nginx/'>nginx (3)</a></li><li><a href='/blog/categories/php/'>php (3)</a></li><li><a href='/blog/categories/python/'>python (12)</a></li><li><a href='/blog/categories/swift/'>swift (11)</a></li><li><a href='/blog/categories/uml/'>UML (8)</a></li><li><a href='/blog/categories/xcode/'>Xcode (11)</a></li><li><a href='/blog/categories/chan-pin-she-ji/'>产品设计 (2)</a></li><li><a href='/blog/categories/gong-ju/'>工具 (1)</a></li><li><a href='/blog/categories/shu-ju-ku/'>数据库 (2)</a></li><li><a href='/blog/categories/sheng-huo-pian-duan/'>生活片段 (10)</a></li><li><a href='/blog/categories/zhi-ye-sheng-ya/'>职业生涯 (7)</a></li><li><a href='/blog/categories/du-shu/'>读书 (2)</a></li></ul>
+</section>
+<section>
+  <h1>外部链接</h1>
+    <ul id="外部链接">
+    	<li><a href="https://developer.apple.com">苹果开发者中心</a> </li>
+    	<li><a href="http://stackoverflow.com/questions/tagged/ios">stackoverflow</a></li>
+    	<li><a href="http://ksnowlv.blog.163.com/blog/#m=0">ksnowlv网易博客</a></li>
+	</ul>
+</section>
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - 律威 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+
+  <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1253538110'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/z_stat.php%3Fid%3D1253538110%26online%3D1' type='text/javascript'%3E%3C/script%3E"));</script>
+
+  <script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F4c1727a94ea20751730e8a556dbdbf82' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+</p>
+
+
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'ksnowlv';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+
+</body>
+</html>

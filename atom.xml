@@ -1,0 +1,805 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[ksnowlv]]></title>
+  <link href="http://ksnowlv.github.io/atom.xml" rel="self"/>
+  <link href="http://ksnowlv.github.io/"/>
+  <updated>2015-03-27T11:30:49+08:00</updated>
+  <id>http://ksnowlv.github.io/</id>
+  <author>
+    <name><![CDATA[律威]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[PMD插件的使用]]></title>
+    <link href="http://ksnowlv.github.io/blog/2015/03/24/pmd-cha-jian-de-shi-yong/"/>
+    <updated>2015-03-24T18:42:00+08:00</updated>
+    <id>http://ksnowlv.github.io/blog/2015/03/24/pmd-cha-jian-de-shi-yong</id>
+    <content type="html"><![CDATA[<p><strong>PMD是</strong>一款静态代码分析工具，它能够自动检测各种潜在缺陷以及不安全或未优化的代码，更多地是集中在预先检测缺陷上</p>
+
+<p><strong>Checkstyle</strong>之类的其它工具可以检查代码是否遵循了约定和标准。</p>
+
+<h3>1.下载插件。</h3>
+
+<p><img src="http://ksnowlv.github.io/images/post/2015-03-24-pmd-cha-jian-de-shi-yong/pmd_1.jpg" alt="image" /></p>
+
+<h3>2.选择工程后，右键弹出菜单运行PMD</h3>
+
+<p><img src="http://ksnowlv.github.io/images/post/2015-03-24-pmd-cha-jian-de-shi-yong/pmd_2.jpg" alt="image" /></p>
+
+<h3>3.代码检查的分类情况</h3>
+
+<p><img src="http://ksnowlv.github.io/images/post/2015-03-24-pmd-cha-jian-de-shi-yong/pmd_3.jpg" alt="image" /></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[iOS-64位适配]]></title>
+    <link href="http://ksnowlv.github.io/blog/2015/01/06/ios-64wei-gua-pei/"/>
+    <updated>2015-01-06T21:31:00+08:00</updated>
+    <id>http://ksnowlv.github.io/blog/2015/01/06/ios-64wei-gua-pei</id>
+    <content type="html"><![CDATA[<p>请参考苹果文档链接：<a href="https://developer.apple.com/library/ios/documentation/General/Conceptual/CocoaTouch64BitGuide/ConvertingYourAppto64-Bit/ConvertingYourAppto64-Bit.html">https://developer.apple.com/library/ios/documentation/General/Conceptual/CocoaTouch64BitGuide/ConvertingYourAppto64-Bit/ConvertingYourAppto64-Bit.html</a></p>
+
+<p>摘取几条如下：</p>
+
+<h3>指针不要转换为整数</h3>
+
+<p>   将指针类型转换成整型的情况一般很少,但是非要用指针类型的话,请确保你的变量地址足够大。</p>
+
+<p>   在 32 位中,这段代码运行正常,是因为 int 类型和 指针类型大小相同。
+   在 64 位中指针类型是比int类型的大,所以这个赋值将会丢失指针类型的数据。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="kt">int</span> <span class="o">*</span><span class="n">c</span> <span class="o">=</span> <span class="n">something</span> <span class="n">passed</span> <span class="k">in</span> <span class="n">as</span> <span class="n">an</span> <span class="n">argument</span><span class="p">....</span>
+</span><span class='line'><span class="kt">int</span> <span class="o">*</span><span class="n">d</span> <span class="o">=</span> <span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="p">)((</span><span class="kt">int</span><span class="p">)</span><span class="n">c</span> <span class="o">+</span> <span class="mi">4</span><span class="p">);</span> <span class="c1">// Incorrect.</span>
+</span><span class='line'><span class="kt">int</span> <span class="o">*</span><span class="n">d</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// Correct!</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>数据类型保持一致</h3>
+
+<p>   许多常见的程序错误都是应为数据类型用的不一致性导致的,尽管当你用了不 一样的数据类型的时候编译器给出了警告,如果你留意这些改变的话,它将会帮助你意识到这些问题。
+   方法调用的时候,方法接受的参数应该和调用的参数类型匹配。如果调用方法的参数比接收的方法的参数要大,这个值将会被截取。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">NSInteger</span> <span class="nf">PerformCalculation</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</span><span class='line'><span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="n">PerformCalculation</span><span class="p">();</span> <span class="c1">// incorrect</span>
+</span><span class='line'><span class="n">NSInteger</span> <span class="n">y</span> <span class="o">=</span> <span class="n">PerformCalculation</span><span class="p">();</span> <span class="c1">// correct!</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>使用方法函数的原型调度Objective-C的消息</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="nf">doSomething:</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="n">x</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+</span><span class='line'><span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="n">doSomethingElse</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="p">(</span><span class="o">*</span><span class="n">action</span><span class="p">)(</span><span class="kt">id</span><span class="p">,</span> <span class="kt">SEL</span><span class="p">,</span> <span class="kt">int</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="kt">int</span> <span class="p">(</span><span class="o">*</span><span class="p">)(</span><span class="kt">id</span><span class="p">,</span> <span class="kt">SEL</span><span class="p">,</span> <span class="kt">int</span><span class="p">))</span> <span class="n">objc_msgSend</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">action</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="k">@selector</span><span class="p">(</span><span class="nl">doSomething:</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>检查可变参数函数</h3>
+
+<p>如果你的方法使用了可变参数如fun(id self, SEL cmd, &hellip;)或者va_start, va_list, va_arg等宏，在iphone6真机测试此函数接收的参数是否正确。</p>
+
+<h3>isa指针不能直接访问</h3>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[年尾离职]]></title>
+    <link href="http://ksnowlv.github.io/blog/2015/01/04/nian-wei-li-zhi/"/>
+    <updated>2015-01-04T21:25:00+08:00</updated>
+    <id>http://ksnowlv.github.io/blog/2015/01/04/nian-wei-li-zhi</id>
+    <content type="html"><![CDATA[<p>2014年过去了，我已经站在了2015的起点。</p>
+
+<p>站在2014年的尾巴上，我做了一个选择，离开淘宝。</p>
+
+<p>在淘宝的9个月的光阴里，出差七个半月的光景。与老婆聚少离多的日子，深感对不起我的她。</p>
+
+<p>工作方面，对其中波澜，也习以为常，尽心尽力去做就好。</p>
+
+<p>年终奖，股票，统统放下，嗷嗷叫地向前走吧。</p>
+
+<p>祝福自己，感谢老婆！祝愿家人在新的一年里开心快乐！</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[阻止文件被iTunes和iCloud同步]]></title>
+    <link href="http://ksnowlv.github.io/blog/2014/12/03/zu-zhi-wen-jian-bei-ituneshe-icloudtong-bu/"/>
+    <updated>2014-12-03T21:48:00+08:00</updated>
+    <id>http://ksnowlv.github.io/blog/2014/12/03/zu-zhi-wen-jian-bei-ituneshe-icloudtong-bu</id>
+    <content type="html"><![CDATA[<h3>1.参考官方文档<a href="https://developer.apple.com/library/ios/#qa/qa1719/_index.html">How do I prevent files from being backed up to iCloud and iTunes?</a></h3>
+
+<h3>2.示例代码</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="k">+</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">addSkipBackupAttributeToItemAtPath:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">path</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kt">BOOL</span> <span class="n">success</span> <span class="o">=</span> <span class="n">NO</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">filePath</span> <span class="o">=</span> <span class="p">[</span><span class="n">path</span> <span class="n">fileSystemRepresentation</span><span class="p">];</span>
+</span><span class='line'>  <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">attrName</span> <span class="o">=</span> <span class="s">&quot;com.apple.MobileBackup&quot;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kt">void</span> <span class="o">*</span><span class="n">check</span> <span class="o">=</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">NSURLIsExcludedFromBackupKey</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">check</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// First try and remove the extended attribute if it is present</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="n">getxattr</span><span class="p">(</span><span class="n">filePath</span><span class="p">,</span> <span class="n">attrName</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">u_int8_t</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">result</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="c1">// The attribute exists, we need to remove it</span>
+</span><span class='line'>      <span class="kt">int</span> <span class="n">removeResult</span> <span class="o">=</span> <span class="n">removexattr</span><span class="p">(</span><span class="n">filePath</span><span class="p">,</span> <span class="n">attrName</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="n">removeResult</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Removed extended attribute on item at path %@&quot;</span><span class="p">,</span> <span class="n">path</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="n">NSURL</span> <span class="o">*</span><span class="n">url</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSURL</span> <span class="nl">fileURLWithPath:</span><span class="n">path</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">success</span> <span class="o">=</span> <span class="p">[</span><span class="n">url</span> <span class="nl">setResourceValue:</span><span class="p">[</span><span class="n">NSNumber</span> <span class="nl">numberWithBool:</span><span class="n">YES</span><span class="p">]</span>
+</span><span class='line'>                             <span class="nl">forKey:</span><span class="n">NSURLIsExcludedFromBackupKey</span>
+</span><span class='line'>                              <span class="nl">error:</span><span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'>  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// iOS 5.0.1 and lower</span>
+</span><span class='line'>    <span class="n">u_int8_t</span> <span class="n">attrValue</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span>
+</span><span class='line'>        <span class="n">setxattr</span><span class="p">(</span><span class="n">filePath</span><span class="p">,</span> <span class="n">attrName</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">attrValue</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">attrValue</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">success</span> <span class="o">=</span> <span class="p">(</span><span class="n">result</span> <span class="o">==</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Add skip backup attribute for item at path: %@, result: %d&quot;</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span>
+</span><span class='line'>        <span class="n">success</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">success</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<pre><code>   通过上述方法可以使该目录和该目录包含的所有文件和文件夹不被icloud和itunes同步了！
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[ZLib与GZip解压缩对比]]></title>
+    <link href="http://ksnowlv.github.io/blog/2014/12/02/zlibyu-gzipjie-ya-suo-dui-bi/"/>
+    <updated>2014-12-02T20:51:00+08:00</updated>
+    <id>http://ksnowlv.github.io/blog/2014/12/02/zlibyu-gzipjie-ya-suo-dui-bi</id>
+    <content type="html"><![CDATA[<h3>1.ZLib与GZip解压缩</h3>
+
+<pre><code>ZLib库默认解压缩方法，并非GZip解压缩，而是ZLib的。
+zlib(RFC1950):一种格式，是对deflate进行了简单的封装； 
+gzip(RFC1952):一种格式，也是对deflate进行的封装.
+gzip与GZip是一种数据压缩格式，可以大体分为头部，数据部和尾部三个部分
+gzip数据头比zlib数据头要大，因为它保存了文件名和其他文件系统信息，事实上这是广泛使用的gzip文件的数据头格式。
+而zlib和gzip格式的区别仅仅是头部和尾部不一样，而实际的内容都是deflate编码的，即： gzip = gzip头(10字节) + deflate编码的实际内容 + gzip尾(8字节)
+</code></pre>
+
+<h3>ZLib头部</h3>
+
+<p>0x78,0x9c 是zlib数据头(非固定，参考RFC 1951)。或者0x0,0x0,0xFF,0xFF也可以实现正常解压缩，而00 00 FF FF是zlib容错方式的数据块头</p>
+
+<h4>GZip头部：</h4>
+
+<p>第一个字节0x1f(31),第二个字节为0x8b(139),标识为GZIP格式。第三个字节为0x08(8)，指示DEFLATE方法.目前只有一种，CM=8;</p>
+
+<h4>GZip尾部：</h4>
+
+<p>CRC32：4字节。原始(未压缩)数据的32位校验和。
+ISIZE：4字节。原始(未压缩)数据的长度的低32位。
+GZIP中字节排列顺序是LSB方式，即Little-Endian，与ZLIB中的相反</p>
+
+<h3>2.objective-c版本的ZLib与GZip解压缩</h3>
+
+<h4>ZLib压缩</h4>
+
+<h4>ZLib解压</h4>
+
+<h4>GZip压缩</h4>
+
+<pre><code>windowBits只有设置为MAX_WBITS + 16才能在在压缩文本中带header和trailer
+</code></pre>
+
+<h4>GZip解压</h4>
+
+<pre><code>windowBits只有设置为MAX_WBITS + 16才能在在压缩文本中带header和trailer
+</code></pre>
+
+<h3>3.代码示例</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">NSString</span><span class="o">*</span> <span class="n">hello</span> <span class="o">=</span> <span class="s">@&quot;helloabc123&quot;</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">NSData</span> <span class="o">*</span><span class="n">helloData</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSData</span> <span class="nl">dataWithBytes:</span><span class="n">hello</span><span class="p">.</span><span class="n">UTF8String</span> <span class="nl">length:</span><span class="p">[</span><span class="n">hello</span> <span class="nl">lengthOfBytesUsingEncoding:</span><span class="n">NSUTF8StringEncoding</span><span class="p">]];</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">NSData</span> <span class="o">*</span><span class="n">compressData</span> <span class="o">=</span> <span class="p">[</span><span class="n">CommonFuctions</span> <span class="nl">zlibCompressData:</span><span class="n">helloData</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">NSData</span> <span class="o">*</span><span class="n">unCompressData</span> <span class="o">=</span> <span class="p">[</span><span class="n">CommonFuctions</span> <span class="nl">zlibUncompressData:</span><span class="n">compressData</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">NSString</span><span class="o">*</span> <span class="n">string</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSString</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithData:</span><span class="n">unCompressData</span> <span class="nl">encoding:</span><span class="n">NSUTF8StringEncoding</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Zlib compressData Length = %lu compressData = %@&quot;</span><span class="p">,</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="p">)</span><span class="n">compressData</span><span class="p">.</span><span class="n">length</span><span class="p">,[</span><span class="n">compressData</span> <span class="n">description</span><span class="p">]);</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">NSData</span> <span class="o">*</span><span class="n">compressDataGZip</span> <span class="o">=</span> <span class="p">[</span><span class="n">CommonFuctions</span> <span class="nl">gzipCompress:</span><span class="n">helloData</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">NSData</span> <span class="o">*</span><span class="n">uncompressDataGZip</span> <span class="o">=</span> <span class="p">[</span><span class="n">CommonFuctions</span> <span class="nl">gzipUncompress:</span><span class="n">compressDataGZip</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">NSString</span><span class="o">*</span> <span class="n">stringRes</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSString</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithData:</span><span class="n">uncompressDataGZip</span> <span class="nl">encoding:</span><span class="n">NSUTF8StringEncoding</span><span class="p">];;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;GZip compressData Length = %lu compressData = %@&quot;</span><span class="p">,</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="p">)</span><span class="n">compressDataGZip</span><span class="p">.</span><span class="n">length</span><span class="p">,[</span><span class="n">compressDataGZip</span> <span class="n">description</span><span class="p">]);</span>
+</span><span class='line'>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>4.日志输出：</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="mi">2014</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mo">02</span> <span class="mi">21</span><span class="o">:</span><span class="mi">14</span><span class="o">:</span><span class="mf">20.946</span> <span class="n">ZlibGZipTest</span><span class="p">[</span><span class="mi">14417</span><span class="o">:</span><span class="mi">4245959</span><span class="p">]</span> <span class="n">Zlib</span> <span class="n">compressData</span> <span class="n">Length</span> <span class="o">=</span> <span class="mi">19</span> <span class="n">compressData</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">789</span><span class="n">ccb48</span> <span class="n">cdc9c94f</span> <span class="mi">4</span><span class="n">c4a3634</span> <span class="mi">32060019</span> <span class="mi">9003</span><span class="n">d1</span><span class="o">&gt;</span>
+</span><span class='line'><span class="mi">2014</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mo">02</span> <span class="mi">21</span><span class="o">:</span><span class="mi">14</span><span class="o">:</span><span class="mf">24.142</span> <span class="n">ZlibGZipTest</span><span class="p">[</span><span class="mi">14417</span><span class="o">:</span><span class="mi">4245959</span><span class="p">]</span> <span class="n">GZip</span> <span class="n">compressData</span> <span class="n">Length</span> <span class="o">=</span> <span class="mi">31</span> <span class="n">compressData</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mf">1f</span><span class="mi">8</span><span class="n">b0800</span> <span class="mo">00000000</span> <span class="mo">0003</span><span class="n">cb48</span> <span class="n">cdc9c94f</span> <span class="mi">4</span><span class="n">c4a3634</span> <span class="mi">32060012</span> <span class="n">e873880b</span> <span class="mo">000000</span><span class="o">&gt;</span>
+</span><span class='line'><span class="p">(</span><span class="n">lldb</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>5.结论</h3>
+
+<h4>1.zlib默认压缩后比gzip小一点。</h4>
+
+<h4>2.zlib与gzip头尾对比。</h4>
+
+<ul>
+<li><strong>zlib头</strong>：789ccb48  <strong>zlib尾</strong>：32060019 9003d1</li>
+<li><strong>gzip头</strong>：1f8b0800 00000000 0003cb48 <strong>gzip尾</strong>：32060012 e873880b 000000</li>
+</ul>
+
+
+<p>两者相比差12个字节。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[iOS8中的spdy使用]]></title>
+    <link href="http://ksnowlv.github.io/blog/2014/11/20/ios8-zhong-de-spdy-shi-yong/"/>
+    <updated>2014-11-20T10:56:00+08:00</updated>
+    <id>http://ksnowlv.github.io/blog/2014/11/20/ios8-zhong-de-spdy-shi-yong</id>
+    <content type="html"><![CDATA[<h3>spdy需要客户端和服务端同时支持。</h3>
+
+<h4>1.spdy available on both OS X Yosemite and iOS 8</h4>
+
+<p>SPDY/2, SPDY/3, and SPDY/3.1 are supported Supported transparently by NSURLSession No source changes needed—it just works</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'> <span class="n">NSURL</span> <span class="o">*</span><span class="n">url</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSURL</span> <span class="nl">URLWithString:</span><span class="s">@&quot;https://www.example.com/&quot;</span><span class="p">];</span>
+</span><span class='line'>  <span class="n">NSURLSessionDataTask</span> <span class="o">*</span><span class="n">task</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSURLSession</span> <span class="n">sharedSession</span><span class="p">]</span>
+</span><span class='line'>        <span class="nl">dataTaskWithURL:</span><span class="n">url</span>
+</span><span class='line'>      <span class="nl">completionHandler:</span><span class="o">^</span><span class="p">(</span><span class="n">NSData</span> <span class="o">*</span><span class="n">data</span><span class="p">,</span> <span class="n">NSURLResponse</span> <span class="o">*</span><span class="n">response</span><span class="p">,</span>
+</span><span class='line'>                          <span class="n">NSError</span> <span class="o">*</span><span class="n">error</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>   <span class="p">}];</span>
+</span><span class='line'>  <span class="p">[</span><span class="n">task</span> <span class="n">resume</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>直接复用session,启用spdy.</p>
+
+<h4>2.SPDY does require server-side support<em> Client negotiates with server during TLS handshake</em> Uses <a href="https://">https://</a> URLs<em> Existing web server software and many CDNs already support SPDY Will not interfere with your NSURLProtocol subclasses</em> Apps might have their own implementation of SPDY or other protocols</h4>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[iOS使用OpenSSL]]></title>
+    <link href="http://ksnowlv.github.io/blog/2014/11/18/ios-shi-yong-openssl/"/>
+    <updated>2014-11-18T17:18:00+08:00</updated>
+    <id>http://ksnowlv.github.io/blog/2014/11/18/ios-shi-yong-openssl</id>
+    <content type="html"><![CDATA[<p><code>iOS</code>中<code>OpenSSL</code></p>
+
+<pre><code>If your app depends on OpenSSL,you should compile OpenSSL yourself 
+and statically link a known version of OpenSSL into your app. 
+This use of OpenSSL is possible on both OS X and iOS. However, 
+unless you are trying to maintain source compatibility with an existing open source project, 
+you should generally use a different API.
+</code></pre>
+
+<p>苹果建议采用系统原生的</p>
+
+<pre><code>Common Crypto and Security Transforms are the recommended alternatives for general encryption.
+ CFNetwork and Secure Transport are the recommended alternatives for secure communications.
+</code></pre>
+
+<p>如果你必须使用<code>OpenSSL</code>，可以直接源代码的形式或库的形式引入Xcode工程中。
+参考<a href="https://github.com/x2on/OpenSSL-for-iPhone">OpenSSL-for-iPhone</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[给iOS应用打补丁]]></title>
+    <link href="http://ksnowlv.github.io/blog/2014/11/13/gei-iosying-yong-da-bu-ding/"/>
+    <updated>2014-11-13T14:55:00+08:00</updated>
+    <id>http://ksnowlv.github.io/blog/2014/11/13/gei-iosying-yong-da-bu-ding</id>
+    <content type="html"><![CDATA[<p>当iOS App出现bug时，由于不能很快上架，如何紧急修复bug呢？</p>
+
+<p><strong>可以通过Lua给app打补丁</strong>。</p>
+
+<pre><code>将脚本放到后台服务器，App从服务器下载Lua代码，并在本地执行，实现了动态替换oc代码,快速修复bug。
+</code></pre>
+
+<blockquote><p>建议尽量少用，或不用。非紧急bug尽量不用。</p></blockquote>
+
+<h3>示例代码</h3>
+
+<h4>1.<a href="https://github.com/mmin18/Create-a-More-Flexible-App">Create-a-More-Flexible-App</a></h4>
+
+<h4>2.<a href="http://github.com/probablycorey/wax">Wax项目</a></h4>
+
+<h4>3.<a href="https://github.com/mmin18/WaxPatch">WaxPatch</a></h4>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[iOS网络长连接与短连接]]></title>
+    <link href="http://ksnowlv.github.io/blog/2014/11/12/iOS-wang-luo-chang-lian-jie-yu-duan-lian-jie/"/>
+    <updated>2014-11-12T15:15:00+08:00</updated>
+    <id>http://ksnowlv.github.io/blog/2014/11/12/iOS-wang-luo-chang-lian-jie-yu-duan-lian-jie</id>
+    <content type="html"><![CDATA[<h3>长连接</h3>
+
+<pre><code>client与server先建立连接，连接建立后不断开，操持连接，然后进行数据的发送和接收。
+由于这种形式的网络通讯方式，网络连接一直存在。
+常用于P2P(点对点)通信。像IM类的产品
+</code></pre>
+
+<h3>短连接</h3>
+
+<pre><code>client与server每进行一次报文收发交易时才进行通讯连接，交易完毕后立即断开连接。
+此方式常用于一点对多点通讯。C/S通信。 
+</code></pre>
+
+<h3>长连接有两种：</h3>
+
+<h4>1. 基于socket的网络通讯。</h4>
+
+<blockquote><p>a.要对通讯协议格式，包括消息头，数据包头等特别清楚，可以实现同步异步机制，可以向客户端推送消息。</p>
+
+<p>b.更少的建立和关闭tcp连接，可以减少网络延时和开销。 在使用https连接时更显著。可以减少多次建立高消耗的SSL/TLS握手</p>
+
+<p>c.实现socket对各种不同类型的网络的穿透，才是真正的麻烦，在某些省份或地区是无法实现网络穿透的。</p></blockquote>
+
+<h4>2.基于http的网络通讯</h4>
+
+<blockquote><p>a.例如spdy协议，iOS8中，系统网络接口提供了对spdy的支持。</p>
+
+<p>b.即使是长连接，http也需要client先发起请求(<strong>除了spdy协议，spdy协议支持服务端推送</strong>)。在实际应用中有一些限制。</p></blockquote>
+
+<h4>总体为说，长连接的优点</h4>
+
+<pre><code>1.通过开启、关闭更少的TCP连接，节约CPU时间和内存. 
+2.通过减少TCP开启引起的包的数目，降低网络阻塞.
+</code></pre>
+
+<h4>缺点</h4>
+
+<pre><code>消耗服务器和客户端资源，像电量，网络流量等    
+</code></pre>
+
+<p>在保持长连时，需要发送一些心跳包.在iOS/android移动终端中，</p>
+
+<ul>
+<li>1.心跳信息是单方向的，只有终端发到应用服务器；</li>
+<li>2.心跳信息的周期比较长，比如旧版QQ的心跳周期为30s，新版QQ为180s，微信为300s，Google原生应用为1680s左右。</li>
+</ul>
+
+
+<h3>短连接</h3>
+
+<pre><code>多用于操作频繁、点对点的通讯，且连接数不是太多的情况，应用较为普遍。
+</code></pre>
+
+<p>参考资料：
+<a href="http://labs.chinamobile.com/mblog/31189_199441">试试把APP心跳的前因后果解释更简单明白？</a>
+<a href="http://labs.chinamobile.com/mblog/104209_199343">透视互联网APP的心跳机制</a>
+<a href="http://blog.csdn.net/totogogo/article/details/7329542">Android/iOS Notification feature</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[iOS设备获取DNS-IP]]></title>
+    <link href="http://ksnowlv.github.io/blog/2014/11/11/ios-she-bei-huo-qu-dns-ip/"/>
+    <updated>2014-11-11T17:56:00+08:00</updated>
+    <id>http://ksnowlv.github.io/blog/2014/11/11/ios-she-bei-huo-qu-dns-ip</id>
+    <content type="html"><![CDATA[<p>iOS设备如何获取DNS-IP呢？
+示例如下：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="cp">#include &lt;arpa/inet.h&gt;</span>
+</span><span class='line'><span class="cp">#include &lt;ifaddrs.h&gt;</span>
+</span><span class='line'><span class="cp">#include &lt;resolv.h&gt;</span>
+</span><span class='line'><span class="cp">#include &lt;dns.h&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">outPutDNSServers</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">res_state</span> <span class="n">res</span> <span class="o">=</span> <span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="n">__res_state</span><span class="p">));</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="n">res_ninit</span><span class="p">(</span><span class="n">res</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span> <span class="n">result</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">res</span><span class="o">-&gt;</span><span class="n">nscount</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="n">NSString</span> <span class="o">*</span><span class="n">s</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSString</span> <span class="n">stringWithUTF8String</span> <span class="o">:</span>  <span class="n">inet_ntoa</span><span class="p">(</span><span class="n">res</span><span class="o">-&gt;</span><span class="n">nsaddr_list</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">sin_addr</span><span class="p">)];</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%@&quot;</span><span class="p">,</span><span class="n">s</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>         <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%@&quot;</span><span class="p">,</span><span class="s">@&quot; res_init result != 0&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">res_nclose</span><span class="p">(</span><span class="n">res</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>另外添加<strong>libresolv.dylib</strong></p>
+
+<p>日志输出：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="mi">2014</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">11</span> <span class="mi">17</span><span class="o">:</span><span class="mi">52</span><span class="o">:</span><span class="mf">03.111</span> <span class="n">NetWorkInfoTest</span><span class="p">[</span><span class="mi">1870</span><span class="o">:</span><span class="mi">2041786</span><span class="p">]</span> <span class="mf">10.32.255.10</span>
+</span><span class='line'><span class="mi">2014</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">11</span> <span class="mi">17</span><span class="o">:</span><span class="mi">52</span><span class="o">:</span><span class="mf">03.112</span> <span class="n">NetWorkInfoTest</span><span class="p">[</span><span class="mi">1870</span><span class="o">:</span><span class="mi">2041786</span><span class="p">]</span> <span class="mf">10.32.222.10</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[axure之中继器]]></title>
+    <link href="http://ksnowlv.github.io/blog/2014/11/10/axure-zhi-zhong-ji-qi/"/>
+    <updated>2014-11-10T17:13:00+08:00</updated>
+    <id>http://ksnowlv.github.io/blog/2014/11/10/axure-zhi-zhong-ji-qi</id>
+    <content type="html"><![CDATA[<p>axure中继器，可以添加/移除/更新中继器的项目。</p>
+
+<p>我们制作一个demo，效果如下：
+<img src="http://ksnowlv.github.io/images/post/2014-11-10-axure-zhi-zhong-ji-qi/repeater_result.png" alt="image" /></p>
+
+<p>制作使用中继器的主界面
+<img src="http://ksnowlv.github.io/images/post/2014-11-10-axure-zhi-zhong-ji-qi/repeater_overview.png" alt="image" /></p>
+
+<p>制作使用中继器的项
+<img src="http://ksnowlv.github.io/images/post/2014-11-10-axure-zhi-zhong-ji-qi/repeater_item.png" alt="image" /></p>
+
+<p>源文件见<a href="https://github.com/ksnowlv/axure-demo/blob/master/axure_repeater.rp">axure_repeater.rp</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[axure之动态面板]]></title>
+    <link href="http://ksnowlv.github.io/blog/2014/11/06/axure-zhi-dong-tai-mian-ban/"/>
+    <updated>2014-11-06T16:09:00+08:00</updated>
+    <id>http://ksnowlv.github.io/blog/2014/11/06/axure-zhi-dong-tai-mian-ban</id>
+    <content type="html"><![CDATA[<h3>axure动态面板</h3>
+
+<pre><code>一个可以在层或状态中装有其他部件的容器.可以包含一个或多个状态，并且每个状态中可以包含多个部件.
+一个动态面板状态只能在同一时间看到一次.使用交互你可以隐藏/显示动态面板及设置当前动态面板状态的可见性.
+</code></pre>
+
+<h3>样例：</h3>
+
+<p>以淘宝和支付宝PC登陆页面，简单示例：</p>
+
+<h4>1.动态面板主界面</h4>
+
+<p><img src="http://ksnowlv.github.io/images/post/2014-11-06-axure-zhi-dong-tai-mian-ban/axure_dynamic_panel.png" alt="image" /></p>
+
+<h4>2.淘宝登陆页面</h4>
+
+<p><img src="http://ksnowlv.github.io/images/post/2014-11-06-axure-zhi-dong-tai-mian-ban/axure_taobao_state.png" alt="image" /></p>
+
+<h4>3.支付宝登陆页面</h4>
+
+<p><img src="http://ksnowlv.github.io/images/post/2014-11-06-axure-zhi-dong-tai-mian-ban/axure_pay_state.png" alt="image" /></p>
+
+<p>源文件可参看：<a href="https://github.com/ksnowlv/axure-demo/blob/master/axure_dynamic_panel.rp">axure_dynamic_panel.rp</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[UML图小结]]></title>
+    <link href="http://ksnowlv.github.io/blog/2014/11/04/uml-tu-xiao-jie/"/>
+    <updated>2014-11-04T17:13:00+08:00</updated>
+    <id>http://ksnowlv.github.io/blog/2014/11/04/uml-tu-xiao-jie</id>
+    <content type="html"><![CDATA[<h3>1.活动图VS时序图</h3>
+
+<pre><code>活动图从用户的角度描述用例
+时序图从对象间的交互描述用例
+</code></pre>
+
+<h3>2. 时序图VS协作图</h3>
+
+<pre><code>时序图从对象间的交互描述用例。强调对象交互的时间次序。
+协作图从对象间的交互描述用例。强调对象交互的空间结构。
+</code></pre>
+
+<p> 时序图和协作图在语义上是等价的，所以时序图和协作图可以彼此转换而不会损失信息</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[uml组件图]]></title>
+    <link href="http://ksnowlv.github.io/blog/2014/11/04/uml-zu-jian-tu/"/>
+    <updated>2014-11-04T16:09:00+08:00</updated>
+    <id>http://ksnowlv.github.io/blog/2014/11/04/uml-zu-jian-tu</id>
+    <content type="html"><![CDATA[<h3>组件图(Component diagram)</h3>
+
+<pre><code>显示系统组件间的结构关系组件图,有助于直观显示系统的高级结构以及这些结构通过接口提供和使用的服务行为.
+</code></pre>
+
+<h3>组件图示例</h3>
+
+<p><img src="http://ksnowlv.github.io/images/post/2014-11-04-uml-zu-jian-tu/component_diagram.png" alt="image" /></p>
+
+<p>Store组件提供了<strong>OrderEntry</strong> 接口,并要求使用<strong>Account</strong>接口。
+Store组件由三个组件组成：</p>
+
+<ul>
+<li>1.Order组件</li>
+<li>2.Customer组件</li>
+<li>3.Product组件。</li>
+</ul>
+
+
+<blockquote><p>注意Store的 OrderEntry 和Account接口符号在组件的边缘上为何有一个方块？</p>
+
+<p>这一个方块被称为一个端口。单纯感觉来说，端口提供一种方法，它显示建模组件所 提供/要求 的接口如何与它里面的部分相关联。 通过使用端口，我们可以从外部实例中分离出Store组件的内部部件。</p></blockquote>
+
+<p> OrderEntry 端口代表Order组件的 OrderEntry 接口，表示Store组件提供该接口。
+Account端口代表内部的Customer组件要求使用的Account接口必须分配给Store组件，表示Store组件要求使用该接口。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[uml协作图]]></title>
+    <link href="http://ksnowlv.github.io/blog/2014/11/04/uml-xie-zuo-tu/"/>
+    <updated>2014-11-04T14:25:00+08:00</updated>
+    <id>http://ksnowlv.github.io/blog/2014/11/04/uml-xie-zuo-tu</id>
+    <content type="html"><![CDATA[<h3>协作图(也叫通讯图collaboration diagram)</h3>
+
+<pre><code> 显示对象之间的交互，强调交互的空间结构
+</code></pre>
+
+<h3>协作图构成</h3>
+
+<ul>
+<li>1.对象：参与交互的元素</li>
+<li>2.链接：用来标识消息在不同对象之间传递方向与关系。</li>
+<li>3.消息：协作图中对象与对象之间的通信方式。</li>
+</ul>
+
+
+<h3>协作图示例</h3>
+
+<p><img src="http://ksnowlv.github.io/images/post/2014-11-04-uml-xie-zuo-tu/collaboration_diagram.jpg" alt="image" /></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[uml活动图]]></title>
+    <link href="http://ksnowlv.github.io/blog/2014/11/03/uml-huo-dong-tu/"/>
+    <updated>2014-11-03T17:21:00+08:00</updated>
+    <id>http://ksnowlv.github.io/blog/2014/11/03/uml-huo-dong-tu</id>
+    <content type="html"><![CDATA[<h3>活动图(Activity Diagram)</h3>
+
+<pre><code>UML用于对系统的动态行为建模的另一种常用工具，
+它描述活动的顺序，展现从一个活动到另一个活动的控制流。
+活动图在本质上是一种流程图。
+活动图着重表现从一个活动到另一个活动的控制流，是内部处理驱动的流程
+</code></pre>
+
+<h3>活动图图参考如下：</h3>
+
+<p><img src="http://ksnowlv.github.io/images/post/2014-11-03-uml-huo-dong-tu/activity_diagram.jpg" alt="image" /></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[uml状态图]]></title>
+    <link href="http://ksnowlv.github.io/blog/2014/11/03/uml-zhuang-tai-tu/"/>
+    <updated>2014-11-03T17:20:00+08:00</updated>
+    <id>http://ksnowlv.github.io/blog/2014/11/03/uml-zhuang-tai-tu</id>
+    <content type="html"><![CDATA[<h3>状态图(Statechart Diagram)</h3>
+
+<pre><code>描述一个实体基于事件反应的动态行为，显示该实体如何根据当前所处的状态对不同的事件做出反应的。 
+</code></pre>
+
+<h3>状态图参考如下：</h3>
+
+<p><img src="http://ksnowlv.github.io/images/post/2014-11-03-uml-zhuang-tai-tu/state_diagram.jpg" alt="image" /></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[uml时序图]]></title>
+    <link href="http://ksnowlv.github.io/blog/2014/11/03/uml-shi-xu-tu/"/>
+    <updated>2014-11-03T16:14:00+08:00</updated>
+    <id>http://ksnowlv.github.io/blog/2014/11/03/uml-shi-xu-tu</id>
+    <content type="html"><![CDATA[<h3>时序图（Sequence Diagram）</h3>
+
+<pre><code>显示对象之间交互的图，这些对象是按时间顺序排列的。
+</code></pre>
+
+<h3>时序图中包括的建模元素主要有：</h3>
+
+<ul>
+<li>1.对象（Actor）</li>
+<li>2.生命线（Lifeline）</li>
+<li>3.控制焦点（Focus of control）</li>
+<li>4.消息（Message）:消息有同步消息，异步消息，返回消息。</li>
+</ul>
+
+
+<h3>时序图参考如下：</h3>
+
+<p><img src="http://ksnowlv.github.io/images/post/2014-11-03-uml-shi-xu-tu/sequence_diagram.jpg" alt="image" /></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[uml类图]]></title>
+    <link href="http://ksnowlv.github.io/blog/2014/11/03/uml-lei-tu/"/>
+    <updated>2014-11-03T11:28:00+08:00</updated>
+    <id>http://ksnowlv.github.io/blog/2014/11/03/uml-lei-tu</id>
+    <content type="html"><![CDATA[<h3>类之间的关系有关联、聚合、组合、泛化、依赖。</h3>
+
+<ul>
+<li>1.关联：是类之间的一种很弱的联系。关联可以有方向，可以是单向关联，也可以是双向关联。</li>
+<li>2.聚合：是一种特殊的关联，聚合表示整体与部分的关系。整体类是由组成类聚合而成。例如鱼群与鱼，人群与人。</li>
+<li>3.组合：也是一种特殊的关联，也表示类之间整体和部分的关系，但是组合关系中部分和整体具有统一的生存期。一旦整体对象不存在，部分对象也将不存在。</li>
+<li>4.泛化：定义父类与子类之间的关系，也就是继承关系。泛化关系是“a－kind－of”关系。</li>
+<li>5.依赖：一个类依赖于另一个类的功能。如果A类与B类有关联关系，它们必然有依赖关系。如果两个类有关联关系时，不用再表示出这两个类之间的依赖系统。</li>
+<li>6.实现：类对接口类的继承与实现（可以是多个）。</li>
+</ul>
+
+
+<h3>类图参考如下：</h3>
+
+<p><img src="http://ksnowlv.github.io/images/post/2014-11-03-uml-lei-tu/class_diagram.jpg" alt="image" /></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[uml-用例图]]></title>
+    <link href="http://ksnowlv.github.io/blog/2014/10/27/uml-yong-li-tu/"/>
+    <updated>2014-10-27T17:15:00+08:00</updated>
+    <id>http://ksnowlv.github.io/blog/2014/10/27/uml-yong-li-tu</id>
+    <content type="html"><![CDATA[<h3>用例图(Use Case)</h3>
+
+<pre><code>主要用来描述“用户、需求、系统功能单元”之间的关系.
+</code></pre>
+
+<p>用例图所包含的元素</p>
+
+<h4>1.参与者(Actor)</h4>
+
+<h4>2.用例(Use Case)</h4>
+
+<pre><code>外部可见的系统功能,用椭圆表示
+</code></pre>
+
+<h4>3.子系统(Subsystem)</h4>
+
+<pre><code>用来展示系统的一部分功能，这部分功能联系紧密。
+</code></pre>
+
+<h4>4.关系</h4>
+
+<pre><code>用例图中涉及的关系有：关联、泛化、包含、扩展。
+</code></pre>
+
+<ul>
+<li>a.关联(Association):表示参与者与用例之间的通信，任何一方都可发送或接受消息.</li>
+<li>b.泛化(Inheritance):继承关系，子用例和父用例相似，但表现出更特别的行为.</li>
+<li>c.包含(Include):包含关系用来把一个较复杂用例所表示的功能分解成较小的功能.</li>
+<li>d.扩展(Extend):指用例功能的延伸，相当于为基础用例提供一个附加功能.
+　 <br/>
+示例图：</li>
+</ul>
+
+
+<p><img src="http://ksnowlv.github.io/images/post/2014-10-27-uml-yong-li-tu/case_diagram.jpg" alt="image" />
+　　
+用例图也许并不能很好地表达系统的需求，有时需要添加用例描述表来说明.</p>
+]]></content>
+  </entry>
+  
+</feed>

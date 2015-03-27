@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: iOS-安全 | ksnowlv]]></title>
+  <link href="http://ksnowlv.github.io/blog/categories/ios-an-quan/atom.xml" rel="self"/>
+  <link href="http://ksnowlv.github.io/"/>
+  <updated>2015-03-27T11:30:49+08:00</updated>
+  <id>http://ksnowlv.github.io/</id>
+  <author>
+    <name><![CDATA[律威]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[iOS使用OpenSSL]]></title>
+    <link href="http://ksnowlv.github.io/blog/2014/11/18/ios-shi-yong-openssl/"/>
+    <updated>2014-11-18T17:18:00+08:00</updated>
+    <id>http://ksnowlv.github.io/blog/2014/11/18/ios-shi-yong-openssl</id>
+    <content type="html"><![CDATA[<p><code>iOS</code>中<code>OpenSSL</code></p>
+
+<pre><code>If your app depends on OpenSSL,you should compile OpenSSL yourself 
+and statically link a known version of OpenSSL into your app. 
+This use of OpenSSL is possible on both OS X and iOS. However, 
+unless you are trying to maintain source compatibility with an existing open source project, 
+you should generally use a different API.
+</code></pre>
+
+<p>苹果建议采用系统原生的</p>
+
+<pre><code>Common Crypto and Security Transforms are the recommended alternatives for general encryption.
+ CFNetwork and Secure Transport are the recommended alternatives for secure communications.
+</code></pre>
+
+<p>如果你必须使用<code>OpenSSL</code>，可以直接源代码的形式或库的形式引入Xcode工程中。
+参考<a href="https://github.com/x2on/OpenSSL-for-iPhone">OpenSSL-for-iPhone</a></p>
+]]></content>
+  </entry>
+  
+</feed>
