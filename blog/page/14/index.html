@@ -9,8 +9,22 @@
   <meta name="author" content="律威">
 
   
-  <meta name="description" content="iOS系统中，通过公有API不能获取周围所有Wifi的信息，但是，可以获取设备当前连接WiFi的信息。 1.引入头文件和库 #import &lt;SystemConfiguration/SystemConfiguration.h&gt;
-#import &lt; &hellip;">
+  <meta name="description" content="查看NSObject类initialize方法方法的文档时，发现其可以用来实现单例模块。 代码如下： 1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+@implementation QBaseObject static QBaseObject * &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -88,6 +102,79 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/05/09/initializeshi-xian-dan-li/">Initialize实现单例</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-05-09T17:34:00+08:00" pubdate data-updated="true">May 9<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/05/09/initializeshi-xian-dan-li/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>查看NSObject类<a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/Classes/NSObject_Class/Reference/Reference.html#//apple_ref/occ/clm/NSObject/initialize">initialize方法</a>方法的文档时，发现其可以用来实现单例模块。</p>
+
+<p>代码如下：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="k">@implementation</span> <span class="nc">QBaseObject</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">static</span> <span class="n">QBaseObject</span> <span class="o">*</span><span class="n">_sharedBaseObject</span><span class="p">;</span>
+</span><span class='line'><span class="k">static</span> <span class="kt">BOOL</span> <span class="n">_initialized</span> <span class="o">=</span> <span class="n">NO</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">+</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">initialize</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">_initialized</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="n">_sharedBaseObject</span> <span class="o">=</span> <span class="p">[[</span><span class="n">QBaseObject</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</span><span class='line'>        <span class="n">_initialized</span> <span class="o">=</span> <span class="n">YES</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -270,6 +357,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/04/16/mac-xia-ssh-keychang-yong-cao-zuo-ming-ling/">mac下ssh-key常用操作命令</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/03/24/pmd-cha-jian-de-shi-yong/">PMD插件的使用</a>
       </li>
     
@@ -285,15 +376,11 @@
         <a href="/blog/2014/12/03/zu-zhi-wen-jian-bei-ituneshe-icloudtong-bu/">阻止文件被iTunes和iCloud同步</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2014/12/02/zlibyu-gzipjie-ya-suo-dui-bi/">ZLib与GZip解压缩对比</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>分类</h1>
-    <ul id="category-list"><li><a href='/blog/categories/androidcha-jian/'>Android插件 (1)</a></li><li><a href='/blog/categories/c-slash-c-plus-plus/'>C/C++ (1)</a></li><li><a href='/blog/categories/git/'>git (6)</a></li><li><a href='/blog/categories/githubbo-ke/'>github博客 (8)</a></li><li><a href='/blog/categories/ios/'>iOS (19)</a></li><li><a href='/blog/categories/ios-memory/'>iOS-Memory (4)</a></li><li><a href='/blog/categories/ios-nei-cun/'>iOS-内存 (1)</a></li><li><a href='/blog/categories/ios-duo-xian-cheng/'>iOS-多线程 (1)</a></li><li><a href='/blog/categories/ios-an-quan/'>iOS-安全 (1)</a></li><li><a href='/blog/categories/ios-wang-luo/'>iOS-网络 (12)</a></li><li><a href='/blog/categories/ios-she-ji-mo-shi/'>iOS-设计模式 (1)</a></li><li><a href='/blog/categories/iosyou-hua/'>iOS优化 (1)</a></li><li><a href='/blog/categories/mac/'>Mac (3)</a></li><li><a href='/blog/categories/mac-duo-xian-cheng/'>Mac-多线程 (1)</a></li><li><a href='/blog/categories/nginx/'>nginx (3)</a></li><li><a href='/blog/categories/php/'>php (3)</a></li><li><a href='/blog/categories/python/'>python (12)</a></li><li><a href='/blog/categories/swift/'>swift (11)</a></li><li><a href='/blog/categories/uml/'>UML (8)</a></li><li><a href='/blog/categories/xcode/'>Xcode (11)</a></li><li><a href='/blog/categories/chan-pin-she-ji/'>产品设计 (2)</a></li><li><a href='/blog/categories/gong-ju/'>工具 (1)</a></li><li><a href='/blog/categories/shu-ju-ku/'>数据库 (2)</a></li><li><a href='/blog/categories/sheng-huo-pian-duan/'>生活片段 (10)</a></li><li><a href='/blog/categories/zhi-ye-sheng-ya/'>职业生涯 (7)</a></li><li><a href='/blog/categories/du-shu/'>读书 (2)</a></li></ul>
+    <ul id="category-list"><li><a href='/blog/categories/androidcha-jian/'>Android插件 (1)</a></li><li><a href='/blog/categories/c-slash-c-plus-plus/'>C/C++ (1)</a></li><li><a href='/blog/categories/git/'>git (6)</a></li><li><a href='/blog/categories/githubbo-ke/'>github博客 (8)</a></li><li><a href='/blog/categories/ios/'>iOS (19)</a></li><li><a href='/blog/categories/ios-memory/'>iOS-Memory (4)</a></li><li><a href='/blog/categories/ios-nei-cun/'>iOS-内存 (1)</a></li><li><a href='/blog/categories/ios-duo-xian-cheng/'>iOS-多线程 (1)</a></li><li><a href='/blog/categories/ios-an-quan/'>iOS-安全 (1)</a></li><li><a href='/blog/categories/ios-wang-luo/'>iOS-网络 (12)</a></li><li><a href='/blog/categories/ios-she-ji-mo-shi/'>iOS-设计模式 (1)</a></li><li><a href='/blog/categories/iosyou-hua/'>iOS优化 (1)</a></li><li><a href='/blog/categories/mac/'>Mac (4)</a></li><li><a href='/blog/categories/mac-duo-xian-cheng/'>Mac-多线程 (1)</a></li><li><a href='/blog/categories/nginx/'>nginx (3)</a></li><li><a href='/blog/categories/php/'>php (3)</a></li><li><a href='/blog/categories/python/'>python (12)</a></li><li><a href='/blog/categories/swift/'>swift (11)</a></li><li><a href='/blog/categories/uml/'>UML (8)</a></li><li><a href='/blog/categories/xcode/'>Xcode (11)</a></li><li><a href='/blog/categories/chan-pin-she-ji/'>产品设计 (2)</a></li><li><a href='/blog/categories/gong-ju/'>工具 (1)</a></li><li><a href='/blog/categories/shu-ju-ku/'>数据库 (2)</a></li><li><a href='/blog/categories/sheng-huo-pian-duan/'>生活片段 (10)</a></li><li><a href='/blog/categories/zhi-ye-sheng-ya/'>职业生涯 (7)</a></li><li><a href='/blog/categories/du-shu/'>读书 (2)</a></li></ul>
 </section>
 <section>
   <h1>外部链接</h1>

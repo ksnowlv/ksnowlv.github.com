@@ -9,9 +9,7 @@
   <meta name="author" content="律威">
 
   
-  <meta name="description" content="在iOS开发中,经常会遇见&#8221;selector not recognized&#8221;这种类型的crash,其原因: 1.该方法实际上不存在. 1.检查是否拼写错误。
-2.检查该方法在iOS SDK版本中的适用版本范围。
-3.检查对象传递是否传递有误。 2.内存管理不当。 1. &hellip;">
+  <meta name="description" content="Xcode的&#8221;other link flags&ldquo;都支持哪些选项呢？可参考http://stackoverflow.com/questions/14497872/other-linker-flags-list中提到的“ man ld”命令,在Mac Terminal下是有效的 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -89,6 +87,53 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/08/15/xcode-other-link-flags-list/">Xcode-other-link-flags支持的参数</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-08-15T08:14:00+08:00" pubdate data-updated="true">Aug 15<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/08/15/xcode-other-link-flags-list/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h4>Xcode的&#8221;<code>other link flags</code>&ldquo;都支持哪些选项呢？可参考<a href="http://stackoverflow.com/questions/14497872/other-linker-flags-list">http://stackoverflow.com/questions/14497872/other-linker-flags-list</a>中提到的“ <code>man ld</code>”命令,在<code>Mac Terminal</code>下是有效的</h4>
+
+<pre><code>ksnowlv@ksnowlvdeMacBook-Pro~$man ld
+</code></pre>
+
+<p><img src="/images/post/2014-08-15-xcode-other-link-flags-list/overview.png" alt="image" /></p>
+
+<h4>我们常用<code>-ObjC</code>,<code>-all_load</code>,<code>-force_load</code></h4>
+
+<p><img src="/images/post/2014-08-15-xcode-other-link-flags-list/other_link_flag.png" alt="image" /></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1047,211 +1092,6 @@ c.测试同学3.1版本内存占用”摸底”     -----正在进行中。
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/08/08/python-xian-cheng-zhi-dui-lie-queue/">python线程之队列Queue</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-08-08T23:44:00+08:00" pubdate data-updated="true">Aug 8<span>th</span>, 2014</time>
-        
-         | <a href="/blog/2014/08/08/python-xian-cheng-zhi-dui-lie-queue/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Python的Queue模块中提供了同步的、线程安全的队列类.</p>
-
-<pre><code>1.FIFO（先入先出)队列Queue，
-2.LIFO（后入先出）队列LifoQueue，
-3.优先级队列PriorityQueue。
-</code></pre>
-
-<p>这些队列都实现了锁原语，能够在多线程中直接使用。可以使用队列来实现线程间的同步。</p>
-
-<p>代码示例如下:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-<span class='line-number'>64</span>
-<span class='line-number'>65</span>
-<span class='line-number'>66</span>
-<span class='line-number'>67</span>
-<span class='line-number'>68</span>
-<span class='line-number'>69</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c">#!/usr/bin/python</span>
-</span><span class='line'>
-</span><span class='line'><span class="kn">import</span> <span class="nn">Queue</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">threading</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">time</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">exitFlag</span> <span class="o">=</span> <span class="mi">0</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">QThread</span> <span class="p">(</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">):</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="s">&quot;QThread class&quot;</span>
-</span><span class='line'>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">threadID</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">queue</span><span class="p">):</span>
-</span><span class='line'>        <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">threadID</span> <span class="o">=</span> <span class="n">threadID</span>
-</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
-</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">queue</span> <span class="o">=</span> <span class="n">queue</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c">#线程函数</span>
-</span><span class='line'>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span class='line'>        <span class="k">print</span> <span class="s">&quot;Starting &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
-</span><span class='line'>        <span class="n">process_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="p">)</span>
-</span><span class='line'>        <span class="k">print</span> <span class="s">&quot;Exiting &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
-</span><span class='line'>
-</span><span class='line'><span class="c">#处理数据</span>
-</span><span class='line'><span class="k">def</span> <span class="nf">process_data</span><span class="p">(</span><span class="n">threadName</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
-</span><span class='line'>    <span class="k">while</span> <span class="ow">not</span> <span class="n">exitFlag</span><span class="p">:</span>
-</span><span class='line'>        <span class="n">queueLock</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
-</span><span class='line'>        <span class="k">if</span> <span class="ow">not</span> <span class="n">workQueue</span><span class="o">.</span><span class="n">empty</span><span class="p">():</span>
-</span><span class='line'>            <span class="n">data</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-</span><span class='line'>            <span class="n">queueLock</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
-</span><span class='line'>            <span class="k">print</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s"> processing </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">threadName</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
-</span><span class='line'>        <span class="k">else</span><span class="p">:</span>
-</span><span class='line'>            <span class="n">queueLock</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
-</span><span class='line'>        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="n">threadList</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;ksnow&quot;</span><span class="p">,</span> <span class="s">&quot;kair&quot;</span><span class="p">,</span> <span class="s">&quot;baby&quot;</span><span class="p">]</span>
-</span><span class='line'><span class="n">nameList</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;One&quot;</span><span class="p">,</span> <span class="s">&quot;Two&quot;</span><span class="p">,</span> <span class="s">&quot;Three&quot;</span><span class="p">,</span> <span class="s">&quot;Four&quot;</span><span class="p">,</span> <span class="s">&quot;Five&quot;</span><span class="p">]</span>
-</span><span class='line'><span class="n">queueLock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
-</span><span class='line'>
-</span><span class='line'><span class="c">#创建FIFO（先入先出)队列Queue</span>
-</span><span class='line'><span class="n">workQueue</span> <span class="o">=</span> <span class="n">Queue</span><span class="o">.</span><span class="n">Queue</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
-</span><span class='line'><span class="n">threads</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span class='line'><span class="n">threadID</span> <span class="o">=</span> <span class="mi">1</span>
-</span><span class='line'>
-</span><span class='line'><span class="c"># 创建新线程</span>
-</span><span class='line'><span class="k">for</span> <span class="n">tName</span> <span class="ow">in</span> <span class="n">threadList</span><span class="p">:</span>
-</span><span class='line'>    <span class="n">thread</span> <span class="o">=</span> <span class="n">QThread</span><span class="p">(</span><span class="n">threadID</span><span class="p">,</span> <span class="n">tName</span><span class="p">,</span> <span class="n">workQueue</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-</span><span class='line'>    <span class="n">threads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">thread</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">threadID</span> <span class="o">+=</span> <span class="mi">1</span>
-</span><span class='line'>
-</span><span class='line'><span class="c"># 填充队列</span>
-</span><span class='line'><span class="n">queueLock</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
-</span><span class='line'><span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">nameList</span><span class="p">:</span>
-</span><span class='line'>    <span class="n">workQueue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
-</span><span class='line'><span class="n">queueLock</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
-</span><span class='line'>
-</span><span class='line'><span class="c"># 等待队列清空</span>
-</span><span class='line'><span class="k">while</span> <span class="ow">not</span> <span class="n">workQueue</span><span class="o">.</span><span class="n">empty</span><span class="p">():</span>
-</span><span class='line'>    <span class="k">pass</span>
-</span><span class='line'>
-</span><span class='line'><span class="c"># 通知线程是时候退出</span>
-</span><span class='line'><span class="n">exitFlag</span> <span class="o">=</span> <span class="mi">1</span>
-</span><span class='line'>
-</span><span class='line'><span class="c"># 等待所有线程完成</span>
-</span><span class='line'><span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">threads</span><span class="p">:</span>
-</span><span class='line'>    <span class="n">t</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
-</span><span class='line'><span class="k">print</span> <span class="s">&quot;Exiting Main Thread&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>运行结果如下:</p>
-
-<pre><code>ksnowlv@ksnowlvdeMacBook-Pro~/Documents/lvwei projects/python$python thread_queue.py
-Starting ksnow
-Starting kair
-Starting baby
-kair processing One
-ksnow processing Two
-baby processing Three
-ksnow processing Four
-kair processing Five
-Exiting baby
-Exiting ksnow
-Exiting kair
-Exiting Main Thread
-</code></pre>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/10/">&larr; Older</a>
@@ -1276,6 +1116,10 @@ Exiting Main Thread
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/04/16/mac-xia-ssh-keychang-yong-cao-zuo-ming-ling/">mac下ssh-key常用操作命令</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/03/24/pmd-cha-jian-de-shi-yong/">PMD插件的使用</a>
       </li>
     
@@ -1291,15 +1135,11 @@ Exiting Main Thread
         <a href="/blog/2014/12/03/zu-zhi-wen-jian-bei-ituneshe-icloudtong-bu/">阻止文件被iTunes和iCloud同步</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2014/12/02/zlibyu-gzipjie-ya-suo-dui-bi/">ZLib与GZip解压缩对比</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>分类</h1>
-    <ul id="category-list"><li><a href='/blog/categories/androidcha-jian/'>Android插件 (1)</a></li><li><a href='/blog/categories/c-slash-c-plus-plus/'>C/C++ (1)</a></li><li><a href='/blog/categories/git/'>git (6)</a></li><li><a href='/blog/categories/githubbo-ke/'>github博客 (8)</a></li><li><a href='/blog/categories/ios/'>iOS (19)</a></li><li><a href='/blog/categories/ios-memory/'>iOS-Memory (4)</a></li><li><a href='/blog/categories/ios-nei-cun/'>iOS-内存 (1)</a></li><li><a href='/blog/categories/ios-duo-xian-cheng/'>iOS-多线程 (1)</a></li><li><a href='/blog/categories/ios-an-quan/'>iOS-安全 (1)</a></li><li><a href='/blog/categories/ios-wang-luo/'>iOS-网络 (12)</a></li><li><a href='/blog/categories/ios-she-ji-mo-shi/'>iOS-设计模式 (1)</a></li><li><a href='/blog/categories/iosyou-hua/'>iOS优化 (1)</a></li><li><a href='/blog/categories/mac/'>Mac (3)</a></li><li><a href='/blog/categories/mac-duo-xian-cheng/'>Mac-多线程 (1)</a></li><li><a href='/blog/categories/nginx/'>nginx (3)</a></li><li><a href='/blog/categories/php/'>php (3)</a></li><li><a href='/blog/categories/python/'>python (12)</a></li><li><a href='/blog/categories/swift/'>swift (11)</a></li><li><a href='/blog/categories/uml/'>UML (8)</a></li><li><a href='/blog/categories/xcode/'>Xcode (11)</a></li><li><a href='/blog/categories/chan-pin-she-ji/'>产品设计 (2)</a></li><li><a href='/blog/categories/gong-ju/'>工具 (1)</a></li><li><a href='/blog/categories/shu-ju-ku/'>数据库 (2)</a></li><li><a href='/blog/categories/sheng-huo-pian-duan/'>生活片段 (10)</a></li><li><a href='/blog/categories/zhi-ye-sheng-ya/'>职业生涯 (7)</a></li><li><a href='/blog/categories/du-shu/'>读书 (2)</a></li></ul>
+    <ul id="category-list"><li><a href='/blog/categories/androidcha-jian/'>Android插件 (1)</a></li><li><a href='/blog/categories/c-slash-c-plus-plus/'>C/C++ (1)</a></li><li><a href='/blog/categories/git/'>git (6)</a></li><li><a href='/blog/categories/githubbo-ke/'>github博客 (8)</a></li><li><a href='/blog/categories/ios/'>iOS (19)</a></li><li><a href='/blog/categories/ios-memory/'>iOS-Memory (4)</a></li><li><a href='/blog/categories/ios-nei-cun/'>iOS-内存 (1)</a></li><li><a href='/blog/categories/ios-duo-xian-cheng/'>iOS-多线程 (1)</a></li><li><a href='/blog/categories/ios-an-quan/'>iOS-安全 (1)</a></li><li><a href='/blog/categories/ios-wang-luo/'>iOS-网络 (12)</a></li><li><a href='/blog/categories/ios-she-ji-mo-shi/'>iOS-设计模式 (1)</a></li><li><a href='/blog/categories/iosyou-hua/'>iOS优化 (1)</a></li><li><a href='/blog/categories/mac/'>Mac (4)</a></li><li><a href='/blog/categories/mac-duo-xian-cheng/'>Mac-多线程 (1)</a></li><li><a href='/blog/categories/nginx/'>nginx (3)</a></li><li><a href='/blog/categories/php/'>php (3)</a></li><li><a href='/blog/categories/python/'>python (12)</a></li><li><a href='/blog/categories/swift/'>swift (11)</a></li><li><a href='/blog/categories/uml/'>UML (8)</a></li><li><a href='/blog/categories/xcode/'>Xcode (11)</a></li><li><a href='/blog/categories/chan-pin-she-ji/'>产品设计 (2)</a></li><li><a href='/blog/categories/gong-ju/'>工具 (1)</a></li><li><a href='/blog/categories/shu-ju-ku/'>数据库 (2)</a></li><li><a href='/blog/categories/sheng-huo-pian-duan/'>生活片段 (10)</a></li><li><a href='/blog/categories/zhi-ye-sheng-ya/'>职业生涯 (7)</a></li><li><a href='/blog/categories/du-shu/'>读书 (2)</a></li></ul>
 </section>
 <section>
   <h1>外部链接</h1>

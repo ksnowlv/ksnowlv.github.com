@@ -9,8 +9,9 @@
   <meta name="author" content="律威">
 
   
-  <meta name="description" content="如果多个线程共同对某个数据修改访问，为了保证数据的正确性，需要对多个线程进行同步。 使用Thread对象的Lock和Rlock可以实现简单的线程同步， acquire:请求锁,成功则返回true.
-release:释放锁. 对于需要每次只允许一个线程操作的数据，可以使用上述锁来实现互斥访问。 &hellip;">
+  <meta name="description" content="Python的Queue模块中提供了同步的、线程安全的队列类. 1.FIFO（先入先出)队列Queue，
+2.LIFO（后入先出）队列LifoQueue，
+3.优先级队列PriorityQueue。 这些队列都实现了锁原语，能够在多线程中直接使用。可以使用队列来实现线程间的同步。 代码示例如下: &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -88,6 +89,211 @@ release:释放锁. 对于需要每次只允许一个线程操作的数据，可�
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/08/08/python-xian-cheng-zhi-dui-lie-queue/">python线程之队列Queue</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-08-08T23:44:00+08:00" pubdate data-updated="true">Aug 8<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/08/08/python-xian-cheng-zhi-dui-lie-queue/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Python的Queue模块中提供了同步的、线程安全的队列类.</p>
+
+<pre><code>1.FIFO（先入先出)队列Queue，
+2.LIFO（后入先出）队列LifoQueue，
+3.优先级队列PriorityQueue。
+</code></pre>
+
+<p>这些队列都实现了锁原语，能够在多线程中直接使用。可以使用队列来实现线程间的同步。</p>
+
+<p>代码示例如下:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c">#!/usr/bin/python</span>
+</span><span class='line'>
+</span><span class='line'><span class="kn">import</span> <span class="nn">Queue</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">threading</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">time</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">exitFlag</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">QThread</span> <span class="p">(</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">):</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="s">&quot;QThread class&quot;</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">threadID</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">queue</span><span class="p">):</span>
+</span><span class='line'>        <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">threadID</span> <span class="o">=</span> <span class="n">threadID</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">queue</span> <span class="o">=</span> <span class="n">queue</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c">#线程函数</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>        <span class="k">print</span> <span class="s">&quot;Starting &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+</span><span class='line'>        <span class="n">process_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="p">)</span>
+</span><span class='line'>        <span class="k">print</span> <span class="s">&quot;Exiting &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+</span><span class='line'>
+</span><span class='line'><span class="c">#处理数据</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">process_data</span><span class="p">(</span><span class="n">threadName</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
+</span><span class='line'>    <span class="k">while</span> <span class="ow">not</span> <span class="n">exitFlag</span><span class="p">:</span>
+</span><span class='line'>        <span class="n">queueLock</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
+</span><span class='line'>        <span class="k">if</span> <span class="ow">not</span> <span class="n">workQueue</span><span class="o">.</span><span class="n">empty</span><span class="p">():</span>
+</span><span class='line'>            <span class="n">data</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</span><span class='line'>            <span class="n">queueLock</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+</span><span class='line'>            <span class="k">print</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s"> processing </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">threadName</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+</span><span class='line'>        <span class="k">else</span><span class="p">:</span>
+</span><span class='line'>            <span class="n">queueLock</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+</span><span class='line'>        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="n">threadList</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;ksnow&quot;</span><span class="p">,</span> <span class="s">&quot;kair&quot;</span><span class="p">,</span> <span class="s">&quot;baby&quot;</span><span class="p">]</span>
+</span><span class='line'><span class="n">nameList</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;One&quot;</span><span class="p">,</span> <span class="s">&quot;Two&quot;</span><span class="p">,</span> <span class="s">&quot;Three&quot;</span><span class="p">,</span> <span class="s">&quot;Four&quot;</span><span class="p">,</span> <span class="s">&quot;Five&quot;</span><span class="p">]</span>
+</span><span class='line'><span class="n">queueLock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'><span class="c">#创建FIFO（先入先出)队列Queue</span>
+</span><span class='line'><span class="n">workQueue</span> <span class="o">=</span> <span class="n">Queue</span><span class="o">.</span><span class="n">Queue</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</span><span class='line'><span class="n">threads</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span class='line'><span class="n">threadID</span> <span class="o">=</span> <span class="mi">1</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># 创建新线程</span>
+</span><span class='line'><span class="k">for</span> <span class="n">tName</span> <span class="ow">in</span> <span class="n">threadList</span><span class="p">:</span>
+</span><span class='line'>    <span class="n">thread</span> <span class="o">=</span> <span class="n">QThread</span><span class="p">(</span><span class="n">threadID</span><span class="p">,</span> <span class="n">tName</span><span class="p">,</span> <span class="n">workQueue</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">threads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">thread</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">threadID</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># 填充队列</span>
+</span><span class='line'><span class="n">queueLock</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
+</span><span class='line'><span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">nameList</span><span class="p">:</span>
+</span><span class='line'>    <span class="n">workQueue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+</span><span class='line'><span class="n">queueLock</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># 等待队列清空</span>
+</span><span class='line'><span class="k">while</span> <span class="ow">not</span> <span class="n">workQueue</span><span class="o">.</span><span class="n">empty</span><span class="p">():</span>
+</span><span class='line'>    <span class="k">pass</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># 通知线程是时候退出</span>
+</span><span class='line'><span class="n">exitFlag</span> <span class="o">=</span> <span class="mi">1</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># 等待所有线程完成</span>
+</span><span class='line'><span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">threads</span><span class="p">:</span>
+</span><span class='line'>    <span class="n">t</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+</span><span class='line'><span class="k">print</span> <span class="s">&quot;Exiting Main Thread&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>运行结果如下:</p>
+
+<pre><code>ksnowlv@ksnowlvdeMacBook-Pro~/Documents/lvwei projects/python$python thread_queue.py
+Starting ksnow
+Starting kair
+Starting baby
+kair processing One
+ksnow processing Two
+baby processing Three
+ksnow processing Four
+kair processing Five
+Exiting baby
+Exiting ksnow
+Exiting kair
+Exiting Main Thread
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1360,307 +1566,6 @@ Total Teacher 2
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/08/05/shi-yong-nsurlprotocol-lan-jie-ti-huan-httpqing-qiu/">使用NSURLProtocol拦截替换http请求</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-08-05T05:51:00+08:00" pubdate data-updated="true">Aug 5<span>th</span>, 2014</time>
-        
-         | <a href="/blog/2014/08/05/shi-yong-nsurlprotocol-lan-jie-ti-huan-httpqing-qiu/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h4>使用背景:整个工程中中图片url需要添加额外的参数支持图片优化，包括webview部分。</h4>
-
-<h4>所以使用NSURLProtocol拦截相关URL,替换http请求，实现图片优化参数的统一支持。</h4>
-
-<h4>具体做法如下：</h4>
-
-<h4>1.声明继承NSURLProtocol的子类QImageURLProtocol.</h4>
-
-<p>头文件内容如下：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="cm">/**</span>
-</span><span class='line'><span class="cm"> *  用于测试的url</span>
-</span><span class='line'><span class="cm"> */</span>
-</span><span class='line'><span class="k">static</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">KPicBURL</span> <span class="o">=</span> <span class="s">@&quot;http://g.hiphotos.baidu.com/image/h%3D800%3Bcrop%3D0%2C0%2C1280%2C800/sign=ee4c561ac1fdfc03fa78eeb8e404e4e6/a686c9177f3e6709ef8de51b39c79f3df9dc5540.jpg&quot;</span><span class="p">;</span>
-</span><span class='line'><span class="k">static</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">KPicAURL</span> <span class="o">=</span> <span class="s">@&quot;http://d.hiphotos.baidu.com/image/h%3D800%3Bcrop%3D0%2C0%2C1280%2C800/sign=ee81c70e83cb39dbdec06a56e02d6a56/b812c8fcc3cec3fdcf460491d488d43f869427dd.jpg&quot;</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="k">@interface</span> <span class="nc">QImageURLProtocol</span> : <span class="nc">NSURLProtocol</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">@end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p></p>
-
-<p>实现文件内容如下：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-<span class='line-number'>64</span>
-<span class='line-number'>65</span>
-<span class='line-number'>66</span>
-<span class='line-number'>67</span>
-<span class='line-number'>68</span>
-<span class='line-number'>69</span>
-<span class='line-number'>70</span>
-<span class='line-number'>71</span>
-<span class='line-number'>72</span>
-<span class='line-number'>73</span>
-<span class='line-number'>74</span>
-<span class='line-number'>75</span>
-<span class='line-number'>76</span>
-<span class='line-number'>77</span>
-</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="k">@interface</span> <span class="nc">QImageURLProtocol</span> <span class="p">()</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">)</span> <span class="n">NSURLConnection</span> <span class="o">*</span><span class="n">connection</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">@end</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">@implementation</span> <span class="nc">QImageURLProtocol</span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#pragma mark -----------NSURLProtocol-------------</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">+</span><span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">canInitWithRequest:</span><span class="p">(</span><span class="n">NSURLRequest</span> <span class="o">*</span><span class="p">)</span><span class="nv">request</span><span class="p">{</span>
-</span><span class='line'>    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;----origin request url = %@&quot;</span><span class="p">,</span><span class="n">request</span><span class="p">.</span><span class="n">URL</span><span class="p">.</span><span class="n">absoluteString</span><span class="p">);</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">([</span><span class="n">self</span> <span class="nl">isQImageURLRequest:</span><span class="n">request</span><span class="p">])</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="n">YES</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">return</span> <span class="n">NO</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">+</span><span class="p">(</span><span class="n">NSURLRequest</span> <span class="o">*</span><span class="p">)</span><span class="nf">canonicalRequestForRequest:</span><span class="p">(</span><span class="n">NSURLRequest</span> <span class="o">*</span><span class="p">)</span><span class="nv">request</span><span class="p">{</span>
-</span><span class='line'>    <span class="n">NSMutableURLRequest</span> <span class="o">*</span><span class="n">cdnRequest</span> <span class="o">=</span> <span class="p">[</span><span class="n">request</span> <span class="n">mutableCopy</span><span class="p">];</span>
-</span><span class='line'>    <span class="n">cdnRequest</span><span class="p">.</span><span class="n">URL</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span> <span class="nl">imagesForQImageURL:</span><span class="n">request</span><span class="p">.</span><span class="n">URL</span><span class="p">];</span>
-</span><span class='line'>    <span class="c1">//[NSURLProtocol setProperty:@&quot;YES&quot; forKey:@&quot;QImageURL&quot; inRequest:cdnRequest];</span>
-</span><span class='line'>    <span class="k">return</span> <span class="n">cdnRequest</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">startLoading</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">self</span><span class="p">.</span><span class="n">connection</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSURLConnection</span> <span class="nl">connectionWithRequest:</span><span class="p">[</span><span class="n">QImageURLProtocol</span> <span class="nl">canonicalRequestForRequest:</span><span class="n">self</span><span class="p">.</span><span class="n">request</span> <span class="p">]</span> <span class="nl">delegate:</span><span class="n">self</span><span class="p">];</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">stopLoading</span> <span class="p">{</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">connection</span> <span class="n">cancel</span><span class="p">];</span>
-</span><span class='line'>    <span class="n">self</span><span class="p">.</span><span class="n">connection</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">connection:</span><span class="p">(</span><span class="n">NSURLConnection</span> <span class="o">*</span><span class="p">)</span><span class="nv">connection</span> <span class="nf">didReceiveResponse:</span><span class="p">(</span><span class="n">NSURLResponse</span> <span class="o">*</span><span class="p">)</span><span class="nv">response</span> <span class="p">{</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">client</span> <span class="nl">URLProtocol:</span><span class="n">self</span> <span class="nl">didReceiveResponse:</span><span class="n">response</span> <span class="nl">cacheStoragePolicy:</span><span class="n">NSURLCacheStorageNotAllowed</span><span class="p">];</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">connection:</span><span class="p">(</span><span class="n">NSURLConnection</span> <span class="o">*</span><span class="p">)</span><span class="nv">connection</span> <span class="nf">didReceiveData:</span><span class="p">(</span><span class="n">NSData</span> <span class="o">*</span><span class="p">)</span><span class="nv">data</span> <span class="p">{</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">client</span> <span class="nl">URLProtocol:</span><span class="n">self</span> <span class="nl">didLoadData:</span><span class="n">data</span><span class="p">];</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">connectionDidFinishLoading:</span><span class="p">(</span><span class="n">NSURLConnection</span> <span class="o">*</span><span class="p">)</span><span class="nv">connection</span> <span class="p">{</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">client</span> <span class="nl">URLProtocolDidFinishLoading:</span><span class="n">self</span><span class="p">];</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">connection:</span><span class="p">(</span><span class="n">NSURLConnection</span> <span class="o">*</span><span class="p">)</span><span class="nv">connection</span> <span class="nf">didFailWithError:</span><span class="p">(</span><span class="n">NSError</span> <span class="o">*</span><span class="p">)</span><span class="nv">error</span> <span class="p">{</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">client</span> <span class="nl">URLProtocol:</span><span class="n">self</span> <span class="nl">didFailWithError:</span><span class="n">error</span><span class="p">];</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#pragma mark -----------------private method---------</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">+</span><span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">isQImageURLRequest:</span><span class="p">(</span><span class="n">NSURLRequest</span><span class="o">*</span><span class="p">)</span><span class="nv">request</span><span class="p">{</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span> <span class="p">[</span><span class="n">request</span><span class="p">.</span><span class="n">URL</span><span class="p">.</span><span class="n">host</span> <span class="nl">isEqualToString:</span><span class="s">@&quot;d.hiphotos.baidu.com&quot;</span><span class="p">]</span>
-</span><span class='line'>        <span class="c1">//&amp;&amp;nil == [NSURLProtocol propertyForKey:@&quot;QImageURL&quot; inRequest:request]</span>
-</span><span class='line'>        <span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;isQImageURLRequest&quot;</span><span class="p">);</span>
-</span><span class='line'>        <span class="k">return</span> <span class="n">YES</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">return</span> <span class="n">NO</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="k">+</span><span class="p">(</span><span class="n">NSURL</span><span class="o">*</span><span class="p">)</span><span class="nf">imagesForQImageURL:</span><span class="p">(</span><span class="n">NSURL</span><span class="o">*</span><span class="p">)</span><span class="nv">url</span><span class="p">{</span>
-</span><span class='line'>    <span class="c1">//只要是KPicAURL，会被直接替换为KPicBURL</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">([</span><span class="n">url</span><span class="p">.</span><span class="n">host</span> <span class="nl">isEqualToString:</span><span class="s">@&quot;d.hiphotos.baidu.com&quot;</span> <span class="p">]</span>
-</span><span class='line'>        <span class="o">&amp;&amp;</span> <span class="p">[</span><span class="n">url</span><span class="p">.</span><span class="n">absoluteString</span> <span class="nl">isEqualToString:</span><span class="n">KPicAURL</span> <span class="p">])</span> <span class="p">{</span>
-</span><span class='line'>         <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;----real request url = %@&quot;</span><span class="p">,</span><span class="n">KPicBURL</span><span class="p">);</span>
-</span><span class='line'>        <span class="k">return</span> <span class="p">[</span><span class="n">NSURL</span> <span class="nl">URLWithString:</span><span class="n">KPicBURL</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">return</span> <span class="n">url</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">@end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>调用如下：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">dealloc</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">NSURLProtocol</span> <span class="nl">unregisterClass:</span><span class="p">[</span><span class="n">QImageURLProtocol</span> <span class="n">class</span><span class="p">]];</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">viewDidLoad</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">super</span> <span class="n">viewDidLoad</span><span class="p">];</span>
-</span><span class='line'>  <span class="c1">//关键一步</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">NSURLProtocol</span> <span class="nl">registerClass:</span><span class="p">[</span><span class="n">QImageURLProtocol</span> <span class="n">class</span><span class="p">]];</span>
-</span><span class='line'>    <span class="n">_imageDownloadQueue</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSOperationQueue</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">-</span><span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">requestImageEvent:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="n">NSURLRequest</span> <span class="o">*</span><span class="n">request</span> <span class="o">=</span> <span class="p">[</span> <span class="n">NSURLRequest</span> <span class="nl">requestWithURL:</span><span class="p">[</span><span class="n">NSURL</span> <span class="nl">URLWithString:</span><span class="n">KPicAURL</span><span class="p">]];</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">NSURLConnection</span> <span class="nl">sendAsynchronousRequest:</span><span class="n">request</span> <span class="nl">queue:</span><span class="n">_imageDownloadQueue</span> <span class="nl">completionHandler:</span><span class="o">^</span><span class="p">(</span><span class="n">NSURLResponse</span> <span class="o">*</span><span class="n">response</span><span class="p">,</span> <span class="n">NSData</span> <span class="o">*</span><span class="n">data</span><span class="p">,</span> <span class="n">NSError</span> <span class="o">*</span><span class="n">connectionError</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nb">nil</span> <span class="o">==</span> <span class="n">connectionError</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>            <span class="n">UIImage</span> <span class="o">*</span><span class="n">image</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIImage</span> <span class="nl">imageWithData:</span><span class="n">data</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'>            <span class="n">dispatch_async</span><span class="p">(</span><span class="n">dispatch_get_main_queue</span><span class="p">(),</span> <span class="o">^</span><span class="p">{</span>
-</span><span class='line'>                <span class="n">_imageView</span><span class="p">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="p">;</span>
-</span><span class='line'>            <span class="p">});</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="p">}];</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>注意事项:</h4>
-
-<h4>1.这种方法对于基于NSURLConnection的http请求是有效的,例如AFNetworking，对于基于CFNetwork框架的是不支持的,例如：MKNetworkKit,ASIHttpRequest.</h4>
-
-<h4>2.无论对webView还是native的,只要是基于NSURLConnection的网络请求的,可以根据相关特征进行URL拦截替换.</h4>
-
-<h5>3.如何一个工程当中，注册了多个拦截基于NSURLConnection的网络请求的类的情况下，最终生效的是最后拦截者。</h5>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/11/">&larr; Older</a>
@@ -1685,6 +1590,10 @@ Total Teacher 2
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/04/16/mac-xia-ssh-keychang-yong-cao-zuo-ming-ling/">mac下ssh-key常用操作命令</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/03/24/pmd-cha-jian-de-shi-yong/">PMD插件的使用</a>
       </li>
     
@@ -1700,15 +1609,11 @@ Total Teacher 2
         <a href="/blog/2014/12/03/zu-zhi-wen-jian-bei-ituneshe-icloudtong-bu/">阻止文件被iTunes和iCloud同步</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2014/12/02/zlibyu-gzipjie-ya-suo-dui-bi/">ZLib与GZip解压缩对比</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>分类</h1>
-    <ul id="category-list"><li><a href='/blog/categories/androidcha-jian/'>Android插件 (1)</a></li><li><a href='/blog/categories/c-slash-c-plus-plus/'>C/C++ (1)</a></li><li><a href='/blog/categories/git/'>git (6)</a></li><li><a href='/blog/categories/githubbo-ke/'>github博客 (8)</a></li><li><a href='/blog/categories/ios/'>iOS (19)</a></li><li><a href='/blog/categories/ios-memory/'>iOS-Memory (4)</a></li><li><a href='/blog/categories/ios-nei-cun/'>iOS-内存 (1)</a></li><li><a href='/blog/categories/ios-duo-xian-cheng/'>iOS-多线程 (1)</a></li><li><a href='/blog/categories/ios-an-quan/'>iOS-安全 (1)</a></li><li><a href='/blog/categories/ios-wang-luo/'>iOS-网络 (12)</a></li><li><a href='/blog/categories/ios-she-ji-mo-shi/'>iOS-设计模式 (1)</a></li><li><a href='/blog/categories/iosyou-hua/'>iOS优化 (1)</a></li><li><a href='/blog/categories/mac/'>Mac (3)</a></li><li><a href='/blog/categories/mac-duo-xian-cheng/'>Mac-多线程 (1)</a></li><li><a href='/blog/categories/nginx/'>nginx (3)</a></li><li><a href='/blog/categories/php/'>php (3)</a></li><li><a href='/blog/categories/python/'>python (12)</a></li><li><a href='/blog/categories/swift/'>swift (11)</a></li><li><a href='/blog/categories/uml/'>UML (8)</a></li><li><a href='/blog/categories/xcode/'>Xcode (11)</a></li><li><a href='/blog/categories/chan-pin-she-ji/'>产品设计 (2)</a></li><li><a href='/blog/categories/gong-ju/'>工具 (1)</a></li><li><a href='/blog/categories/shu-ju-ku/'>数据库 (2)</a></li><li><a href='/blog/categories/sheng-huo-pian-duan/'>生活片段 (10)</a></li><li><a href='/blog/categories/zhi-ye-sheng-ya/'>职业生涯 (7)</a></li><li><a href='/blog/categories/du-shu/'>读书 (2)</a></li></ul>
+    <ul id="category-list"><li><a href='/blog/categories/androidcha-jian/'>Android插件 (1)</a></li><li><a href='/blog/categories/c-slash-c-plus-plus/'>C/C++ (1)</a></li><li><a href='/blog/categories/git/'>git (6)</a></li><li><a href='/blog/categories/githubbo-ke/'>github博客 (8)</a></li><li><a href='/blog/categories/ios/'>iOS (19)</a></li><li><a href='/blog/categories/ios-memory/'>iOS-Memory (4)</a></li><li><a href='/blog/categories/ios-nei-cun/'>iOS-内存 (1)</a></li><li><a href='/blog/categories/ios-duo-xian-cheng/'>iOS-多线程 (1)</a></li><li><a href='/blog/categories/ios-an-quan/'>iOS-安全 (1)</a></li><li><a href='/blog/categories/ios-wang-luo/'>iOS-网络 (12)</a></li><li><a href='/blog/categories/ios-she-ji-mo-shi/'>iOS-设计模式 (1)</a></li><li><a href='/blog/categories/iosyou-hua/'>iOS优化 (1)</a></li><li><a href='/blog/categories/mac/'>Mac (4)</a></li><li><a href='/blog/categories/mac-duo-xian-cheng/'>Mac-多线程 (1)</a></li><li><a href='/blog/categories/nginx/'>nginx (3)</a></li><li><a href='/blog/categories/php/'>php (3)</a></li><li><a href='/blog/categories/python/'>python (12)</a></li><li><a href='/blog/categories/swift/'>swift (11)</a></li><li><a href='/blog/categories/uml/'>UML (8)</a></li><li><a href='/blog/categories/xcode/'>Xcode (11)</a></li><li><a href='/blog/categories/chan-pin-she-ji/'>产品设计 (2)</a></li><li><a href='/blog/categories/gong-ju/'>工具 (1)</a></li><li><a href='/blog/categories/shu-ju-ku/'>数据库 (2)</a></li><li><a href='/blog/categories/sheng-huo-pian-duan/'>生活片段 (10)</a></li><li><a href='/blog/categories/zhi-ye-sheng-ya/'>职业生涯 (7)</a></li><li><a href='/blog/categories/du-shu/'>读书 (2)</a></li></ul>
 </section>
 <section>
   <h1>外部链接</h1>

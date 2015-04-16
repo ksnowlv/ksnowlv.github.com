@@ -4,7 +4,7 @@
   <title><![CDATA[ksnowlv]]></title>
   <link href="http://ksnowlv.github.io/atom.xml" rel="self"/>
   <link href="http://ksnowlv.github.io/"/>
-  <updated>2015-04-16T19:47:15+08:00</updated>
+  <updated>2015-04-16T20:19:14+08:00</updated>
   <id>http://ksnowlv.github.io/</id>
   <author>
     <name><![CDATA[律威]]></name>
@@ -12,6 +12,42 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[mac下ssh-key常用操作命令]]></title>
+    <link href="http://ksnowlv.github.io/blog/2015/04/16/mac-xia-ssh-keychang-yong-cao-zuo-ming-ling/"/>
+    <updated>2015-04-16T19:54:00+08:00</updated>
+    <id>http://ksnowlv.github.io/blog/2015/04/16/mac-xia-ssh-keychang-yong-cao-zuo-ming-ling</id>
+    <content type="html"><![CDATA[<p><strong>Mac</strong>上关于<strong>ssh key</strong>常用的操作命令</p>
+
+<h3>1.生成公钥/私钥</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'> <span class="n">ssh</span><span class="o">-</span><span class="n">keygen</span> <span class="o">-</span><span class="n">t</span> <span class="n">rsa</span> <span class="o">-</span><span class="n">C</span> <span class="s">&quot;邮箱名&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<h3>2.添加公钥/私钥</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">ssh</span><span class="o">-</span><span class="n">add</span> <span class="err">密钥名</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>3.显示公钥</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">cat</span> <span class="err">公钥名</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>截图如下</h3>
+
+<p><img src="http://ksnowlv.github.io/images/post/2015-04-16-mac-xia-ssh-keychang-yong-cao-zuo-ming-ling/overview.png" alt="image" /></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[PMD插件的使用]]></title>
@@ -754,51 +790,6 @@ Account端口代表内部的Customer组件要求使用的Account接口必须分�
 <h3>类图参考如下：</h3>
 
 <p><img src="http://ksnowlv.github.io/images/post/2014-11-03-uml-lei-tu/class_diagram.jpg" alt="image" /></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[uml-用例图]]></title>
-    <link href="http://ksnowlv.github.io/blog/2014/10/27/uml-yong-li-tu/"/>
-    <updated>2014-10-27T17:15:00+08:00</updated>
-    <id>http://ksnowlv.github.io/blog/2014/10/27/uml-yong-li-tu</id>
-    <content type="html"><![CDATA[<h3>用例图(Use Case)</h3>
-
-<pre><code>主要用来描述“用户、需求、系统功能单元”之间的关系.
-</code></pre>
-
-<p>用例图所包含的元素</p>
-
-<h4>1.参与者(Actor)</h4>
-
-<h4>2.用例(Use Case)</h4>
-
-<pre><code>外部可见的系统功能,用椭圆表示
-</code></pre>
-
-<h4>3.子系统(Subsystem)</h4>
-
-<pre><code>用来展示系统的一部分功能，这部分功能联系紧密。
-</code></pre>
-
-<h4>4.关系</h4>
-
-<pre><code>用例图中涉及的关系有：关联、泛化、包含、扩展。
-</code></pre>
-
-<ul>
-<li>a.关联(Association):表示参与者与用例之间的通信，任何一方都可发送或接受消息.</li>
-<li>b.泛化(Inheritance):继承关系，子用例和父用例相似，但表现出更特别的行为.</li>
-<li>c.包含(Include):包含关系用来把一个较复杂用例所表示的功能分解成较小的功能.</li>
-<li>d.扩展(Extend):指用例功能的延伸，相当于为基础用例提供一个附加功能.
-　 <br/>
-示例图：</li>
-</ul>
-
-
-<p><img src="http://ksnowlv.github.io/images/post/2014-10-27-uml-yong-li-tu/case_diagram.jpg" alt="image" />
-　　
-用例图也许并不能很好地表达系统的需求，有时需要添加用例描述表来说明.</p>
 ]]></content>
   </entry>
   

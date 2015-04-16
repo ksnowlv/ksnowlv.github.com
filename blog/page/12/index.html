@@ -9,8 +9,9 @@
   <meta name="author" content="律威">
 
   
-  <meta name="description" content="git revert撤销某次操作，此次操作之前的commit都会被保留。 因此revert 只會使commit继续往前,优点是可以针对某個 commit 進行还原 并且留下还原记录 git revert -n &lt;commit id&gt; #撤销某次操作，commit id为提交号
-git &hellip;">
+  <meta name="description" content="查看git statsh相关命令：在mac terminal输入git help stash git stash list #显示出所有的暫存清单
+git stash show #显示所暂存的一些修改 git stash drop stash@{number} #丢弃暂存的修改
+git stash &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -88,6 +89,146 @@ git &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/07/29/git-stash/">Git Stash</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-29T00:14:00+08:00" pubdate data-updated="true">Jul 29<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/07/29/git-stash/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h4>查看git statsh相关命令：在mac terminal输入<code>git help stash</code></h4>
+
+<pre><code>git stash list                    #显示出所有的暫存清单
+git stash show                    #显示所暂存的一些修改 
+git stash drop stash@{number}     #丢弃暂存的修改
+git stash stash@{number}          #取出某一次的暫存修改
+git stash branch &lt;branchname&gt;     #暂存到某一分支
+git stash [save [-p|--patch] [-k|--[no-]keep-index] [-q|--quiet]
+                [-u|--include-untracked] [-a|--all] [&lt;message&gt;]]
+                                  #暂存修改
+git stash clear                   #清除所有暂存
+git stash create [&lt;message&gt;]      #创建暂存信息
+git stash store [-m|--message &lt;message&gt;] [-q|--quiet] &lt;commit&gt;
+</code></pre>
+
+<p>示例如下：</p>
+
+<h4>创建c.txt文件，并暂存，暂存信息为“add c.txt”</h4>
+
+<pre><code>ksnowlv@ksnowlvdeMacBook-Pro~/Music/gittest$vim c.txt
+ksnowlv@ksnowlvdeMacBook-Pro~/Music/gittest$git add .
+ksnowlv@ksnowlvdeMacBook-Pro~/Music/gittest$git stash save "add c.txt"
+Saved working directory and index state On master: add c.txt
+HEAD is now at 5636eac add new file
+</code></pre>
+
+<h4>显示暂存列表信息</h4>
+
+<pre><code>ksnowlv@ksnowlvdeMacBook-Pro~/Music/gittest$git stash list
+stash@{0}: On master: add c.txt
+stash@{1}: On master: mm
+stash@{2}: WIP on master: 5636eac add new file
+</code></pre>
+
+<h4>显示最近一次暂存的一些修改</h4>
+
+<pre><code>ksnowlv@ksnowlvdeMacBook-Pro~/Music/gittest$git stash show
+ c.txt | 1 +
+ 1 file changed, 1 insertion(+)
+</code></pre>
+
+<h4>把stash@{2}的暂停版本更新到本地版本</h4>
+
+<pre><code>ksnowlv@ksnowlvdeMacBook-Pro~/Music/gittest$git stash apply stash@{2} 
+On branch master
+Changes to be committed:
+  (use "git reset HEAD &lt;file&gt;..." to unstage)
+
+new file:   b.txt
+</code></pre>
+
+<h4>丢弃stash@{2}的暂停版本</h4>
+
+<pre><code>ksnowlv@ksnowlvdeMacBook-Pro~/Music/gittest$git stash drop stash@{2}
+Dropped stash@{2} (b6aaa50f4b36fb264b677bc4b35e51bf0601a3c0)
+</code></pre>
+
+<h4>显示最新的暂存列表信息</h4>
+
+<pre><code>ksnowlv@ksnowlvdeMacBook-Pro~/Music/gittest$git stash list
+stash@{0}: On master: add c.txt
+stash@{1}: On master: mm
+ksnowlv@ksnowlvdeMacBook-Pro~/Music/gittest$
+</code></pre>
+
+<h4>把stash@{1}，stash@{0}暂存版本恢复到本地</h4>
+
+<pre><code>ksnowlv@ksnowlvdeMacBook-Pro~/Music/gittest$git stash apply stash@{1}
+On branch master
+Changes to be committed:
+  (use "git reset HEAD &lt;file&gt;..." to unstage)
+
+new file:   b.txt
+
+ksnowlv@ksnowlvdeMacBook-Pro~/Music/gittest$git stash apply stash@{0}
+On branch master
+Changes to be committed:
+  (use "git reset HEAD &lt;file&gt;..." to unstage)
+
+new file:   b.txt
+new file:   c.txt
+</code></pre>
+
+<h4>观察是不是先前暂停版本的文件</h4>
+
+<pre><code>ksnowlv@ksnowlvdeMacBook-Pro~/Music/gittest$ls
+a.text b.txt  c.txt
+</code></pre>
+
+<h4>显示暂存列表信息</h4>
+
+<pre><code>ksnowlv@ksnowlvdeMacBook-Pro~/Music/gittest$git stash list
+stash@{0}: On master: add c.txt
+stash@{1}: On master: mm
+</code></pre>
+
+<h4>清除暂存列表信息</h4>
+
+<pre><code>ksnowlv@ksnowlvdeMacBook-Pro~/Music/gittest$git stash clear
+#暂存列表已经被清空
+ksnowlv@ksnowlvdeMacBook-Pro~/Music/gittest$git stash list
+ksnowlv@ksnowlvdeMacBook-Pro~/Music/gittest$
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1273,70 +1414,6 @@ Options:
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/07/25/tian-jin-meng-ma-de-ri-zi-li/">天津猛犸的日子里</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-07-25T20:41:00+08:00" pubdate data-updated="true">Jul 25<span>th</span>, 2014</time>
-        
-         | <a href="/blog/2014/07/25/tian-jin-meng-ma-de-ri-zi-li/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>因在当时的公司一些事，我在2008年9月开始寻找新的工作机会。</p>
-
-<p>当时收到天津猛犸的面试通知后，我欣然前往，这是天津比较有名的手机网游公司。当时面试完后即给了offer,于是，只有等待了。</p>
-
-<p>不曾想，一等将近一个月，十一国庆结束开始入职天津猛犸，开始我十分神往的手机网络游戏开发之旅：symbian平台的封神online手机网游移植。</p>
-
-<p>说是移植，实际上，是重做，共用一套数据和控制逻辑而已。入职时，游戏地图，人物，技能等模块基本就绪。我的主要工作就是地图之上的UI：UI框架(十几个基础控件)和登陆，角色，聊天，背包，技能栏等等.</p>
-
-<p>起初，代码移植，进展缓慢。后来，按功能模块开发，重新设计实现UI框架和基础控件，根据可能的需求，逐步完善。实践证明，如果不需要跨平台，按功能模块开发，相比直接代码移植，要高效的多。</p>
-
-<p>第一次对App性能这么敏感:内存占用，C/C++的陷阱。</p>
-
-<h4>1.内存占用</h4>
-
-<pre><code>优化背景:当时内存占用这块并没有出现瓶颈和问题，温哥指出我们可以做的更好。
-        review了整个工程的全部模块。
-优化结果:内存占用峰值由原来的3.5M左右，降低到1.5M左右。
-体会:业余的，着眼功能;专业的,着眼性能;
-人人可以做个功能，却不是人人都可以性能做到很好。
-</code></pre>
-
-<h4>2.C/C++的陷阱</h4>
-
-<pre><code>优化背景:当时整个网游App运行一天，可能不crash;有时运行,一两个小时，就挂了。
-优化结果:1.review整个工程各个模块关于指针，数组相关逻辑,代码级。
-        2.逐步开启一些模块，确定问题的查找范围，排查问题根源，果然发现一些“隐藏杀手”
-</code></pre>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/13/">&larr; Older</a>
@@ -1361,6 +1438,10 @@ Options:
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/04/16/mac-xia-ssh-keychang-yong-cao-zuo-ming-ling/">mac下ssh-key常用操作命令</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/03/24/pmd-cha-jian-de-shi-yong/">PMD插件的使用</a>
       </li>
     
@@ -1376,15 +1457,11 @@ Options:
         <a href="/blog/2014/12/03/zu-zhi-wen-jian-bei-ituneshe-icloudtong-bu/">阻止文件被iTunes和iCloud同步</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2014/12/02/zlibyu-gzipjie-ya-suo-dui-bi/">ZLib与GZip解压缩对比</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>分类</h1>
-    <ul id="category-list"><li><a href='/blog/categories/androidcha-jian/'>Android插件 (1)</a></li><li><a href='/blog/categories/c-slash-c-plus-plus/'>C/C++ (1)</a></li><li><a href='/blog/categories/git/'>git (6)</a></li><li><a href='/blog/categories/githubbo-ke/'>github博客 (8)</a></li><li><a href='/blog/categories/ios/'>iOS (19)</a></li><li><a href='/blog/categories/ios-memory/'>iOS-Memory (4)</a></li><li><a href='/blog/categories/ios-nei-cun/'>iOS-内存 (1)</a></li><li><a href='/blog/categories/ios-duo-xian-cheng/'>iOS-多线程 (1)</a></li><li><a href='/blog/categories/ios-an-quan/'>iOS-安全 (1)</a></li><li><a href='/blog/categories/ios-wang-luo/'>iOS-网络 (12)</a></li><li><a href='/blog/categories/ios-she-ji-mo-shi/'>iOS-设计模式 (1)</a></li><li><a href='/blog/categories/iosyou-hua/'>iOS优化 (1)</a></li><li><a href='/blog/categories/mac/'>Mac (3)</a></li><li><a href='/blog/categories/mac-duo-xian-cheng/'>Mac-多线程 (1)</a></li><li><a href='/blog/categories/nginx/'>nginx (3)</a></li><li><a href='/blog/categories/php/'>php (3)</a></li><li><a href='/blog/categories/python/'>python (12)</a></li><li><a href='/blog/categories/swift/'>swift (11)</a></li><li><a href='/blog/categories/uml/'>UML (8)</a></li><li><a href='/blog/categories/xcode/'>Xcode (11)</a></li><li><a href='/blog/categories/chan-pin-she-ji/'>产品设计 (2)</a></li><li><a href='/blog/categories/gong-ju/'>工具 (1)</a></li><li><a href='/blog/categories/shu-ju-ku/'>数据库 (2)</a></li><li><a href='/blog/categories/sheng-huo-pian-duan/'>生活片段 (10)</a></li><li><a href='/blog/categories/zhi-ye-sheng-ya/'>职业生涯 (7)</a></li><li><a href='/blog/categories/du-shu/'>读书 (2)</a></li></ul>
+    <ul id="category-list"><li><a href='/blog/categories/androidcha-jian/'>Android插件 (1)</a></li><li><a href='/blog/categories/c-slash-c-plus-plus/'>C/C++ (1)</a></li><li><a href='/blog/categories/git/'>git (6)</a></li><li><a href='/blog/categories/githubbo-ke/'>github博客 (8)</a></li><li><a href='/blog/categories/ios/'>iOS (19)</a></li><li><a href='/blog/categories/ios-memory/'>iOS-Memory (4)</a></li><li><a href='/blog/categories/ios-nei-cun/'>iOS-内存 (1)</a></li><li><a href='/blog/categories/ios-duo-xian-cheng/'>iOS-多线程 (1)</a></li><li><a href='/blog/categories/ios-an-quan/'>iOS-安全 (1)</a></li><li><a href='/blog/categories/ios-wang-luo/'>iOS-网络 (12)</a></li><li><a href='/blog/categories/ios-she-ji-mo-shi/'>iOS-设计模式 (1)</a></li><li><a href='/blog/categories/iosyou-hua/'>iOS优化 (1)</a></li><li><a href='/blog/categories/mac/'>Mac (4)</a></li><li><a href='/blog/categories/mac-duo-xian-cheng/'>Mac-多线程 (1)</a></li><li><a href='/blog/categories/nginx/'>nginx (3)</a></li><li><a href='/blog/categories/php/'>php (3)</a></li><li><a href='/blog/categories/python/'>python (12)</a></li><li><a href='/blog/categories/swift/'>swift (11)</a></li><li><a href='/blog/categories/uml/'>UML (8)</a></li><li><a href='/blog/categories/xcode/'>Xcode (11)</a></li><li><a href='/blog/categories/chan-pin-she-ji/'>产品设计 (2)</a></li><li><a href='/blog/categories/gong-ju/'>工具 (1)</a></li><li><a href='/blog/categories/shu-ju-ku/'>数据库 (2)</a></li><li><a href='/blog/categories/sheng-huo-pian-duan/'>生活片段 (10)</a></li><li><a href='/blog/categories/zhi-ye-sheng-ya/'>职业生涯 (7)</a></li><li><a href='/blog/categories/du-shu/'>读书 (2)</a></li></ul>
 </section>
 <section>
   <h1>外部链接</h1>

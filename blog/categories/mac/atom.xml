@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Mac | ksnowlv]]></title>
   <link href="http://ksnowlv.github.io/blog/categories/mac/atom.xml" rel="self"/>
   <link href="http://ksnowlv.github.io/"/>
-  <updated>2015-04-16T19:47:15+08:00</updated>
+  <updated>2015-04-16T20:19:14+08:00</updated>
   <id>http://ksnowlv.github.io/</id>
   <author>
     <name><![CDATA[律威]]></name>
@@ -12,6 +12,42 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[mac下ssh-key常用操作命令]]></title>
+    <link href="http://ksnowlv.github.io/blog/2015/04/16/mac-xia-ssh-keychang-yong-cao-zuo-ming-ling/"/>
+    <updated>2015-04-16T19:54:00+08:00</updated>
+    <id>http://ksnowlv.github.io/blog/2015/04/16/mac-xia-ssh-keychang-yong-cao-zuo-ming-ling</id>
+    <content type="html"><![CDATA[<p><strong>Mac</strong>上关于<strong>ssh key</strong>常用的操作命令</p>
+
+<h3>1.生成公钥/私钥</h3>
+
+<p>```objective-c
+ ssh-keygen -t rsa -C &ldquo;邮箱名&rdquo;</p>
+
+<p>```</p>
+
+<h3>2.添加公钥/私钥</h3>
+
+<p>```objective-c</p>
+
+<p>ssh-add 密钥名</p>
+
+<p>```</p>
+
+<h3>3.显示公钥</h3>
+
+<p>```objective-c</p>
+
+<p>cat 公钥名</p>
+
+<p>```</p>
+
+<h3>截图如下</h3>
+
+<p><img src="/images/post/2015-04-16-mac-xia-ssh-keychang-yong-cao-zuo-ming-ling/overview.png" alt="image" /></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Mac下杀死占用某个端口的进程]]></title>

@@ -9,7 +9,9 @@
   <meta name="author" content="律威">
 
   
-  <meta name="description" content="PMD是一款静态代码分析工具，它能够自动检测各种潜在缺陷以及不安全或未优化的代码，更多地是集中在预先检测缺陷上 Checkstyle之类的其它工具可以检查代码是否遵循了约定和标准。 1.下载插件。 2.选择工程后，右键弹出菜单运行PMD 3.代码检查的分类情况 ">
+  <meta name="description" content="Mac上关于ssh key常用的操作命令 1.生成公钥/私钥 1 ssh-keygen -t rsa -C &quot;邮箱名&quot; 2.添加公钥/私钥 1
+ssh-add 密钥名 3.显示公钥 1
+cat 公钥名 截图如下 ">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -87,6 +89,71 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/04/16/mac-xia-ssh-keychang-yong-cao-zuo-ming-ling/">Mac下ssh-key常用操作命令</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-04-16T19:54:00+08:00" pubdate data-updated="true">Apr 16<span>th</span>, 2015</time>
+        
+         | <a href="/blog/2015/04/16/mac-xia-ssh-keychang-yong-cao-zuo-ming-ling/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><strong>Mac</strong>上关于<strong>ssh key</strong>常用的操作命令</p>
+
+<h3>1.生成公钥/私钥</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'> <span class="n">ssh</span><span class="o">-</span><span class="n">keygen</span> <span class="o">-</span><span class="n">t</span> <span class="n">rsa</span> <span class="o">-</span><span class="n">C</span> <span class="s">&quot;邮箱名&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<h3>2.添加公钥/私钥</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">ssh</span><span class="o">-</span><span class="n">add</span> <span class="err">密钥名</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>3.显示公钥</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="n">cat</span> <span class="err">公钥名</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>截图如下</h3>
+
+<p><img src="/images/post/2015-04-16-mac-xia-ssh-keychang-yong-cao-zuo-ming-ling/overview.png" alt="image" /></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -799,115 +866,6 @@ you should generally use a different API.
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/11/11/ios-she-bei-huo-qu-dns-ip/">iOS设备获取DNS-IP</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-11-11T17:56:00+08:00" pubdate data-updated="true">Nov 11<span>th</span>, 2014</time>
-        
-         | <a href="/blog/2014/11/11/ios-she-bei-huo-qu-dns-ip/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>iOS设备如何获取DNS-IP呢？
-示例如下：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="cp">#include &lt;arpa/inet.h&gt;</span>
-</span><span class='line'><span class="cp">#include &lt;ifaddrs.h&gt;</span>
-</span><span class='line'><span class="cp">#include &lt;resolv.h&gt;</span>
-</span><span class='line'><span class="cp">#include &lt;dns.h&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">outPutDNSServers</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="n">res_state</span> <span class="n">res</span> <span class="o">=</span> <span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="n">__res_state</span><span class="p">));</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="n">res_ninit</span><span class="p">(</span><span class="n">res</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span> <span class="n">result</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">res</span><span class="o">-&gt;</span><span class="n">nscount</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
-</span><span class='line'>        <span class="p">{</span>
-</span><span class='line'>            <span class="n">NSString</span> <span class="o">*</span><span class="n">s</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSString</span> <span class="n">stringWithUTF8String</span> <span class="o">:</span>  <span class="n">inet_ntoa</span><span class="p">(</span><span class="n">res</span><span class="o">-&gt;</span><span class="n">nsaddr_list</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">sin_addr</span><span class="p">)];</span>
-</span><span class='line'>
-</span><span class='line'>            <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%@&quot;</span><span class="p">,</span><span class="n">s</span><span class="p">);</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">else</span>
-</span><span class='line'>         <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%@&quot;</span><span class="p">,</span><span class="s">@&quot; res_init result != 0&quot;</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">res_nclose</span><span class="p">(</span><span class="n">res</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p></p>
-
-<p>另外添加<strong>libresolv.dylib</strong></p>
-
-<p>日志输出：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='objective-c'><span class='line'><span class="mi">2014</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">11</span> <span class="mi">17</span><span class="o">:</span><span class="mi">52</span><span class="o">:</span><span class="mf">03.111</span> <span class="n">NetWorkInfoTest</span><span class="p">[</span><span class="mi">1870</span><span class="o">:</span><span class="mi">2041786</span><span class="p">]</span> <span class="mf">10.32.255.10</span>
-</span><span class='line'><span class="mi">2014</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">11</span> <span class="mi">17</span><span class="o">:</span><span class="mi">52</span><span class="o">:</span><span class="mf">03.112</span> <span class="n">NetWorkInfoTest</span><span class="p">[</span><span class="mi">1870</span><span class="o">:</span><span class="mi">2041786</span><span class="p">]</span> <span class="mf">10.32.222.10</span>
-</span></code></pre></td></tr></table></div></figure>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -930,6 +888,10 @@ you should generally use a different API.
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/04/16/mac-xia-ssh-keychang-yong-cao-zuo-ming-ling/">mac下ssh-key常用操作命令</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/03/24/pmd-cha-jian-de-shi-yong/">PMD插件的使用</a>
       </li>
     
@@ -945,15 +907,11 @@ you should generally use a different API.
         <a href="/blog/2014/12/03/zu-zhi-wen-jian-bei-ituneshe-icloudtong-bu/">阻止文件被iTunes和iCloud同步</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2014/12/02/zlibyu-gzipjie-ya-suo-dui-bi/">ZLib与GZip解压缩对比</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>分类</h1>
-    <ul id="category-list"><li><a href='/blog/categories/androidcha-jian/'>Android插件 (1)</a></li><li><a href='/blog/categories/c-slash-c-plus-plus/'>C/C++ (1)</a></li><li><a href='/blog/categories/git/'>git (6)</a></li><li><a href='/blog/categories/githubbo-ke/'>github博客 (8)</a></li><li><a href='/blog/categories/ios/'>iOS (19)</a></li><li><a href='/blog/categories/ios-memory/'>iOS-Memory (4)</a></li><li><a href='/blog/categories/ios-nei-cun/'>iOS-内存 (1)</a></li><li><a href='/blog/categories/ios-duo-xian-cheng/'>iOS-多线程 (1)</a></li><li><a href='/blog/categories/ios-an-quan/'>iOS-安全 (1)</a></li><li><a href='/blog/categories/ios-wang-luo/'>iOS-网络 (12)</a></li><li><a href='/blog/categories/ios-she-ji-mo-shi/'>iOS-设计模式 (1)</a></li><li><a href='/blog/categories/iosyou-hua/'>iOS优化 (1)</a></li><li><a href='/blog/categories/mac/'>Mac (3)</a></li><li><a href='/blog/categories/mac-duo-xian-cheng/'>Mac-多线程 (1)</a></li><li><a href='/blog/categories/nginx/'>nginx (3)</a></li><li><a href='/blog/categories/php/'>php (3)</a></li><li><a href='/blog/categories/python/'>python (12)</a></li><li><a href='/blog/categories/swift/'>swift (11)</a></li><li><a href='/blog/categories/uml/'>UML (8)</a></li><li><a href='/blog/categories/xcode/'>Xcode (11)</a></li><li><a href='/blog/categories/chan-pin-she-ji/'>产品设计 (2)</a></li><li><a href='/blog/categories/gong-ju/'>工具 (1)</a></li><li><a href='/blog/categories/shu-ju-ku/'>数据库 (2)</a></li><li><a href='/blog/categories/sheng-huo-pian-duan/'>生活片段 (10)</a></li><li><a href='/blog/categories/zhi-ye-sheng-ya/'>职业生涯 (7)</a></li><li><a href='/blog/categories/du-shu/'>读书 (2)</a></li></ul>
+    <ul id="category-list"><li><a href='/blog/categories/androidcha-jian/'>Android插件 (1)</a></li><li><a href='/blog/categories/c-slash-c-plus-plus/'>C/C++ (1)</a></li><li><a href='/blog/categories/git/'>git (6)</a></li><li><a href='/blog/categories/githubbo-ke/'>github博客 (8)</a></li><li><a href='/blog/categories/ios/'>iOS (19)</a></li><li><a href='/blog/categories/ios-memory/'>iOS-Memory (4)</a></li><li><a href='/blog/categories/ios-nei-cun/'>iOS-内存 (1)</a></li><li><a href='/blog/categories/ios-duo-xian-cheng/'>iOS-多线程 (1)</a></li><li><a href='/blog/categories/ios-an-quan/'>iOS-安全 (1)</a></li><li><a href='/blog/categories/ios-wang-luo/'>iOS-网络 (12)</a></li><li><a href='/blog/categories/ios-she-ji-mo-shi/'>iOS-设计模式 (1)</a></li><li><a href='/blog/categories/iosyou-hua/'>iOS优化 (1)</a></li><li><a href='/blog/categories/mac/'>Mac (4)</a></li><li><a href='/blog/categories/mac-duo-xian-cheng/'>Mac-多线程 (1)</a></li><li><a href='/blog/categories/nginx/'>nginx (3)</a></li><li><a href='/blog/categories/php/'>php (3)</a></li><li><a href='/blog/categories/python/'>python (12)</a></li><li><a href='/blog/categories/swift/'>swift (11)</a></li><li><a href='/blog/categories/uml/'>UML (8)</a></li><li><a href='/blog/categories/xcode/'>Xcode (11)</a></li><li><a href='/blog/categories/chan-pin-she-ji/'>产品设计 (2)</a></li><li><a href='/blog/categories/gong-ju/'>工具 (1)</a></li><li><a href='/blog/categories/shu-ju-ku/'>数据库 (2)</a></li><li><a href='/blog/categories/sheng-huo-pian-duan/'>生活片段 (10)</a></li><li><a href='/blog/categories/zhi-ye-sheng-ya/'>职业生涯 (7)</a></li><li><a href='/blog/categories/du-shu/'>读书 (2)</a></li></ul>
 </section>
 <section>
   <h1>外部链接</h1>
